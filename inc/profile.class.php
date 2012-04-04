@@ -142,6 +142,7 @@ class PluginSimcardProfile extends CommonDBTM {
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
       }
+      self::changeProfile();
    }
     
    static function uninstall() {
@@ -149,6 +150,8 @@ class PluginSimcardProfile extends CommonDBTM {
 
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
+      unset($_SESSION["glpiactiveprofile"]['simcard']);
+      unset($_SESSION["glpiactiveprofile"]['simcard_open_ticket']);
    }
 }
 
