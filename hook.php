@@ -3,7 +3,7 @@
  * @version $Id$
  LICENSE
 
- This file is part of the order plugin.
+  This file is part of the simcard plugin.
 
  Order plugin is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -161,9 +161,9 @@ function plugin_simcard_getAddSearchOptions($itemtype) {
 
 function plugin_item_purge_simcard($item) {
 
-   $temp = new PluginSimcardsSimcard_Item();
-   $temp->clean(array('itemtype' => get_class($item),
-                      'items_id' => $item->getField('id')));
+   $temp = new PluginSimcardSimcard_Item();
+   $temp->deleteByCriteria(array('itemtype' => get_class($item),
+                                 'items_id' => $item->getField('id')));
    return true;
 }
 
@@ -172,8 +172,9 @@ function plugin_item_purge_simcard($item) {
 function plugin_get_headings_simcard($item, $withtemplate) {
    global $LANG;
 
-   if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())
-      || (get_class($item) == 'Profile' && $item->fields['interface']!='helpdesk')) {
+   if ((in_array(get_class($item), PluginSimcardSimcard_Item::getClasses()) && $item->getID() > 0)
+      || (get_class($item) == 'Profile'
+         && $item->fields['interface']!='helpdesk')) {
       return array(1 => $LANG['plugin_simcard']['profile'][1]);
    }
 
@@ -223,4 +224,17 @@ function plugin_datainjection_populate_simcard() {
    $INJECTABLE_TYPES['PluginSimcardSimcardInjection'] = 'simcard';
 }
 
+function plugin_simcard_postinit() {
+   global $UNINSTALL_TYPES, $ORDER_TYPES, $ALL_CUSTOMFIELDS_TYPES, $DB;
+   $plugin = new Plugin();
+   if ($plugin->isInstalled('uninstall') && $plugin->isActivated('uninstall')) {
+      array_push($UNINSTALL_TYPES, 'PluginSimcardSimcard');
+   }
+   if ($plugin->isInstalled('order') && $plugin->isActivated('order')) {
+      array_push($ORDER_TYPES, 'PluginSimcardSimcard');
+   }
+   if ($plugin->isInstalled('customfields') && $plugin->isActivated('customfields')) {
+      PluginCustomfieldsItemtype::registerItemtype('PluginSimcardSimcard');
+   }
+}
 ?>

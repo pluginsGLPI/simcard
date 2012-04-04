@@ -3,7 +3,7 @@
  * @version $Id$
  LICENSE
 
- This file is part of the order plugin.
+  This file is part of the simcard plugin.
 
  Order plugin is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -87,6 +87,7 @@ function plugin_init_simcard() {
          $PLUGIN_HOOKS['migratetypes']['simcard']             = 'plugin_datainjection_migratetypes_simcard';
          $PLUGIN_HOOKS['plugin_pdf']['PluginSimcardsSimcard'] = 'simcard';
          $PLUGIN_HOOKS['menu']['simcard']                     = true;
+         $PLUGIN_HOOKS['post_init']['simcard']                = 'plugin_simcard_postinit';
       }
    }
 }

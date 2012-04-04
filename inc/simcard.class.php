@@ -3,7 +3,7 @@
  * @version $Id$
  LICENSE
 
- This file is part of the order plugin.
+  This file is part of the simcard plugin.
 
  Order plugin is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -161,6 +161,7 @@ class PluginSimcardSimcard extends CommonDBTM {
                            'entity' => $this->fields["entities_id"],
                            'right'  => 'all'));
       echo "</td>";
+      /*
       echo "<td>".$LANG['peripherals'][33]."</td>";
       echo "<td>";
       Dropdown::showGlobalSwitch($this->fields["id"],
@@ -170,7 +171,10 @@ class PluginSimcardSimcard extends CommonDBTM {
                                                       => $CFG_GLPI["phones_management_restrict"],
                                        'target'       => $target));
       echo "</td></tr>\n";
+      */
+      echo "<input type='hidden' name='is_global' value='1'>";
       
+      echo "<td></td></tr>\n";
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['common'][35]."</td>";
       echo "<td>";
@@ -536,6 +540,10 @@ class PluginSimcardSimcard extends CommonDBTM {
       $plugin = new Plugin();
       if ($plugin->isActivated('datainjection') && class_exists('PluginDatainjectionModel')) {
          PluginDatainjectionModel::clean(array('itemtype' => __CLASS__));
+      }
+
+      if ($plugin->isInstalled('customfields') && $plugin->isActivated('customfields')) {
+         PluginCustomfieldsItemtype::unregisterItemtype('PluginSimcardSimcard');
       }
       
       $table = getTableForItemType(__CLASS__);

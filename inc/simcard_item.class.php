@@ -3,7 +3,7 @@
  * @version $Id$
  LICENSE
 
- This file is part of the order plugin.
+  This file is part of the simcard plugin.
 
  Order plugin is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -123,6 +123,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".getItemTypeFormURL(__CLASS__)."'>";
       echo "<table class='tab_cadre_fixehov'>";
+      echo "<tr><th colspan='6'>".$LANG['document'][19]."</th></tr>";
       if (!empty($results)) {
          echo "<tr><th></th>";
          echo "<th>".$LANG['common'][17]."</th>";
@@ -160,16 +161,14 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       }
       
       if (haveRight('simcard', 'w')) {
-         echo "<tr class='tab_bg_1'><td colspan='5' class='center'>";
+         echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
          
-         if (!self::countForItem($simcard->getID())) {
-            echo "<input type='hidden' name='plugin_simcard_simcards_id' value='".$simcard->getID()."'>";
-            Dropdown::showAllItems("items_id",0,0,$simcard->fields['entities_id'], self::getClasses());
-            echo "</td>";
-            echo "<td colspan='2' class='center' class='tab_bg_2'>";
-            echo "<input type='submit' name='additem' value=\"".$LANG['buttons'][8]."\" class='submit'>";
-            echo "</td></tr>";
-         }
+         echo "<input type='hidden' name='plugin_simcard_simcards_id' value='".$simcard->getID()."'>";
+         Dropdown::showAllItems("items_id",0,0,$simcard->fields['entities_id'], self::getClasses());
+         echo "</td>";
+         echo "<td colspan='2' class='center' class='tab_bg_2'>";
+         echo "<input type='submit' name='additem' value=\"".$LANG['buttons'][8]."\" class='submit'>";
+         echo "</td></tr>";
    
          if (!empty($results)) {
             openArrowMassive('items');
@@ -192,7 +191,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".getItemTypeFormURL(__CLASS__)."'>";
       echo "<table class='tab_cadre_fixehov'>";
-      logDebug($results);
+      echo "<tr><th colspan='6'>".$LANG['document'][19]."</th></tr>";
       if (!empty($results)) {
          echo "<tr><th></th>";
          echo "<th>".$LANG['entity'][0]."</th>";
@@ -201,8 +200,8 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<th>".$LANG['common'][20]."</th>";
          echo "</tr>";
          foreach ($results as $data) {
-            $item = new PluginSimcardSimcard();
-            $item->getFromDB($data['plugin_simcard_simcards_id']);
+            $tmp = new PluginSimcardSimcard();
+            $tmp->getFromDB($data['plugin_simcard_simcards_id']);
             echo "<tr>";
             echo "<td>";
             if (haveRight('simcard', 'w')) {
@@ -210,16 +209,16 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             }
             echo "</td>";
             echo "<td>";
-            echo Dropdown::getDropdownName('glpi_entities', $item->fields['entities_id']);
+            echo Dropdown::getDropdownName('glpi_entities', $tmp->fields['entities_id']);
             echo "</td>";
             echo "<td>";
-            echo $item->getLink();
+            echo $tmp->getLink();
             echo "</td>";
             echo "<td>";
-            echo $item->fields['serial'];
+            echo $tmp->fields['serial'];
             echo "</td>";
             echo "<td>";
-            echo $item->fields['otherserial'];
+            echo $tmp->fields['otherserial'];
             echo "</td>";
             echo "</tr>";
          }
@@ -227,6 +226,22 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       
       if (haveRight('simcard', 'w')) {
          echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
+         echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
+         echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
+         $used = array();
+         foreach (getAllDatasFromTable('glpi_plugin_simcard_simcards_items',
+                                      "`itemtype`='".$item->getType()."'
+                                         AND `items_id`='".$item->getID()."'") as $use) {
+            $used[$use['plugin_simcard_simcards_id']] = $use['plugin_simcard_simcards_id'];
+         }
+         Dropdown::show('PluginSimcardSimcard',
+                        array ('name' => "plugin_simcard_simcards_id",
+                               'entity' => $item->fields['entities_id'], 'used' => $used));
+         echo "</td>";
+         echo "<td colspan='2' class='center' class='tab_bg_2'>";
+         echo "<input type='submit' name='additem' value=\"".$LANG['buttons'][8]."\" class='submit'>";
+         echo "</td></tr>";
+         
          if (!empty($results)) {
             openArrowMassive('items');
             closeArrowMassive('delete_items', $LANG['buttons'][10]);

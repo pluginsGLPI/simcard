@@ -3,7 +3,7 @@
  * @version $Id$
  LICENSE
 
- This file is part of the order plugin.
+  This file is part of the simcard plugin.
 
  Order plugin is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -72,7 +72,6 @@ class PluginSimcardProfile extends CommonDBTM {
    static function changeProfile() {
       $prof = new self();
       if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
-         logDebug($prof);
          if ($prof->fields['simcard']) {
             $_SESSION["glpiactiveprofile"]['simcard'] = $prof->fields['simcard'];
             $_SESSION["glpiactiveprofile"]['simcard_open_ticket'] = $prof->fields['open_ticket'];

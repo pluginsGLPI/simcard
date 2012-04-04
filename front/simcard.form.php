@@ -3,7 +3,7 @@
  * @version $Id$
  LICENSE
 
- This file is part of the order plugin.
+  This file is part of the simcard plugin.
 
  Order plugin is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -54,8 +54,6 @@ $simcard = new PluginSimcardSimcard();
 if (isset($_POST["add"])) {
    $simcard->check(-1, 'w', $_POST);
    if ($newID = $simcard->add($_POST)) {
-      //Event::log($newID, "simcards", 4, "inventory",
-      //           sprintf(__('%1$s adds the item %2%s'), $_SESSION["glpiname"], $_POST["name"]));
    }
    glpi_header($_SERVER['HTTP_REFERER']);
 
@@ -64,9 +62,6 @@ if (isset($_POST["add"])) {
    $simcard->check($_POST['id'], 'd');
    $ok = $simcard->delete($_POST);
    if ($ok) {
-      //Event::log($_POST["id"], "computers", 4, "inventory",
-                 //TRANS: %s is the user login
-      //           sprintf(__('%s deletes the item'), $_SESSION["glpiname"]));
    }
    glpi_header(getItemTypeSearchURL('PluginSimcardSimcard'));
 
@@ -82,9 +77,6 @@ if (isset($_POST["add"])) {
 } else if (isset($_REQUEST["purge"])) {
    $simcard->check($_REQUEST['id'], 'd');
    if ($simcard->delete($_REQUEST,1)) {
-      //Event::log($_REQUEST["id"], "computers", 4, "inventory",
-                 //TRANS: %s is the user login
-      //           sprintf(__('%s purges the item'), $_SESSION["glpiname"]));
    }
    glpi_header(getItemTypeSearchURL('PluginSimcardSimcard'));
    
@@ -92,18 +84,11 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["update"])) {
    $simcard->check($_POST['id'], 'w');
    $simcard->update($_POST);
-   //Event::log($_POST["id"], "simcards", 4, "inventory",
-              //TRANS: %s is the user login
-   //           sprintf(__('%s updates the item'), $_SESSION["glpiname"]));
    glpi_header($_SERVER['HTTP_REFERER']);
 
 } else if (isset($_GET["unglobalize"])) {
-   $peripheral->check($_GET["id"],'w');
+   $simcard->check($_GET["id"],'w');
 
-   //Phone_Item::unglobalizeItem($simcard);
-   //Event::log($_GET["id"], "simcards", 4, "inventory",
-               //TRANS: %s is the user login
-   //            sprintf(__('%s sets unitary management'), $_SESSION["glpiname"]));
 
    glpi_header(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
    
