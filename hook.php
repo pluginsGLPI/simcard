@@ -43,7 +43,6 @@ function plugin_simcard_install() {
    PluginSimcardSimcardVoltage::install($migration);
    PluginSimcardPhoneOperator::install($migration);
    PluginSimcardSimcard_Item::install($migration);
-   PluginSimcardProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    return true;
 }
 

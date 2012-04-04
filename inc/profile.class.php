@@ -142,6 +142,7 @@ class PluginSimcardProfile extends CommonDBTM {
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die($DB->error());
       }
+      PluginSimcardProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
       self::changeProfile();
    }
     
