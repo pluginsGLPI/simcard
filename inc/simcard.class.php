@@ -59,13 +59,16 @@ class PluginSimcardSimcard extends CommonDBTM {
    function defineTabs($options=array()) {
       global $LANG;
       $ong     = array();
-      $ong[1]  = $LANG['connect'][2];
-      $ong[2]  = $LANG['Menu'][26];
-      $ong[3]  = $LANG['Menu'][27];
-      $ong[4]  = $LANG['Menu'][5];
-      $ong[5]  = $LANG['title'][37];
-      $ong[6]  = $LANG['log'][42];
-      $ong[12] = $LANG['title'][38];
+      if ($this->fields['id'] > 0) {
+         $ong[1]  = $LANG['connect'][2];
+         $ong[2]  = $LANG['Menu'][26];
+         $ong[3]  = $LANG['Menu'][27];
+         $ong[4]  = $LANG['Menu'][5];
+         $ong[5]  = $LANG['title'][37];
+         $ong[6]  = $LANG['log'][42];
+         $ong[12] = $LANG['title'][38];
+      }
+
       return $ong;
    }
 
@@ -187,16 +190,15 @@ class PluginSimcardSimcard extends CommonDBTM {
       echo "<textarea cols='45' rows='15' name='comment' >".$this->fields["comment"]."</textarea>";
       echo "</td></tr>\n";
       
-      echo "</td></tr>";
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['plugin_simcard'][1]."</td>";
-      echo "<td >";
+      echo "<td>";
       autocompletionTextField($this,'phonenumber');
       echo "</td></tr>\n";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['plugin_simcard'][8]."</td>";
-      echo "<td >";
+      echo "<td>";
       autocompletionTextField($this,'serial');
       echo "</td></tr>\n";
       
@@ -209,32 +211,31 @@ class PluginSimcardSimcard extends CommonDBTM {
                              (isset($options['withtemplate']) && $options['withtemplate']==2),
                              $this->getType(), $this->fields["entities_id"]);
       autocompletionTextField($this, 'otherserial', array('value' => $objectName));
-      echo "</td>";
       echo "</td></tr>\n";
       
       //Only show PIN and PUK code to users who can write (theses informations are highly sensible)
       if (haveRight('simcard', 'w')) {
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][3]."</td>";
-         echo "<td >";
+         echo "<td>";
          autocompletionTextField($this,'pin2');
          echo "</td></tr>\n";
          
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][5]."</td>";
-         echo "<td >";
+         echo "<td>";
          autocompletionTextField($this,'pin2');
          echo "</td></tr>\n";
          
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][4]."</td>";
-         echo "<td >";
+         echo "<td>";
          autocompletionTextField($this,'puk');
          echo "</td></tr>\n";
 
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][2]."</td>";
-         echo "<td >";
+         echo "<td>";
          autocompletionTextField($this,'puk2');
          echo "</td></tr>\n";
       }
@@ -315,7 +316,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[1]['datatype']        = 'itemlink';
       $tab[1]['itemlink_type']   = $this->getType();
       $tab[1]['massiveaction']   = false; // implicit key==1
-      $tab[1]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[1]['injectable']      = true;
       $tab[1]['checktype']       = 'text';
       $tab[1]['displaytype']     = 'text';
       
@@ -331,7 +332,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[5]['datatype']        = 'string';
       $tab[5]['checktype']       = 'text';
       $tab[5]['displaytype']     = 'text';
-      $tab[5]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[5]['injectable']      = true;
       
       $tab[6]['table']           = $this->getTable();
       $tab[6]['field']           = 'otherserial';
@@ -339,7 +340,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[6]['datatype']        = 'string';
       $tab[6]['checktype']       = 'text';
       $tab[6]['displaytype']     = 'text';
-      $tab[6]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[6]['injectable']      = true;
       
       $tab[16]['table']          = $this->getTable();
       $tab[16]['field']          = 'comment';
@@ -348,7 +349,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[16]['linkfield']      = 'comment';
       $tab[16]['checktype']      = 'text';
       $tab[16]['displaytype']    = 'multiline_text';
-      $tab[16]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[16]['injectable']      = true;
       
       $tab += Location::getSearchOptionsToAdd();
 
@@ -365,35 +366,35 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[24]['name']           = $LANG['common'][10];
       $tab[24]['checktype']      = 'text';
       $tab[24]['displaytype']    = 'user';
-      $tab[24]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[24]['injectable']      = true;
 
       $tab[23]['table']          = 'glpi_plugin_simcard_simcardvoltages';
       $tab[23]['field']          = 'name';
       $tab[23]['name']           = $LANG['plugin_simcard'][9];
       $tab[23]['checktype']      = 'text';
       $tab[23]['displaytype']    = 'dropdown';
-      $tab[23]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[23]['injectable']      = true;
       
       $tab[25]['table']          = 'glpi_plugin_simcard_simcardsizes';
       $tab[25]['field']          = 'name';
       $tab[25]['name']           = $LANG['plugin_simcard'][6];
       $tab[25]['checktype']      = 'text';
       $tab[25]['displaytype']    = 'dropdown';
-      $tab[25]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[25]['injectable']      = true;
       
       $tab[26]['table']          = 'glpi_plugin_simcard_phoneoperators';
       $tab[26]['field']          = 'name';
       $tab[26]['name']           = $LANG['plugin_simcard'][7];
       $tab[26]['checktype']      = 'text';
       $tab[26]['displaytype']    = 'dropdown';
-      $tab[26]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[26]['injectable']      = true;
       
       $tab[27]['table']          = $this->getTable();
       $tab[27]['field']          = 'phonenumber';
       $tab[27]['name']           = $LANG['plugin_simcard'][1];
       $tab[27]['checktype']       = 'text';
       $tab[27]['displaytype']     = 'text';
-      $tab[27]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[27]['injectable']      = true;
       
       if (haveRight('simcard', 'w')) {
          $tab[28]['table']          = $this->getTable();
@@ -401,28 +402,28 @@ class PluginSimcardSimcard extends CommonDBTM {
          $tab[28]['name']           = $LANG['plugin_simcard'][3];
          $tab[28]['checktype']       = 'text';
          $tab[28]['displaytype']     = 'text';
-         $tab[28]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+         $tab[28]['injectable']      = true;
          
          $tab[29]['table']          = $this->getTable();
          $tab[29]['field']          = 'puk';
          $tab[29]['name']           = $LANG['plugin_simcard'][4];
          $tab[29]['checktype']       = 'text';
          $tab[29]['displaytype']     = 'text';
-         $tab[29]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+         $tab[29]['injectable']      = true;
 
          $tab[30]['table']          = $this->getTable();
          $tab[30]['field']          = 'pin2';
          $tab[30]['name']           = $LANG['plugin_simcard'][5];
          $tab[30]['checktype']       = 'text';
          $tab[30]['displaytype']     = 'text';
-         $tab[30]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+         $tab[30]['injectable']      = true;
          
          $tab[32]['table']          = $this->getTable();
          $tab[32]['field']          = 'puk2';
          $tab[32]['name']           = $LANG['plugin_simcard'][2];
          $tab[32]['checktype']       = 'text';
          $tab[32]['displaytype']     = 'text';
-         $tab[32]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+         $tab[32]['injectable']      = true;
       }
 
       $tab[31]['table']          = 'glpi_states';
@@ -430,7 +431,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[31]['name']           = $LANG['joblist'][0];
       $tab[31]['checktype']       = 'text';
       $tab[31]['displaytype']     = 'dropdown';
-      $tab[31]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[31]['injectable']      = true;
       
       $tab[49]['table']          = 'glpi_groups';
       $tab[49]['field']          = 'name';
@@ -438,14 +439,14 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[49]['name']           = $LANG['common'][35];
       $tab[49]['checktype']       = 'text';
       $tab[49]['displaytype']     = 'dropdown';
-      $tab[49]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[49]['injectable']      = true;
       
       $tab[70]['table']          = 'glpi_users';
       $tab[70]['field']          = 'name';
       $tab[70]['name']           = $LANG['common'][34];
       $tab[70]['checktype']       = 'text';
       $tab[70]['displaytype']     = 'user';
-      $tab[70]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[70]['injectable']      = true;
       
       $tab[80]['table']          = 'glpi_entities';
       $tab[80]['field']          = 'completename';
@@ -459,14 +460,14 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[90]['linkfield']      = 'notepad';
       $tab[90]['checktype']       = 'text';
       $tab[90]['displaytype']     = 'multiline_text';
-      $tab[90]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[90]['injectable']      = true;
       
       $tab[91]['injectable']      = false;
       $tab[93]['injectable']      = false;
 
       $tab[3]['checktype']       = 'text';
       $tab[3]['displaytype']     = 'dropdown';
-      $tab[3]['injectable']      = PluginDatainjectionCommonInjectionLib::FIELD_INJECTABLE;
+      $tab[3]['injectable']      = true;
 
       return $tab;
    }
