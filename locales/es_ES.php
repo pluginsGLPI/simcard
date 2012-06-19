@@ -37,7 +37,7 @@ $LANG['plugin_simcard'][6] = "Size";
 $LANG['plugin_simcard'][7] = "Proveedor";
 $LANG['plugin_simcard'][8] = "IMSI";
 $LANG['plugin_simcard'][9] = "Voltage";
-
+$LANG['plugin_simcard'][10] = "New SIM card";
 
 $LANG['plugin_simcard']['profile'][0] = "Privilegios de Gestión";
 $LANG['plugin_simcard']['profile'][1] = "Tarjetas SIM";

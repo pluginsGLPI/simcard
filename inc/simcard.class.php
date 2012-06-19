@@ -106,6 +106,20 @@ class PluginSimcardSimcard extends CommonDBTM {
       $this->showTabs($options);
       $this->showFormHeader($options);
 
+      if (isset($options['itemtype']) && isset($options['items_id'])) {
+         echo "<tr class='tab_bg_1'>";
+         echo "<td>".$LANG['document'][14]."</td>";
+         echo "<td>";
+         $item = new $options['itemtype'];
+         $item->getFromDB($options['items_id']);
+         echo $item->getLink(1);
+         echo "</td>";
+         echo "<td colspan='2'></td></tr>\n";
+         echo "<input type='hidden' name='_itemtype' value='".$options['itemtype']."'>";
+         echo "<input type='hidden' name='_items_id' value='".$options['items_id']."'>";
+      }
+      
+      
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['common'][16].
                           (isset($options['withtemplate']) && $options['withtemplate']?"*":"").
@@ -302,6 +316,14 @@ class PluginSimcardSimcard extends CommonDBTM {
          }
       }
 
+      if (isset($this->input['_itemtype']) && isset($this->input['_items_id'])) {
+         $simcard_item = new PluginSimcardSimcard_Item();
+         $tmp['plugin_simcard_simcards_id'] = $this->getID();
+         $tmp['itemtype'] = $this->input['_itemtype'];
+         $tmp['items_id'] = $this->input['_items_id'];
+         $simcard_item->add($tmp);
+      }
+      
    }
    
    function getSearchOptions() {

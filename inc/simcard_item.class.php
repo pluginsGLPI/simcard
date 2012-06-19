@@ -186,6 +186,12 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       if (!$item->can($item->getID(),'r')) {
          return false;
       }
+      
+      if (haveRight('simcard', 'w')) {
+         $url = getItemTypeFormURL('PluginSimcardSimcard');
+         $url.= "?itemtype=".$item->getType()."&items_id=".$item->getID()."&id=-1";
+         echo "<div class='center'><a href='$url'>".$LANG['plugin_simcard'][10]."</a></div><br>";
+      }
       $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
                                      "`items_id` = '".$item->getID()."' AND `itemtype`='".get_class($item)."'");
       echo "<div class='spaced'>";

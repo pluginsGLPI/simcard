@@ -95,7 +95,7 @@ if (isset($_POST["add"])) {
 } else {//print computer information
    commonHeader(PluginSimcardSimcard::getTypeName(2), $_SERVER['PHP_SELF'], "plugins", "simcard");
    //show computer form to add
-   $simcard->showForm($_GET["id"], array('withtemplate' => $_GET["withtemplate"]));
+   $simcard->showForm($_GET["id"], $_GET);
    commonFooter();
 }
 ?>
