@@ -220,7 +220,8 @@ function plugin_headings_simcard($item,$withtemplate=0) {
 
 function plugin_datainjection_populate_simcard() {
    global $INJECTABLE_TYPES;
-   $INJECTABLE_TYPES['PluginSimcardSimcardInjection'] = 'simcard';
+   $INJECTABLE_TYPES['PluginSimcardSimcardInjection']      = 'simcard';
+   $INJECTABLE_TYPES['PluginSimcardSimcard_ItemInjection'] = 'simcard';
 }
 
 function plugin_simcard_postinit() {
