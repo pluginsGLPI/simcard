@@ -60,13 +60,20 @@ class PluginSimcardSimcard extends CommonDBTM {
       global $LANG;
       $ong     = array();
       if ($this->fields['id'] > 0) {
-         $ong[1]  = $LANG['connect'][2];
-         $ong[2]  = $LANG['Menu'][26];
-         $ong[3]  = $LANG['Menu'][27];
-         $ong[4]  = $LANG['Menu'][5];
-         $ong[5]  = $LANG['title'][37];
-         $ong[6]  = $LANG['log'][42];
-         $ong[12] = $LANG['title'][38];
+         if (!$this->fields['is_template']) {
+            $ong[1]  = $LANG['connect'][2];
+            $ong[2]  = $LANG['Menu'][26];
+            $ong[3]  = $LANG['Menu'][27];
+            $ong[4]  = $LANG['Menu'][5];
+            $ong[5]  = $LANG['title'][37];
+            $ong[6]  = $LANG['log'][42];
+            $ong[12] = $LANG['title'][38];
+         } else {
+            $ong[2]  = $LANG['Menu'][26];
+            $ong[3]  = $LANG['Menu'][27];
+            $ong[5]  = $LANG['title'][37];
+            $ong[12] = $LANG['title'][38];
+         }
       }
 
       return $ong;
