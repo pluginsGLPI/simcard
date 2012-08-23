@@ -93,7 +93,7 @@ if (isset($_POST["add"])) {
    glpi_header(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
    
 } else {//print computer information
-   commonHeader(PluginSimcardSimcard::getTypeName(2), $_SERVER['PHP_SELF'], "plugins", "simcard");
+   commonHeader(PluginSimcardSimcard::getTypeName(2), $_SERVER['PHP_SELF'], "plugins", "simcard", "simcard");
    //show computer form to add
    $simcard->showForm($_GET["id"], $_GET);
    commonFooter();

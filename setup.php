@@ -68,7 +68,8 @@ function plugin_init_simcard() {
             //menu entry
             $PLUGIN_HOOKS['menu_entry']['simcard'] = 'front/simcard.php';
             //search link
-            $PLUGIN_HOOKS['submenu_entry']['simcard']['search'] = 'front/simcard.php';
+            $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['search']
+               = '/plugins/simcard/front/simcard.php';
             //add simcard to items details
             $PLUGIN_HOOKS['headings']['simcard']           = 'plugin_get_headings_simcard';
             $PLUGIN_HOOKS['headings_action']['simcard']    = 'plugin_headings_actions_simcard';
@@ -77,7 +78,11 @@ function plugin_init_simcard() {
              
          if (haveRight("simcard", "w")) {
             //add link
-            $PLUGIN_HOOKS['submenu_entry']['simcard']['add'] = 'front/simcard.form.php';
+            $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['add']
+               = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=1';
+            $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['template']
+               = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=0';
+            
             //use massiveaction in the plugin
             $PLUGIN_HOOKS['use_massive_action']['simcard']=1;
          }
