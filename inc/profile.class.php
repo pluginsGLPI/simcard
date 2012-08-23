@@ -92,7 +92,7 @@ class PluginSimcardProfile extends CommonDBTM {
       $canedit = haveRight("profile", "w");
       $prof    = new Profile();
       if ($ID){
-         $this->getFromDB($ID);
+         $this->getFromDBByProfile($ID);
          $prof->getFromDB($ID);
       }
 
@@ -113,7 +113,7 @@ class PluginSimcardProfile extends CommonDBTM {
       if ($prof->fields['create_ticket']) {
          Dropdown::showYesNo("open_ticket" , $this->fields["open_ticket"]);
       } else {
-         echo Dropdpown::getYesNo(0);
+         echo Dropdown::getYesNo(0);
       }
       echo "</td>";
       echo "</tr>";
@@ -121,7 +121,7 @@ class PluginSimcardProfile extends CommonDBTM {
       if ($canedit) {
          echo "<tr class='tab_bg_1'>";
          echo "<td align='center' colspan='2'>";
-         echo "<input type='hidden' name='id' value=$ID>";
+         echo "<input type='hidden' name='id' value=".$this->getID().">";
          echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit'>";
          echo "</td></tr>";
       }
