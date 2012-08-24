@@ -236,10 +236,13 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
          echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
          $used = array();
-         foreach (getAllDatasFromTable('glpi_plugin_simcard_simcards_items',
-                                      "`itemtype`='".$item->getType()."'
-                                         AND `items_id`='".$item->getID()."'") as $use) {
-            $used[$use['plugin_simcard_simcards_id']] = $use['plugin_simcard_simcards_id'];
+         $query = "SELECT `id`
+                   FROM `glpi_plugin_simcard_simcards`
+                   WHERE `is_template`='0'
+                      AND `id` IN (SELECT `plugin_simcard_simcards_id`
+                                   FROM `glpi_plugin_simcard_simcards_items`)";
+         foreach ($DB->request($query) as $use) {
+            $used[$use['id']] = $use['id'];
          }
          Dropdown::show('PluginSimcardSimcard',
                         array ('name' => "plugin_simcard_simcards_id",
