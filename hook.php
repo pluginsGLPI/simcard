@@ -139,6 +139,7 @@ function plugin_simcard_getAddSearchOptions($itemtype) {
          $sopt[1710]['field']         = 'name';
          $sopt[1710]['name']          = $LANG['plugin_simcard']['profile'][1]." - ".$LANG['common'][16];
          $sopt[1710]['forcegroupby']  = true;
+         $sopt[1710]['massiveaction'] = false;
          $sopt[1710]['datatype']      = 'itemlink';
          $sopt[1710]['itemlink_type'] = 'PluginSimcardSimcard';
          $sopt[1710]['joinparams']     = array('beforejoin'
@@ -147,6 +148,7 @@ function plugin_simcard_getAddSearchOptions($itemtype) {
          $sopt[1711]['table']         = 'glpi_plugin_simcard_simcards';
          $sopt[1711]['field']         = 'phonenumber';
          $sopt[1711]['name']          = $LANG['plugin_simcard']['profile'][1]." - ".$LANG['plugin_simcard'][1];
+         $sopt[1711]['massiveaction'] = false;
          $sopt[1711]['forcegroupby']  = true;
          $sopt[1711]['joinparams']     = array('beforejoin'
                                                 => array('table'      => 'glpi_plugin_simcard_simcards_items',

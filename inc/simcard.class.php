@@ -60,7 +60,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       global $LANG;
       $ong     = array();
       if ($this->fields['id'] > 0) {
-         if (!$this->fields['is_template']) {
+         if (!isset($options['withtemplate']) || empty($options['withtemplate'])) {
             $ong[1]  = $LANG['connect'][2];
             $ong[2]  = $LANG['Menu'][26];
             $ong[3]  = $LANG['Menu'][27];
@@ -69,11 +69,12 @@ class PluginSimcardSimcard extends CommonDBTM {
             $ong[6]  = $LANG['log'][42];
             $ong[12] = $LANG['title'][38];
          } else {
-            $ong[2]  = $LANG['Menu'][26];
             $ong[3]  = $LANG['Menu'][27];
             $ong[5]  = $LANG['title'][37];
             $ong[12] = $LANG['title'][38];
          }
+      } else {
+         $ong[1] = $LANG['title'][26];
       }
 
       return $ong;
@@ -185,17 +186,7 @@ class PluginSimcardSimcard extends CommonDBTM {
                            'entity' => $this->fields["entities_id"],
                            'right'  => 'all'));
       echo "</td>";
-      /*
-      echo "<td>".$LANG['peripherals'][33]."</td>";
-      echo "<td>";
-      Dropdown::showGlobalSwitch($this->fields["id"],
-                                 array('withtemplate' => $withtemplate,
-                                       'value'        => $this->fields["is_global"],
-                                       'management_restrict'
-                                                      => $CFG_GLPI["phones_management_restrict"],
-                                       'target'       => $target));
-      echo "</td></tr>\n";
-      */
+
       echo "<input type='hidden' name='is_global' value='1'>";
       
       echo "<td></td></tr>\n";
