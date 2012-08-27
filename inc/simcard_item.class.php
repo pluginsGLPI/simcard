@@ -162,13 +162,14 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       
       if (haveRight('simcard', 'w')) {
          echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
-         
-         echo "<input type='hidden' name='plugin_simcard_simcards_id' value='".$simcard->getID()."'>";
-         Dropdown::showAllItems("items_id",0,0,$simcard->fields['entities_id'], self::getClasses());
-         echo "</td>";
-         echo "<td colspan='2' class='center' class='tab_bg_2'>";
-         echo "<input type='submit' name='additem' value=\"".$LANG['buttons'][8]."\" class='submit'>";
-         echo "</td></tr>";
+         if (empty($results)) {
+            echo "<input type='hidden' name='plugin_simcard_simcards_id' value='".$simcard->getID()."'>";
+            Dropdown::showAllItems("items_id",0,0,$simcard->fields['entities_id'], self::getClasses());
+            echo "</td>";
+            echo "<td colspan='2' class='center' class='tab_bg_2'>";
+            echo "<input type='submit' name='additem' value=\"".$LANG['buttons'][8]."\" class='submit'>";
+            echo "</td></tr>";
+         }
    
          if (!empty($results)) {
             openArrowMassive('items');
@@ -185,6 +186,12 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       
       if (!$item->can($item->getID(),'r')) {
          return false;
+      }
+      
+      if (haveRight('simcard', 'w')) {
+         $url = getItemTypeFormURL('PluginSimcardSimcard');
+         $url.= "?itemtype=".$item->getType()."&items_id=".$item->getID()."&id=-1";
+         echo "<div class='center'><a href='$url'>".$LANG['plugin_simcard'][10]."</a></div><br>";
       }
       $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
                                      "`items_id` = '".$item->getID()."' AND `itemtype`='".get_class($item)."'");
@@ -229,10 +236,13 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
          echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
          $used = array();
-         foreach (getAllDatasFromTable('glpi_plugin_simcard_simcards_items',
-                                      "`itemtype`='".$item->getType()."'
-                                         AND `items_id`='".$item->getID()."'") as $use) {
-            $used[$use['plugin_simcard_simcards_id']] = $use['plugin_simcard_simcards_id'];
+         $query = "SELECT `id`
+                   FROM `glpi_plugin_simcard_simcards`
+                   WHERE `is_template`='0'
+                      AND `id` IN (SELECT `plugin_simcard_simcards_id`
+                                   FROM `glpi_plugin_simcard_simcards_items`)";
+         foreach ($DB->request($query) as $use) {
+            $used[$use['id']] = $use['id'];
          }
          Dropdown::show('PluginSimcardSimcard',
                         array ('name' => "plugin_simcard_simcards_id",
