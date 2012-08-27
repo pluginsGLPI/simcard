@@ -104,7 +104,7 @@ function plugin_version_simcard() {
    $author = "El Sendero  <a href='http://www.elsendero.es'>";
    $author.= "<img src='".GLPI_ROOT."/plugins/simcard/pics/favicon.ico'></a>";
    $author.= ", <a href='www.teclib.com'>Walid Nouh</a>";
-   return array ('name' => $LANG['plugin_simcard']['title'][1], 'version' => '0.80.2',
+   return array ('name' => $LANG['plugin_simcard']['title'][1], 'version' => '0.80.3',
                  'author' => $author,
                  'homepage' => 'https://forge.indepnet.net/projects/show/simcard',
                  'minGlpiVersion' => '0.80.0');
