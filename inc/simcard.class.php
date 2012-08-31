@@ -49,11 +49,11 @@ class PluginSimcardSimcard extends CommonDBTM {
    }
 
    function canCreate() {
-      return haveRight('simcard', 'w');
+      return Session::haveRight('simcard', 'w');
    }
 
    function canView() {
-      return haveRight('simcard', 'r');
+      return Session::haveRight('simcard', 'r');
    }
 
    function defineTabs($options=array()) {
@@ -61,17 +61,19 @@ class PluginSimcardSimcard extends CommonDBTM {
       $ong     = array();
       if ($this->fields['id'] > 0) {
          if (!isset($options['withtemplate']) || empty($options['withtemplate'])) {
-            $ong[1]  = $LANG['connect'][2];
-            $ong[2]  = $LANG['Menu'][26];
-            $ong[3]  = $LANG['Menu'][27];
-            $ong[4]  = $LANG['Menu'][5];
-            $ong[5]  = $LANG['title'][37];
-            $ong[6]  = $LANG['log'][42];
-            $ong[12] = $LANG['title'][38];
+            $this->addStandardTab('PluginSimcardSimcard_Item', $ong, $options);
+            $this->addStandardTab('NetworkPort', $ong, $options);
+            $this->addStandardTab('Document',$ong,$options);
+            $this->addStandardTab('Infocom',$ong,$options);
+            $this->addStandardTab('Contract_Item', $ong, $options);
+            $this->addStandardTab('Ticket',$ong,$options);
+            $this->addStandardTab('Note',$ong,$options);
+            $this->addStandardTab('Log',$ong,$options);
+            $this->addStandardTab('Event',$ong,$options);
          } else {
-            $ong[3]  = $LANG['Menu'][27];
-            $ong[5]  = $LANG['title'][37];
-            $ong[12] = $LANG['title'][38];
+            $this->addStandardTab('Document',$ong,$options);
+            $this->addStandardTab('Log',$ong,$options);
+            $this->addStandardTab('Event',$ong,$options);
          }
       } else {
          $ong[1] = $LANG['title'][26];
@@ -136,7 +138,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $objectName = autoName($this->fields["name"], "name",
                              (isset($options['withtemplate']) && $options['withtemplate']==2),
                              $this->getType(), $this->fields["entities_id"]);
-      autocompletionTextField($this, 'name', array('value' => $objectName));
+      Html::autocompletionTextField($this, 'name', array('value' => $objectName));
       echo "</td>";
       echo "<td>".$LANG['joblist'][0]."</td>";
       echo "<td>";
@@ -205,13 +207,13 @@ class PluginSimcardSimcard extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['plugin_simcard'][1]."</td>";
       echo "<td>";
-      autocompletionTextField($this,'phonenumber');
+      Html::autocompletionTextField($this,'phonenumber');
       echo "</td></tr>\n";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['plugin_simcard'][8]."</td>";
       echo "<td>";
-      autocompletionTextField($this,'serial');
+      Html::autocompletionTextField($this,'serial');
       echo "</td></tr>\n";
       
       echo "<tr class='tab_bg_1'>";
@@ -222,33 +224,33 @@ class PluginSimcardSimcard extends CommonDBTM {
       $objectName = autoName($this->fields["otherserial"], "otherserial",
                              (isset($options['withtemplate']) && $options['withtemplate']==2),
                              $this->getType(), $this->fields["entities_id"]);
-      autocompletionTextField($this, 'otherserial', array('value' => $objectName));
+      Html::autocompletionTextField($this, 'otherserial', array('value' => $objectName));
       echo "</td></tr>\n";
       
       //Only show PIN and PUK code to users who can write (theses informations are highly sensible)
-      if (haveRight('simcard', 'w')) {
+      if (Session::haveRight('simcard', 'w')) {
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][3]."</td>";
          echo "<td>";
-         autocompletionTextField($this,'pin2');
+         Html::autocompletionTextField($this,'pin2');
          echo "</td></tr>\n";
          
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][5]."</td>";
          echo "<td>";
-         autocompletionTextField($this,'pin2');
+         Html::autocompletionTextField($this,'pin2');
          echo "</td></tr>\n";
          
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][4]."</td>";
          echo "<td>";
-         autocompletionTextField($this,'puk');
+         Html::autocompletionTextField($this,'puk');
          echo "</td></tr>\n";
 
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][2]."</td>";
          echo "<td>";
-         autocompletionTextField($this,'puk2');
+         Html::autocompletionTextField($this,'puk2');
          echo "</td></tr>\n";
       }
 
@@ -416,7 +418,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[27]['displaytype']     = 'text';
       $tab[27]['injectable']      = true;
       
-      if (haveRight('simcard', 'w')) {
+      if (Session::haveRight('simcard', 'w')) {
          $tab[28]['table']          = $this->getTable();
          $tab[28]['field']          = 'pin';
          $tab[28]['name']           = $LANG['plugin_simcard'][3];
@@ -569,6 +571,36 @@ class PluginSimcardSimcard extends CommonDBTM {
       
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
+   }
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+
+      if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())
+         || get_class($item) == 'Profile') {
+         return array(1 => $LANG['plugin_simcard']['profile'][1]);
+      } elseif (get_class($item) == __CLASS__) {
+         return $LANG['plugin_simcard']['profile'][1];
+      }
+      return '';
+   }
+
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      
+      switch (get_class($item)) {
+         case 'Profile':
+            $profile      = new PluginSimcardProfile();
+            if (!$profile->getFromDBByProfile($item->getField('id'))) {
+               $profile->createAccess($item->getField('id'));
+            }
+            $profile->showForm($item->getField('id'));
+         break;
+         default:
+            PluginSimcardSimcard_Item::showForItem($item);
+            break;
+      }
+      return true;
    }
 }
 ?>

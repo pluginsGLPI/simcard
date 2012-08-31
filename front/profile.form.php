@@ -39,5 +39,5 @@ $prof = new PluginSimcardProfile();
 if (isset ($_POST['update'])) {
    $prof->update($_POST);
 }
-glpi_header($_SERVER['HTTP_REFERER']);
+Html::back();
 ?>

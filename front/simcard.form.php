@@ -31,7 +31,7 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-checkRight("simcard", "r");
+Session::checkRight("simcard", "r");
 
 if (!isset($_GET["id"])) {
    $_GET["id"] = "";
@@ -55,7 +55,7 @@ if (isset($_POST["add"])) {
    $simcard->check(-1, 'w', $_POST);
    if ($newID = $simcard->add($_POST)) {
    }
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 // delete a computer
 } else if (isset($_POST["delete"])) {
@@ -63,7 +63,7 @@ if (isset($_POST["add"])) {
    $ok = $simcard->delete($_POST);
    if ($ok) {
    }
-   glpi_header(getItemTypeSearchURL('PluginSimcardSimcard'));
+   Html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
 
 } else if (isset($_POST["restore"])) {
    $simcard->check($_POST['id'], 'd');
@@ -72,30 +72,30 @@ if (isset($_POST["add"])) {
                  //TRANS: %s is the user login
                  sprintf(__('%s restores the item'), $_SESSION["glpiname"]));
    }
-   glpi_header(getItemTypeSearchURL('PluginSimcardSimcard'));
+   html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
    
 } else if (isset($_REQUEST["purge"])) {
    $simcard->check($_REQUEST['id'], 'd');
    if ($simcard->delete($_REQUEST,1)) {
    }
-   glpi_header(getItemTypeSearchURL('PluginSimcardSimcard'));
+   Html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
    
 //update a computer
 } else if (isset($_POST["update"])) {
    $simcard->check($_POST['id'], 'w');
    $simcard->update($_POST);
-   glpi_header($_SERVER['HTTP_REFERER']);
+   Html::back();
 
 } else if (isset($_GET["unglobalize"])) {
    $simcard->check($_GET["id"],'w');
 
 
-   glpi_header(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
+  Html::redirect(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
    
 } else {//print computer information
-   commonHeader(PluginSimcardSimcard::getTypeName(2), $_SERVER['PHP_SELF'], "plugins", "simcard", "simcard");
+   Html::header(PluginSimcardSimcard::getTypeName(2), $_SERVER['PHP_SELF'], "plugins", "simcard", "simcard");
    //show computer form to add
    $simcard->showForm($_GET["id"], $_GET);
-   commonFooter();
+   html::footer();
 }
 ?>

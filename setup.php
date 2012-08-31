@@ -32,6 +32,8 @@
 function plugin_init_simcard() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
     
+   $PLUGIN_HOOKS['csrf_compliant']['simcard'] = true;
+   
    $plugin = new Plugin();
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
       $PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
@@ -44,10 +46,14 @@ function plugin_init_simcard() {
       $PLUGIN_HOOKS['plugin_datainjection_populate']['simcard']
          = 'plugin_datainjection_populate_simcard';
       $PLUGIN_HOOKS['item_purge']['simcard'] = array();
+      
       foreach (PluginSimcardSimcard_Item::getClasses() as $type) {
          $PLUGIN_HOOKS['item_purge']['simcard'][$type] = 'plugin_item_purge_simcard';
        }
        
+      Plugin::registerClass('PluginSimcardSimcard_Item',
+                            array('addtabon' => PluginSimcardSimcard_Item::getClasses()));
+                            
       // Params : plugin name - string type - number - class - table - form page
       Plugin::registerClass('PluginSimcardSimcard',
                             array('linkgroup_types'        => true,
@@ -61,10 +67,10 @@ function plugin_init_simcard() {
                                   'reservation_types'      => true));
        array_push($CFG_GLPI['state_types'], 'PluginSimcardSimcard');
       //if glpi is loaded
-      if (getLoginUserID()) {
+      if (Session::getLoginUserID()) {
           
          // Display a menu entry ?
-         if (haveRight("simcard", "r")) {
+         if (Session::haveRight("simcard", "r")) {
             //menu entry
             $PLUGIN_HOOKS['menu_entry']['simcard'] = 'front/simcard.php';
             //search link
@@ -76,7 +82,7 @@ function plugin_init_simcard() {
             $PLUGIN_HOOKS['headings_actionpdf']['simcard'] = 'plugin_headings_actionpdf_simcard';
          }
              
-         if (haveRight("simcard", "w")) {
+         if (Session::haveRight("simcard", "w")) {
             //add link
             $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['add']
                = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=1';
@@ -104,16 +110,17 @@ function plugin_version_simcard() {
    $author = "El Sendero  <a href='http://www.elsendero.es'>";
    $author.= "<img src='".GLPI_ROOT."/plugins/simcard/pics/favicon.ico'></a>";
    $author.= ", <a href='www.teclib.com'>Walid Nouh</a>";
-   return array ('name' => $LANG['plugin_simcard']['title'][1], 'version' => '0.80.3',
-                 'author' => $author,
-                 'homepage' => 'https://forge.indepnet.net/projects/show/simcard',
-                 'minGlpiVersion' => '0.80.0');
+   return array ('name'           => $LANG['plugin_simcard']['title'][1],
+                   'version'        => '0.83.1',
+                   'author'         => $author,
+                   'homepage'       => 'https://forge.indepnet.net/projects/show/simcard',
+                   'minGlpiVersion' => '0.83.3');
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_simcard_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.80','lt') || version_compare(GLPI_VERSION,'0.81','ge')) {
-      echo "This plugin requires GLPI >= 0.80 and GLPI < 0.81";
+   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
+      echo "This plugin requires GLPI >= 0.83.3 and GLPI < 0.84";
       return false;
    }
    return true;

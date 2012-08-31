@@ -31,7 +31,7 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-checkRight("simcard", "w");
+Session::checkRight("simcard", "w");
 
 $simcard_item = new PluginSimcardSimcard_Item();
 if (isset($_POST["additem"])) {
@@ -48,5 +48,5 @@ if (isset($_POST["additem"])) {
       }
    }
 }
-glpi_header($_SERVER['HTTP_REFERER']);
+Html::back();
 ?>

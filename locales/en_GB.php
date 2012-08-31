@@ -28,7 +28,7 @@
  @since     2009
  ---------------------------------------------------------------------- */
 
-$LANG['plugin_simcard']['title'][1]	= "Sim cards management";
+$LANG['plugin_simcard']['title'][1] = "Sim cards management";
 $LANG['plugin_simcard'][1] = "Phone number";
 $LANG['plugin_simcard'][2] = "PUK2";
 $LANG['plugin_simcard'][3] = "Pin 1";

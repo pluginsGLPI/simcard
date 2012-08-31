@@ -86,17 +86,17 @@ class PluginSimcardProfile extends CommonDBTM {
    function showForm($ID){
       global $LANG;
 
-      if (!haveRight("profile", "r")) {
+      if (!Session::haveRight("profile", "r")) {
          return false;
       }
-      $canedit = haveRight("profile", "w");
+      $canedit = Session::haveRight("profile", "w");
       $prof    = new Profile();
       if ($ID){
          $this->getFromDBByProfile($ID);
          $prof->getFromDB($ID);
       }
 
-      echo "<form action='".getItemTypeFormURL(__CLASS__)."' method='post'>";
+      echo "<form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' method='post'>";
       echo "<table class='tab_cadre_fixe'>";
 
       echo "<th colspan='4' align='center'><strong>" .
