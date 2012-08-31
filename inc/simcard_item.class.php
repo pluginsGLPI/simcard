@@ -91,8 +91,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       $temp = new self();
       $temp->deleteByCriteria(
          array('itemtype' => $item->getType(),
-               'items_id' => $item->getField('id'))
-      );
+               'items_id' => $item->getField('id')));
    }
    
    static function getClasses() {
@@ -266,9 +265,9 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             Html::openArrowMassives('items');
             Html::closeArrowMassives(array ('delete_items' => $LANG['buttons'][10]));
          }
-         echo "</table>" ;
-         Html::closeForm();
       }
+      echo "</table>" ;
+      Html::closeForm();
       echo "</div>";
    }
 
