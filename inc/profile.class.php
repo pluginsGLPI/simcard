@@ -125,7 +125,8 @@ class PluginSimcardProfile extends CommonDBTM {
          echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit'>";
          echo "</td></tr>";
       }
-      echo "</table></form>";
+      echo "</table>";
+      Html::closeForm();
    }
     
    static function install(Migration $migration) {
@@ -153,6 +154,27 @@ class PluginSimcardProfile extends CommonDBTM {
       $DB->query("DROP TABLE IF EXISTS `$table`");
       unset($_SESSION["glpiactiveprofile"]['simcard']);
       unset($_SESSION["glpiactiveprofile"]['simcard_open_ticket']);
+   }
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG;
+      if (get_class($item) == 'Profile') {
+         return array(1 => $LANG['plugin_simcard']['profile'][1]);
+      }
+      return '';
+   }
+
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      
+      if (get_class($item) == 'Profile') {
+         $profile = new self();
+         if (!$profile->getFromDBByProfile($item->getField('id'))) {
+            $profile->createAccess($item->getField('id'));
+         }
+         $profile->showForm($item->getField('id'));
+      }
+      return true;
    }
 }
 

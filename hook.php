@@ -95,8 +95,8 @@ function plugin_simcard_getDropdown() {
    $plugin = new Plugin();
    if ($plugin->isActivated("simcard")) {
      return array('PluginSimcardSimcardSize'    => $LANG['plugin_simcard'][6],
-                  'PluginSimcardPhoneOperator'  => $LANG['plugin_simcard'][7],
-                  'PluginSimcardSimcardVoltage' => $LANG['plugin_simcard'][9]);
+                   'PluginSimcardPhoneOperator'  => $LANG['plugin_simcard'][7],
+                   'PluginSimcardSimcardVoltage' => $LANG['plugin_simcard'][9]);
    } else {
       return array();
    }
@@ -167,58 +167,6 @@ function plugin_item_purge_simcard($item) {
                                  'items_id' => $item->getField('id')));
    return true;
 }
-
-// Define headings added by the plugin
-/*
-function plugin_get_headings_simcard($item, $withtemplate) {
-   global $LANG;
-
-   if ((in_array(get_class($item), PluginSimcardSimcard_Item::getClasses()) && $item->getID() > 0)
-      || (get_class($item) == 'Profile'
-         && $item->fields['interface']!='helpdesk')) {
-      return array(1 => $LANG['plugin_simcard']['profile'][1]);
-   }
-
-   return false;
-}
-
-// Define headings actions added by the plugin
-
-function plugin_headings_actions_simcard($item) {
-
-   if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())
-       || get_class($item)=='Profile') {
-      return array(1 => "plugin_headings_simcard");
-   } else {
-   return false;
-   }
-}
-
-
-// action heading
-function plugin_headings_simcard($item,$withtemplate=0) {
-   global $CFG_GLPI;
-
-   $profile      = new PluginSimcardProfile();
-   $simcard_Item = new PluginSimcardSimcard_Item();
-
-   switch (get_class($item)) {
-
-      case 'Profile' :
-         if (!$profile->getFromDBByProfile($item->getField('id'))) {
-            $profile->createAccess($item->getField('id'));
-         }
-         $profile->showForm($item->getField('id'));
-         break;
-
-      default :
-         if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())) {
-            PluginSimcardSimcard_Item::showForItem($item);
-         }
-         break;
-   }
-}*/
-
 
 function plugin_datainjection_populate_simcard() {
    global $INJECTABLE_TYPES;

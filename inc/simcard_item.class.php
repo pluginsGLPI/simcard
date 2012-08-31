@@ -125,7 +125,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    static function showForSimcard(PluginSimcardSimcard $simcard) {
       global $DB, $LANG;
       
-      if (!$simcard->can($simcard->getID(),'r')) {
+      if (!$simcard->can($simcard->getID(), 'r')) {
          return false;
       }
       $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
@@ -182,12 +182,12 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          }
    
          if (!empty($results)) {
-            Html::openArrowMassive('items');
-            Html::closeArrowMassive('delete_items', $LANG['buttons'][10]);
+            Html::openArrowMassives('items');
+            Html::closeArrowMassives(array('delete_items' => $LANG['buttons'][10]));
          }
-         echo "</form>";
-         echo "</table>" ;
       }
+      echo "</table>" ;
+      Html::closeForm();
       echo "</div>";
    }
    
@@ -263,18 +263,17 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "</td></tr>";
          
          if (!empty($results)) {
-            Html::openArrowMassive('items');
-            Html::closeArrowMassive('delete_items', $LANG['buttons'][10]);
+            Html::openArrowMassives('items');
+            Html::closeArrowMassives(array ('delete_items' => $LANG['buttons'][10]));
          }
-         echo "</form>";
          echo "</table>" ;
+         Html::closeForm();
       }
       echo "</div>";
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $LANG;
-Toolbox::logDebug(PluginSimcardSimcard_Item::getClasses());
       if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())) {
          return array(1 => $LANG['plugin_simcard']['profile'][1]);
       } elseif (get_class($item) == 'PluginSimcardSimcard') {

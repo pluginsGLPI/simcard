@@ -53,6 +53,8 @@ function plugin_init_simcard() {
        
       Plugin::registerClass('PluginSimcardSimcard_Item',
                             array('addtabon' => PluginSimcardSimcard_Item::getClasses()));
+      Plugin::registerClass('PluginSimcardProfile',
+                            array('addtabon' => 'Profile'));
                             
       // Params : plugin name - string type - number - class - table - form page
       Plugin::registerClass('PluginSimcardSimcard',

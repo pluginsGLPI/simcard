@@ -199,8 +199,8 @@ class PluginSimcardSimcard extends CommonDBTM {
                                     'entity'    => $this->fields["entities_id"]));
 
       echo "</td>";
-      echo "<td rowspan='9'>".$LANG['common'][25]."</td>";
-      echo "<td rowspan='9' class='middle'>";
+      echo "<td rowspan='7'>".$LANG['common'][25]."</td>";
+      echo "<td rowspan='7' class='middle'>";
       echo "<textarea cols='45' rows='15' name='comment' >".$this->fields["comment"]."</textarea>";
       echo "</td></tr>\n";
       
@@ -232,7 +232,7 @@ class PluginSimcardSimcard extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][3]."</td>";
          echo "<td>";
-         Html::autocompletionTextField($this,'pin2');
+         Html::autocompletionTextField($this,'pin');
          echo "</td></tr>\n";
          
          echo "<tr class='tab_bg_1'>";
