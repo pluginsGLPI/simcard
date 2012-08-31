@@ -98,7 +98,6 @@ function plugin_init_simcard() {
           
          // Import from Data_Injection plugin
          $PLUGIN_HOOKS['migratetypes']['simcard']             = 'plugin_datainjection_migratetypes_simcard';
-         $PLUGIN_HOOKS['plugin_pdf']['PluginSimcardsSimcard'] = 'simcard';
          $PLUGIN_HOOKS['menu']['simcard']                     = true;
          $PLUGIN_HOOKS['post_init']['simcard']                = 'plugin_simcard_postinit';
       }
@@ -113,7 +112,7 @@ function plugin_version_simcard() {
    $author.= "<img src='".GLPI_ROOT."/plugins/simcard/pics/favicon.ico'></a>";
    $author.= ", <a href='www.teclib.com'>Walid Nouh</a>";
    return array ('name'           => $LANG['plugin_simcard']['title'][1],
-                   'version'        => '0.83.1',
+                   'version'        => '0.83',
                    'author'         => $author,
                    'homepage'       => 'https://forge.indepnet.net/projects/show/simcard',
                    'minGlpiVersion' => '0.83.3');
