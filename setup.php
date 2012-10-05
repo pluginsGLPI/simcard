@@ -43,6 +43,9 @@ function plugin_init_simcard() {
 
       $PLUGIN_HOOKS['pre_item_purge']['simcard'] =
          array('Profile' => array('PluginSimcardsProfile', 'purgeProfiles'));
+      $PLUGIN_HOOKS['item_transfer']['simcard'] =
+         array('PluginSimcardSimcard' => array('PluginSimcardSimcard_Item', 'cleanFormSimcard'));
+         
       $PLUGIN_HOOKS['plugin_datainjection_populate']['simcard']
          = 'plugin_datainjection_populate_simcard';
       $PLUGIN_HOOKS['item_purge']['simcard'] = array();

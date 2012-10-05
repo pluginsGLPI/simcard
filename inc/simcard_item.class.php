@@ -140,6 +140,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<th>".$LANG['common'][16]."</th>";
          echo "<th>".$LANG['common'][19]."</th>";
          echo "<th>".$LANG['common'][20]."</th>";
+         echo "<th>".$LANG['plugin_simcard'][1]."</th>";
          echo "</tr>";
          foreach ($results as $data) {
             $item = new $data['itemtype'];
@@ -164,6 +165,9 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             echo "</td>";
             echo "<td>";
             echo $item->fields['otherserial'];
+            echo "</td>";
+            echo "<td>";
+            echo $tmp->fields['phonenumber'];
             echo "</td>";
             echo "</tr>";
          }
