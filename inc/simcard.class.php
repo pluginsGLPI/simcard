@@ -191,7 +191,7 @@ class PluginSimcardSimcard extends CommonDBTM {
 
       echo "<input type='hidden' name='is_global' value='1'>";
       
-      echo "<td></td></tr>\n";
+      echo "<td colspan='2'></td></tr>\n";
       echo "<tr class='tab_bg_1'>";
       echo "<td>".$LANG['common'][35]."</td>";
       echo "<td>";
@@ -199,8 +199,8 @@ class PluginSimcardSimcard extends CommonDBTM {
                                     'entity'    => $this->fields["entities_id"]));
 
       echo "</td>";
-      echo "<td rowspan='7'>".$LANG['common'][25]."</td>";
-      echo "<td rowspan='7' class='middle'>";
+      echo "<td rowspan='8'>".$LANG['common'][25]."</td>";
+      echo "<td rowspan='8' class='middle'>";
       echo "<textarea cols='45' rows='15' name='comment' >".$this->fields["comment"]."</textarea>";
       echo "</td></tr>\n";
       

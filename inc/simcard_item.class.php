@@ -144,7 +144,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          foreach ($results as $data) {
             $item = new $data['itemtype'];
             $item->getFromDB($data['items_id']);
-            echo "<tr>";
+            echo "<tr class='tab_bg_1'>";
             echo "<td>";
             if (Session::haveRight('simcard', 'w')) {
                echo "<input type='checkbox' name='todelete[".$data['id']."]'>";
@@ -170,7 +170,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       }
       
       if (Session::haveRight('simcard', 'w')) {
-         echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
+         echo "<tr class='tab_bg_1'><td colspan='6' class='center'>";
          if (empty($results)) {
             echo "<input type='hidden' name='plugin_simcard_simcards_id' value='".$simcard->getID()."'>";
             Dropdown::showAllItems("items_id",0,0,$simcard->fields['entities_id'], self::getClasses());
@@ -181,7 +181,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          }
    
          if (!empty($results)) {
-            Html::openArrowMassives('items');
+            Html::openArrowMassives('items',true);
             Html::closeArrowMassives(array('delete_items' => $LANG['buttons'][10]));
          }
       }
@@ -219,7 +219,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          foreach ($results as $data) {
             $tmp = new PluginSimcardSimcard();
             $tmp->getFromDB($data['plugin_simcard_simcards_id']);
-            echo "<tr>";
+            echo "<tr class='tab_bg_1'>";
             echo "<td>";
             if (Session::haveRight('simcard', 'w')) {
                echo "<input type='checkbox' name='todelete[".$data['id']."]'>";
@@ -245,7 +245,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       }
       
       if (Session::haveRight('simcard', 'w')) {
-         echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
+         echo "<tr class='tab_bg_1'><td colspan='5' class='center'>";
          echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
          echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
          $used = array();
@@ -266,7 +266,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "</td></tr>";
          
          if (!empty($results)) {
-            Html::openArrowMassives('items');
+            Html::openArrowMassives('items', true);
             Html::closeArrowMassives(array ('delete_items' => $LANG['buttons'][10]));
          }
       }
