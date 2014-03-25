@@ -36,9 +36,10 @@ $LANG['plugin_simcard'][4] = "Puk";
 $LANG['plugin_simcard'][5] = "Pin 2";
 $LANG['plugin_simcard'][6] = "Size";
 $LANG['plugin_simcard'][7] = "Provider";
-$LANG['plugin_simcard'][8] = "ICCD";
+$LANG['plugin_simcard'][8] = "IMSI";
 $LANG['plugin_simcard'][9] = "Voltage";
 $LANG['plugin_simcard'][10] = "New SIM card";
+$LANG['plugin_simcard'][11] = "Types of SIM card";
 
 $LANG['plugin_simcard']['profile'][0] = "Right Manager";
 $LANG['plugin_simcard']['profile'][1] = "Sim cards";

@@ -109,7 +109,7 @@ class PluginSimcardProfile extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr class='tab_bg_2'>";
-      echo "<td>" . $LANG['setup'][352] . " - " . $LANG['plugin_simcard']['profile'][1] . ":</td><td>";
+      echo "<td>" . __("Associable items to a ticket") . " - " . $LANG['plugin_simcard']['profile'][1] . ":</td><td>";
       if ($prof->fields['create_ticket']) {
          Dropdown::showYesNo("open_ticket" , $this->fields["open_ticket"]);
       } else {
@@ -122,7 +122,7 @@ class PluginSimcardProfile extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
          echo "<td align='center' colspan='2'>";
          echo "<input type='hidden' name='id' value=".$this->getID().">";
-         echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit'>";
+         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
          echo "</td></tr>";
       }
       echo "</table>";
@@ -147,6 +147,16 @@ class PluginSimcardProfile extends CommonDBTM {
       self::changeProfile();
    }
     
+   /**
+    * 
+    *
+    * @since 0.84+1.3
+    **/
+   static function upgrade(Migration $migration) {
+      global $DB;
+
+   }
+   
    static function uninstall() {
       global $DB;
 

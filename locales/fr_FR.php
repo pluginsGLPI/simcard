@@ -29,16 +29,17 @@
  ---------------------------------------------------------------------- */
 
 $LANG['plugin_simcard']['title'][1] = "Gestion des cartes SIM";
-$LANG['plugin_simcard'][1] ="Numéro de téléphone";
+$LANG['plugin_simcard'][1] = "Numéro de téléphone";
 $LANG['plugin_simcard'][2] = "PUK2";
 $LANG['plugin_simcard'][3] = "PIN";
 $LANG['plugin_simcard'][4] = "PUK";
 $LANG['plugin_simcard'][5] = "PIN2";
-$LANG['plugin_simcard'][6] ="Taille";
-$LANG['plugin_simcard'][7] ="Opérateur";
-$LANG['plugin_simcard'][8] ="ICCID";
+$LANG['plugin_simcard'][6] = "Taille";
+$LANG['plugin_simcard'][7] = "Opérateur";
+$LANG['plugin_simcard'][8] = "IMSI";
 $LANG['plugin_simcard'][9] = "Voltage";
 $LANG['plugin_simcard'][10] = "Nouvelle carte SIM";
+$LANG['plugin_simcard'][11] = "Types de carte SIM";
 
 $LANG['plugin_simcard']['profile'][0] = "Gestion des droits";
 $LANG['plugin_simcard']['profile'][1] = "Carte SIM";

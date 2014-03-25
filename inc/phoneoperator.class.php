@@ -32,7 +32,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-/// Class Vlan
+/// Class PhoneOperator
 class PluginSimcardPhoneOperator extends CommonDropdown {
 
    static function getTypeName($nb=0) {
@@ -42,6 +42,7 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
 
    static function install(Migration $migration) {
       global $DB;
+      
       $table = getTableForItemType(__CLASS__);
       if (!TableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
@@ -53,6 +54,16 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;";
          $DB->query($query) or die($DB->error());
       }
+   }
+   
+   /**
+    * 
+    *
+    * @since 0.84+1.3
+    **/
+   static function upgrade(Migration $migration) {
+      global $DB;
+
    }
    
    static function uninstall() {

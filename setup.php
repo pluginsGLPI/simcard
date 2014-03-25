@@ -28,6 +28,7 @@
  @since     2009
  ---------------------------------------------------------------------- */
 
+define ("PLUGIN_SIMCARD_VERSION", "0.84+1.3");
 // Init the hooks of the plugins -Needed
 function plugin_init_simcard() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
@@ -43,9 +44,6 @@ function plugin_init_simcard() {
 
       $PLUGIN_HOOKS['pre_item_purge']['simcard'] =
          array('Profile' => array('PluginSimcardsProfile', 'purgeProfiles'));
-      $PLUGIN_HOOKS['item_transfer']['simcard'] =
-         array('PluginSimcardSimcard' => array('PluginSimcardSimcard_Item', 'cleanFormSimcard'));
-         
       $PLUGIN_HOOKS['plugin_datainjection_populate']['simcard']
          = 'plugin_datainjection_populate_simcard';
       $PLUGIN_HOOKS['item_purge']['simcard'] = array();
@@ -111,20 +109,22 @@ function plugin_init_simcard() {
 function plugin_version_simcard() {
    global $LANG;
 
-   $author = "El Sendero  <a href='http://www.elsendero.es'>";
-   $author.= "<img src='".GLPI_ROOT."/plugins/simcard/pics/favicon.ico'></a>";
+   $author = "<a href='http://www.elsendero.es'>El Sendero</a>";
    $author.= ", <a href='www.teclib.com'>Walid Nouh</a>";
+   $author.= ", Anthony Piesset";
+   $author.= ", <a href='mailto:dethegeek@gmail.com'>Dethegeek</a>";
    return array ('name'           => $LANG['plugin_simcard']['title'][1],
-                   'version'        => '0.83',
+                   'version'        => PLUGIN_SIMCARD_VERSION,
                    'author'         => $author,
+                   'license'        => 'GPLv2+',
                    'homepage'       => 'https://forge.indepnet.net/projects/show/simcard',
-                   'minGlpiVersion' => '0.83.3');
+                   'minGlpiVersion' => '0.84');
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_simcard_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
-      echo "This plugin requires GLPI >= 0.83.3 and GLPI < 0.84";
+   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
+      echo "This plugin requires GLPI >= 0.84 and GLPI < 0.85";
       return false;
    }
    return true;

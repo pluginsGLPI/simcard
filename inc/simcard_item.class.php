@@ -32,24 +32,24 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-// Relation between Computer and Items (monitor, printer, phone, peripheral only)
+// Relation between Simcard and Items (computer, phone, peripheral only)
 class PluginSimcardSimcard_Item extends CommonDBRelation{
 
    // From CommonDBRelation
-   public $itemtype_1 = 'PluginSimcardSimcard';
-   public $items_id_1 = 'plugin_simcard_simcards_id';
+   static public $itemtype_1 = 'PluginSimcardSimcard';
+   static public $items_id_1 = 'plugin_simcard_simcards_id';
 
-   public $itemtype_2 = 'itemtype';
-   public $items_id_2 = 'items_id';
+   static public $itemtype_2 = 'itemtype';
+   static public $items_id_2 = 'items_id';
 
    /**
     * Name of the type
     *
     * @param $nb  integer  number of item in the type (default 0)
    **/
-   static function getTypeName() {
+   static function getTypeName($nb=0) {
       global $LANG;
-      return $LANG['connect'][0];
+      return __s('Direct Connections');
    }
    
    /**
@@ -61,7 +61,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
     *
     * @return boolean
    **/
-   function can($ID, $right, &$input=NULL) {
+   function can($ID, $right, array &$input=NULL) {
 
       if ($ID<0) {
          // Ajout
@@ -115,6 +115,16 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       }
    }
    
+   /**
+    * 
+    *
+    * @since 0.84+1.3
+    **/
+   static function upgrade(Migration $migration) {
+      global $DB;
+
+   }
+   
    static function uninstall() {
       global $DB;
       $table = getTableForItemType(__CLASS__);
@@ -132,19 +142,19 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<table class='tab_cadre_fixehov'>";
-      echo "<tr><th colspan='6'>".$LANG['document'][19]."</th></tr>";
+      echo "<tr><th colspan='6'>".__("Associated item")."</th></tr>";
       if (!empty($results)) {
          echo "<tr><th></th>";
-         echo "<th>".$LANG['common'][17]."</th>";
-         echo "<th>".$LANG['entity'][0]."</th>";
-         echo "<th>".$LANG['common'][16]."</th>";
-         echo "<th>".$LANG['common'][19]."</th>";
-         echo "<th>".$LANG['common'][20]."</th>";
+         echo "<th>".__("Type")."</th>";
+         echo "<th>".__("Entity")."</th>";
+         echo "<th>".__("Name")."</th>";
+         echo "<th>".__("Serial Number")."</th>";
+         echo "<th>".__("Inventory Number")."</th>";
          echo "</tr>";
          foreach ($results as $data) {
             $item = new $data['itemtype'];
             $item->getFromDB($data['items_id']);
-            echo "<tr class='tab_bg_1'>";
+            echo "<tr>";
             echo "<td>";
             if (Session::haveRight('simcard', 'w')) {
                echo "<input type='checkbox' name='todelete[".$data['id']."]'>";
@@ -170,19 +180,19 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       }
       
       if (Session::haveRight('simcard', 'w')) {
-         echo "<tr class='tab_bg_1'><td colspan='6' class='center'>";
+         echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
          if (empty($results)) {
             echo "<input type='hidden' name='plugin_simcard_simcards_id' value='".$simcard->getID()."'>";
             Dropdown::showAllItems("items_id",0,0,$simcard->fields['entities_id'], self::getClasses());
             echo "</td>";
             echo "<td colspan='2' class='center' class='tab_bg_2'>";
-            echo "<input type='submit' name='additem' value=\"".$LANG['buttons'][8]."\" class='submit'>";
+            echo "<input type='submit' name='additem' value=\""._sx('button', 'Add')."\" class='submit'>";
             echo "</td></tr>";
          }
    
          if (!empty($results)) {
-            Html::openArrowMassives('items',true);
-            Html::closeArrowMassives(array('delete_items' => $LANG['buttons'][10]));
+            Html::openArrowMassives('items');
+            Html::closeArrowMassives(array('delete_items' => _sx('button', 'Disconnect')));
          }
       }
       echo "</table>" ;
@@ -207,19 +217,18 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<table class='tab_cadre_fixehov'>";
-      echo "<tr><th colspan='6'>".$LANG['document'][19]."</th></tr>";
+      echo "<tr><th colspan='6'>".__s('Associated item')."</th></tr>";
       if (!empty($results)) {
          echo "<tr><th></th>";
-         echo "<th>".$LANG['entity'][0]."</th>";
-         echo "<th>".$LANG['common'][16]."</th>";
-         echo "<th>".$LANG['common'][19]."</th>";
-         echo "<th>".$LANG['common'][20]."</th>";
-         echo "<th>".$LANG['plugin_simcard'][1]."</th>";
+         echo "<th>".__s('Entity')."</th>";
+         echo "<th>".__s('Name')."</th>";
+         echo "<th>".__s('Serial Number')."</th>";
+         echo "<th>".__s('Inventory number')."</th>";
          echo "</tr>";
          foreach ($results as $data) {
             $tmp = new PluginSimcardSimcard();
             $tmp->getFromDB($data['plugin_simcard_simcards_id']);
-            echo "<tr class='tab_bg_1'>";
+            echo "<tr>";
             echo "<td>";
             if (Session::haveRight('simcard', 'w')) {
                echo "<input type='checkbox' name='todelete[".$data['id']."]'>";
@@ -237,15 +246,12 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             echo "<td>";
             echo $tmp->fields['otherserial'];
             echo "</td>";
-            echo "<td>";
-            echo $tmp->fields['phonenumber'];
-            echo "</td>";
             echo "</tr>";
          }
       }
       
       if (Session::haveRight('simcard', 'w')) {
-         echo "<tr class='tab_bg_1'><td colspan='5' class='center'>";
+         echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
          echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
          echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
          $used = array();
@@ -262,12 +268,12 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
                                'entity' => $item->fields['entities_id'], 'used' => $used));
          echo "</td>";
          echo "<td colspan='2' class='center' class='tab_bg_2'>";
-         echo "<input type='submit' name='additem' value=\"".$LANG['buttons'][8]."\" class='submit'>";
+         echo "<input type='submit' name='additem' value=\""._sx('button', 'Save')."\" class='submit'>";
          echo "</td></tr>";
          
          if (!empty($results)) {
-            Html::openArrowMassives('items', true);
-            Html::closeArrowMassives(array ('delete_items' => $LANG['buttons'][10]));
+            Html::openArrowMassives('items');
+            Html::closeArrowMassives(array ('delete_items' => _sx('button', 'Disconnect')));
          }
       }
       echo "</table>" ;
@@ -277,13 +283,16 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $LANG;
+      
       if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())) {
          return array(1 => $LANG['plugin_simcard']['profile'][1]);
       } elseif (get_class($item) == 'PluginSimcardSimcard') {
-         return array(1 => $LANG['connect'][0]);
-       }
+         return _n('Associated item','Associated items',2);
+         return _n('connect');
+      }
       return '';
-    }
+   }
+
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       
@@ -293,13 +302,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          self::showForSimcard($item);
       }
       return true;
-   }
-
-   static function cleanFormSimcard($params = array()) {
-      if ($params['itemtype'] == 'PluginSimcardSimcard') {
-         $item = new self();
-         $item->deleteByCriteria(array('plugin_simcard_simcards_id' => $params['id']));
-      }
    }
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 /*
- * @version $Id$
+ * @version $Id: simcardvoltage.class.php 36 2012-08-31 13:59:28Z walid $
  LICENSE
 
   This file is part of the simcard plugin.
@@ -32,13 +32,13 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-/// Class SimcardVoltage
-class PluginSimcardSimcardVoltage extends CommonDropdown {
+/// Class SimcardType
+class PluginSimcardSimcardType extends CommonDropdown {
 
 
    static function getTypeName($nb=0) {
       global $LANG;
-      return $LANG['plugin_simcard'][9];
+      return $LANG['plugin_simcard'][11];
    }
 
    static function install(Migration $migration) {
@@ -54,11 +54,6 @@ class PluginSimcardSimcardVoltage extends CommonDropdown {
            KEY `name` (`name`)
          ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die ("Error adding table $table");
-         
-         $query = "INSERT INTO `$table` (`id`, `name`, `comment`) VALUES
-                     (1, '3V', ''),
-                     (2, '5V', '');";
-         $DB->query($query) or die("Error adding simcard voltages");
       }
    }
    
@@ -70,6 +65,12 @@ class PluginSimcardSimcardVoltage extends CommonDropdown {
    static function upgrade(Migration $migration) {
       global $DB;
 
+         switch (plugin_simcard_currentVersion()) {
+      	    case '1.2':
+      	       self::install($migration);
+      	       break;
+
+      }
    }
    
    static function uninstall() {

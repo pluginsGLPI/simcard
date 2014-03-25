@@ -32,7 +32,7 @@ if (!defined('GLPI_ROOT')){
    die("Sorry. You can't access directly to this file");
 }
 
-/// Computer class
+/// class SimcardInjection
 class PluginSimcardSimcardInjection extends PluginSimcardSimcard
    implements PluginDatainjectionInjectionInterface {
 

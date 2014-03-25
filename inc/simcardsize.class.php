@@ -32,7 +32,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-/// Class Vlan
+/// Class SimcardSize
 class PluginSimcardSimcardSize extends CommonDropdown {
 
 
@@ -61,6 +61,16 @@ class PluginSimcardSimcardSize extends CommonDropdown {
                      (4, 'Nano-SIM', '');";
          $DB->query($query) or die("Error adding simcard sizes");
       }
+   }
+   
+   /**
+    * 
+    *
+    * @since 0.84+1.3
+    **/
+   static function upgrade(Migration $migration) {
+      global $DB;
+
    }
    
    static function uninstall() {

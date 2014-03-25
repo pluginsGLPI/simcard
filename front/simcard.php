@@ -38,7 +38,7 @@ if ($simcard->canView() || Session::haveRight("simcard", "w")) {
 } else {
    echo "<div align='center'><br><br><img src=\"".
       $CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
-   echo "<b>".$LANG['login'][5]."</b></div>";
+   echo "<b>".__s('Access denied')."</b></div>";
 }
 
 Html::footer();
