@@ -309,46 +309,9 @@ class PluginSimcardSimcard extends CommonDBTM {
 
       // Manage add from template
       if (isset($this->input["_oldID"])) {
-         // ADD Infocoms
-      //   $ic = new Infocom();
-        // $ic->cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
-Infocom::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
-		//test 0.84.3
-			Contract_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
-         // ADD Contract
-     //    $query = "SELECT `contracts_id`
-              //     FROM `glpi_contracts_items`
-            //       WHERE `items_id` = '".$this->input["_oldID"]."'
-          //               AND `itemtype` = '".$this->getType()."'";
-        // $result = $DB->query($query);
-
-        // if ($DB->numrows($result)>0) {
-          //  $contractitem = new Contract_Item();
-
-           // while ($data=$DB->fetch_array($result)) {
-             //  $contractitem->add(array('contracts_id' => $data["contracts_id"],
-               //                         'itemtype'     => $this->getType(),
-                 //                       'items_id'     => $this->fields['id']));
-          //  }
-         //}
-
-         // ADD Documents
-       //  $query = "SELECT `documents_id`
-         //          FROM `glpi_documents_items`
-           //        WHERE `items_id` = '".$this->input["_oldID"]."'
-             //            AND `itemtype` = '".$this->getType()."'";
-        // $result = $DB->query($query);
-//
-  //       if ($DB->numrows($result)>0) {
-    //        $docitem = new Document_Item();
-//
-  //          while ($data=$DB->fetch_array($result)) {
-    //           $docitem->add(array('documents_id' => $data["documents_id"],
-      //                             'itemtype'     => $this->getType(),
-        //                           'items_id'     => $this->fields['id']));
-Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);          
- // }
-   //      }
+         Infocom::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
+         Contract_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
+         Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);          
      }
 
       if (isset($this->input['_itemtype']) && isset($this->input['_items_id'])) {
@@ -388,7 +351,10 @@ Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields
       $tab[4]['name']            = __('Type');
       $tab[4]['datatype']        = 'dropdown';
       $tab[4]['massiveaction']   = true;
-
+      $tab[4]['checktype']       = 'text';
+      $tab[4]['displaytype']     = 'dropdown';
+      $tab[4]['injectable']      = true;
+      
       $tab[5]['table']           = $this->getTable();
       $tab[5]['field']           = 'serial';
       $tab[5]['name']            = $LANG['plugin_simcard'][8];
@@ -412,16 +378,32 @@ Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields
       $tab[16]['linkfield']      = 'comment';
       $tab[16]['checktype']      = 'text';
       $tab[16]['displaytype']    = 'multiline_text';
-      $tab[16]['injectable']      = true;
+      $tab[16]['injectable']     = true;
       
       $tab += Location::getSearchOptionsToAdd();
+
+      $tab[3]['checktype']       = 'text';
+      $tab[3]['displaytype']     = 'dropdown';
+      $tab[3]['injectable']      = true;
+      
+      $tab[91]['injectable']     = false;
+      $tab[93]['injectable']     = false;
 
       $tab[19]['table']          = $this->getTable();
       $tab[19]['field']          = 'date_mod';
       $tab[19]['name']           = __('Last update');
       $tab[19]['datatype']       = 'datetime';
       $tab[19]['massiveaction']  = false;
-      $tab[19]['injectable']      = false;
+      $tab[19]['injectable']     = false;
+      
+      // TODO : This index has not any similar in GLPI, should find an other index
+      $tab[23]['table']          = 'glpi_plugin_simcard_simcardvoltages';
+      $tab[23]['field']          = 'name';
+      $tab[23]['name']           = $LANG['plugin_simcard'][9];
+      $tab[23]['datatype']       = 'dropdown';
+      $tab[23]['checktype']      = 'text';
+      $tab[23]['displaytype']    = 'dropdown';
+      $tab[23]['injectable']     = true;
       
       $tab[24]['table']          = 'glpi_users';
       $tab[24]['field']          = 'name';
@@ -430,21 +412,16 @@ Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields
       $tab[24]['datatype']       = 'dropdown';
       $tab[24]['right']          = 'own_ticket';
       $tab[24]['checktype']      = 'text';
-      $tab[24]['injectable']      = true;
+      $tab[24]['displaytype']    = 'dropdown';
+      $tab[24]['injectable']     = true;
 
-      $tab[23]['table']          = 'glpi_plugin_simcard_simcardvoltages';
-      $tab[23]['field']          = 'name';
-      $tab[23]['name']           = $LANG['plugin_simcard'][9];
-      $tab[23]['datatype']       = 'dropdown';
-      $tab[23]['checktype']      = 'text';
-      $tab[23]['injectable']      = true;
-      
       $tab[25]['table']          = 'glpi_plugin_simcard_simcardsizes';
       $tab[25]['field']          = 'name';
       $tab[25]['name']           = $LANG['plugin_simcard'][6];
       $tab[25]['datatype']       = 'dropdown';
       $tab[25]['checktype']      = 'text';
-      $tab[25]['injectable']      = true;
+      $tab[25]['displaytype']    = 'dropdown';
+      $tab[25]['injectable']     = true;
       
       $tab[26]['table']          = 'glpi_plugin_simcard_phoneoperators';
       $tab[26]['field']          = 'name';
@@ -452,74 +429,84 @@ Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields
       $tab[26]['datatype']       = 'dropdown';
       $tab[26]['checktype']      = 'text';
       $tab[26]['displaytype']    = 'dropdown';
-      $tab[26]['injectable']      = true;
+      $tab[26]['injectable']     = true;
       
       $tab[27]['table']          = $this->getTable();
       $tab[27]['field']          = 'phonenumber';
       $tab[27]['name']           = $LANG['plugin_simcard'][1];
-      $tab[27]['datatype']        = 'string';
-      $tab[27]['checktype']       = 'text';
-      $tab[27]['displaytype']     = 'text';
-      $tab[27]['injectable']      = true;
+      $tab[27]['datatype']       = 'string';
+      $tab[27]['checktype']      = 'text';
+      $tab[27]['displaytype']    = 'text';
+      $tab[27]['injectable']     = true;
       
       if (Session::haveRight('simcard', 'w')) {
-         $tab[28]['table']          = $this->getTable();
-         $tab[28]['field']          = 'pin';
-         $tab[28]['name']           = $LANG['plugin_simcard'][3];
-         $tab[28]['datatype']        = 'string';
-         $tab[28]['checktype']       = 'text';
-         $tab[28]['displaytype']     = 'text';
-         $tab[28]['injectable']      = true;
+         $tab[28]['table']       = $this->getTable();
+         $tab[28]['field']       = 'pin';
+         $tab[28]['name']        = $LANG['plugin_simcard'][3];
+         $tab[28]['datatype']    = 'string';
+         $tab[28]['checktype']   = 'text';
+         $tab[28]['displaytype'] = 'text';
+         $tab[28]['injectable']  = true;
          
-         $tab[29]['table']          = $this->getTable();
-         $tab[29]['field']          = 'puk';
-         $tab[29]['name']           = $LANG['plugin_simcard'][4];
-         $tab[29]['datatype']        = 'string';
-         $tab[29]['checktype']       = 'text';
-         $tab[29]['displaytype']     = 'text';
-         $tab[29]['injectable']      = true;
+         $tab[29]['table']       = $this->getTable();
+         $tab[29]['field']       = 'puk';
+         $tab[29]['name']        = $LANG['plugin_simcard'][4];
+         $tab[29]['datatype']    = 'string';
+         $tab[29]['checktype']   = 'text';
+         $tab[29]['displaytype'] = 'text';
+         $tab[29]['injectable']  = true;
 
-         $tab[30]['table']          = $this->getTable();
-         $tab[30]['field']          = 'pin2';
-         $tab[30]['name']           = $LANG['plugin_simcard'][5];
-         $tab[30]['datatype']        = 'string';
-         $tab[30]['checktype']       = 'text';
-         $tab[30]['displaytype']     = 'text';
-         $tab[30]['injectable']      = true;
+         $tab[30]['table']       = $this->getTable();
+         $tab[30]['field']       = 'pin2';
+         $tab[30]['name']        = $LANG['plugin_simcard'][5];
+         $tab[30]['datatype']    = 'string';
+         $tab[30]['checktype']   = 'text';
+         $tab[30]['displaytype'] = 'text';
+         $tab[30]['injectable']  = true;
          
-         $tab[32]['table']          = $this->getTable();
-         $tab[32]['field']          = 'puk2';
-         $tab[32]['name']           = $LANG['plugin_simcard'][2];
-         $tab[32]['datatype']        = 'string';
-         $tab[32]['checktype']       = 'text';
-         $tab[32]['displaytype']     = 'text';
-         $tab[32]['injectable']      = true;
+         $tab[32]['table']       = $this->getTable();
+         $tab[32]['field']       = 'puk2';
+         $tab[32]['name']        = $LANG['plugin_simcard'][2];
+         $tab[32]['datatype']    = 'string';
+         $tab[32]['checktype']   = 'text';
+         $tab[32]['displaytype'] = 'text';
+         $tab[32]['injectable']  = true;
       }
 
-      $tab[31]['table']           = 'glpi_states';
-      $tab[31]['field']           = 'name';
-      $tab[31]['name']            = __('Statut');
-      $tab[31]['datatype']        = 'dropdown';
-      $tab[31]['checktype']       = 'text';
-      $tab[31]['displaytype']     = 'dropdown';
-      $tab[31]['injectable']      = true;
+      $tab[31]['table']          = 'glpi_states';
+      $tab[31]['field']          = 'name';
+      $tab[31]['name']           = __('Statut');
+      $tab[31]['datatype']       = 'dropdown';
+      $tab[31]['checktype']      = 'text';
+      $tab[31]['displaytype']    = 'dropdown';
+      $tab[31]['injectable']     = true;
       
-      $tab[49]['table']           = 'glpi_groups';
-      $tab[49]['field']           = 'name';
-      $tab[49]['name']            = __('Group');
-      $tab[49]['datatype']        = 'dropdown';
-      $tab[49]['checktype']       = 'text';
-      $tab[49]['displaytype']     = 'dropdown';
-      $tab[49]['injectable']      = true;
+      $tab[71]['table']          = 'glpi_groups';
+      $tab[71]['field']          = 'completename';
+      $tab[71]['name']           = __('Group');
+      $tab[71]['datatype']       = 'dropdown';
+      $tab[71]['checktype']      = 'text';
+      $tab[71]['displaytype']    = 'dropdown';
+      $tab[71]['injectable']     = true;
       
-      $tab[70]['table']           = 'glpi_users';
-      $tab[70]['field']           = 'name';
-      $tab[70]['name']            = __('User');
-      $tab[70]['datatype']        = 'dropdown';
-      $tab[70]['right']           = 'all';
-      $tab[70]['checktype']       = 'text';
-      $tab[70]['displaytype']     = 'user';
-      $tab[70]['injectable']      = true;
+      $tab[49]['table']          = 'glpi_groups';
+      $tab[49]['field']          = 'name';
+      $tab[49]['linkfield']      = 'groups_id_tech';
+      $tab[49]['condition']      = '`is_assign`';
+      $tab[49]['name']           = __('Group in charge of the hardware');
+      $tab[49]['datatype']       = 'dropdown';
+      $tab[49]['checktype']      = 'text';
+      $tab[49]['displaytype']    = 'dropdown';
+      $tab[49]['injectable']     = true;
+     
+      $tab[70]['table']          = 'glpi_users';
+      $tab[70]['field']          = 'name';
+      $tab[70]['name']           = __('User');
+      $tab[70]['datatype']       = 'dropdown';
+      $tab[70]['right']          = 'all';
+      $tab[70]['checktype']      = 'text';
+      $tab[70]['displaytype']    = 'dropdown';
+      $tab[70]['injectable']     = true;
       
       $tab[80]['table']          = 'glpi_entities';
       $tab[80]['field']          = 'completename';
@@ -528,20 +515,13 @@ Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields
       
       $tab[90]['table']          = $this->getTable();
       $tab[90]['field']          = 'notepad';
-      $tab[90]['name']           = __('title');
+      $tab[90]['name']           = __('Notes');
       $tab[90]['massiveaction']  = false;
       $tab[90]['linkfield']      = 'notepad';
-      $tab[90]['checktype']       = 'text';
-      $tab[90]['displaytype']     = 'multiline_text';
-      $tab[90]['injectable']      = true;
+      $tab[90]['checktype']      = 'text';
+      $tab[90]['displaytype']    = 'multiline_text';
+      $tab[90]['injectable']     = true;
       
-      $tab[91]['injectable']      = false;
-      $tab[93]['injectable']      = false;
-
-      $tab[3]['checktype']       = 'text';
-      $tab[3]['displaytype']     = 'dropdown';
-      $tab[3]['injectable']      = true;
-
       return $tab;
    }
    

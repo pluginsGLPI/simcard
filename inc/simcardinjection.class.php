@@ -52,6 +52,11 @@ class PluginSimcardSimcardInjection extends PluginSimcardSimcard
    }
 
 
+   static function getTable() {
+      $parenttype = get_parent_class();
+      return $parenttype::getTable();
+   }
+
    function getOptions($primary_type = '') {
       return Search::getOptions(get_parent_class($this));
    }

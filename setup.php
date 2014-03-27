@@ -28,7 +28,13 @@
  @since     2009
  ---------------------------------------------------------------------- */
 
-define ("PLUGIN_SIMCARD_VERSION", "0.84+1.3");
+define ("PLUGIN_SIMCARD_VERSION", "1.3");
+
+// Minimal GLPI version, inclusive
+define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.84");
+// Maximum GLPI version, exclusive
+define ("PLUGIN_SIMCARD_GLPI_MAX_VERSION", "0.85");
+
 // Init the hooks of the plugins -Needed
 function plugin_init_simcard() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
@@ -118,13 +124,13 @@ function plugin_version_simcard() {
                    'author'         => $author,
                    'license'        => 'GPLv2+',
                    'homepage'       => 'https://forge.indepnet.net/projects/show/simcard',
-                   'minGlpiVersion' => '0.84');
+                   'minGlpiVersion' => PLUGIN_SIMCARD_GLPI_MIN_VERSION);
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_simcard_check_prerequisites() {
-   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
-      echo "This plugin requires GLPI >= 0.84 and GLPI < 0.85";
+   if (version_compare(GLPI_VERSION, PLUGIN_SIMCARD_GLPI_MIN_VERSION, 'lt') || version_compare(GLPI_VERSION, PLUGIN_SIMCARD_GLPI_MAX_VERSION, 'ge')) {
+      echo "This plugin requires GLPI >= " . PLUGIN_SIMCARD_GLPI_MIN_VERSION . " and GLPI < " . PLUGIN_SIMCARD_GLPI_MAX_VERSION;
       return false;
    }
    return true;
