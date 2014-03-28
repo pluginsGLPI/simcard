@@ -35,7 +35,7 @@
 /**
  * 
  * @author dethegeek
- * @since 0.84+1.3
+ * @since 1.3
  *
  */
 class PluginSimcardConfig extends CommonDBTM {

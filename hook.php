@@ -35,7 +35,7 @@
  * Returns 0 if the plugin is not yet installed
  * Returns 1 if the plugin is already installed
  * 
- * @since 0.84+1.3
+ * @since 1.3
  * 
  * @return number
  */
@@ -54,13 +54,13 @@ function plugin_simcard_currentVersion() {
          $currentVersion = 0;
       } else {      
          if (TableExists('glpi_plugin_simcard_configs')) {
-            // The plugin is at least 0.84+1.3
+            // The plugin is at least 1.3
             // Get the current version in the plugin's configuration
             $pluginSimcardConfig = new PluginSimcardConfig();
             $currentVersion = $pluginSimcardConfig->getValue('Version');
          }
          if ($currentVersion == '') {
-            // The plugin is older than 0.84+1.3
+            // The plugin is older than 1.3
             $currentVersion = '1.2';
          }
       }
@@ -245,6 +245,15 @@ function plugin_datainjection_populate_simcard() {
    $INJECTABLE_TYPES['PluginSimcardSimcardInjection']      = 'simcard';
 }
 
+/**
+ * 
+ * Determine if the plugin should be installed or upgraded
+ * 
+ * Returns 0 if the plugin is not yet installed
+ * Returns 1 if the plugin is already installed
+ * 
+ * @since 1.3
+ */
 function plugin_simcard_postinit() {
    global $UNINSTALL_TYPES, $ORDER_TYPES, $ALL_CUSTOMFIELDS_TYPES, $DB;
    $plugin = new Plugin();

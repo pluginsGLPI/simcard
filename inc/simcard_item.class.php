@@ -118,7 +118,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    /**
     * 
     *
-    * @since 0.84+1.3
+    * @since 1.3
     **/
    static function upgrade(Migration $migration) {
       global $DB;
