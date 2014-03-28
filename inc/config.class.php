@@ -40,6 +40,11 @@
  */
 class PluginSimcardConfig extends CommonDBTM {
 
+   // Type reservation : https://forge.indepnet.net/projects/plugins/wiki/PluginTypesReservation
+   // Reserved range   : [10126, 10135]
+   const RESERVED_TYPE_RANGE_MIN = 10126;
+   const RESERVED_TYPE_RANGE_MAX = 10135;
+   
    static $config = array();
 
    /**

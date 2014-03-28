@@ -200,30 +200,34 @@ function plugin_simcard_getAddSearchOptions($itemtype) {
     
    $sopt = array();
 
+   $reservedTypeIndex = PluginSimcardConfig::RESERVED_TYPE_RANGE_MIN;
+   
    if (in_array($itemtype,PluginSimcardSimcard_Item::getClasses())) {
       if (Session::haveRight("simcard","r")) {
-         $sopt[1710]['table']         = 'glpi_plugin_simcard_simcards';
-         $sopt[1710]['field']         = 'name';
-         $sopt[1710]['name']          = $LANG['plugin_simcard']['profile'][1]." - ".__s('Name');
-         $sopt[1710]['forcegroupby']  = true;
-         $sopt[1710]['massiveaction'] = false;
-         $sopt[1710]['datatype']      = 'itemlink';
-         $sopt[1710]['itemlink_type'] = 'PluginSimcardSimcard';
-         $sopt[1710]['joinparams']     = array('beforejoin'
-                                                => array('table'      => 'glpi_plugin_simcard_simcards_items',
-                                                         'joinparams' => array('jointype' => 'itemtype_item')));
-         $sopt[1711]['table']         = 'glpi_plugin_simcard_simcards';
-         $sopt[1711]['field']         = 'phonenumber';
-         $sopt[1711]['name']          = $LANG['plugin_simcard']['profile'][1]." - ".$LANG['plugin_simcard'][1];
-         $sopt[1711]['massiveaction'] = false;
-         $sopt[1711]['forcegroupby']  = true;
-         $sopt[1711]['joinparams']     = array('beforejoin'
-                                                => array('table'      => 'glpi_plugin_simcard_simcards_items',
-                                                         'joinparams' => array('jointype' => 'itemtype_item')));
+         $sopt[$reservedTypeIndex]['table']         = 'glpi_plugin_simcard_simcards';
+         $sopt[$reservedTypeIndex]['field']         = 'name';
+         $sopt[$reservedTypeIndex]['name']          = $LANG['plugin_simcard']['profile'][1]." - ".__s('Name');
+         $sopt[$reservedTypeIndex]['forcegroupby']  = true;
+         $sopt[$reservedTypeIndex]['massiveaction'] = false;
+         $sopt[$reservedTypeIndex]['datatype']      = 'itemlink';
+         $sopt[$reservedTypeIndex]['itemlink_type'] = 'PluginSimcardSimcard';
+         $sopt[$reservedTypeIndex]['joinparams']    = array('beforejoin'
+                                                            => array('table'      => 'glpi_plugin_simcard_simcards_items',
+                                                            'joinparams' => array('jointype' => 'itemtype_item')));
+         $reservedTypeIndex++;
+         $sopt[$reservedTypeIndex]['table']         = 'glpi_plugin_simcard_simcards';
+         $sopt[$reservedTypeIndex]['field']         = 'phonenumber';
+         $sopt[$reservedTypeIndex]['name']          = $LANG['plugin_simcard']['profile'][1]." - ".$LANG['plugin_simcard'][1];
+         $sopt[$reservedTypeIndex]['massiveaction'] = false;
+         $sopt[$reservedTypeIndex]['forcegroupby']  = true;
+         $sopt[$reservedTypeIndex]['joinparams']    = array('beforejoin'
+                                                            => array('table'      => 'glpi_plugin_simcard_simcards_items',
+                                                            'joinparams' => array('jointype' => 'itemtype_item')));
       }
    }
    return $sopt;
 }
+
 
 // Hook done on purge item case
 
