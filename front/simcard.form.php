@@ -63,7 +63,7 @@ if (isset($_POST["add"])) {
    $ok = $simcard->delete($_POST);
    if ($ok) {
    }
-   Html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
+   $simcard->redirectToList();
 
 } else if (isset($_POST["restore"])) {
    $simcard->check($_POST['id'], 'd');
@@ -72,13 +72,13 @@ if (isset($_POST["add"])) {
                  //TRANS: %s is the user login
                  sprintf(__('%s restores the item'), $_SESSION["glpiname"]));
    }
-   html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
+   $simcard->redirectToList();
    
 } else if (isset($_REQUEST["purge"])) {
    $simcard->check($_REQUEST['id'], 'd');
    if ($simcard->delete($_REQUEST,1)) {
    }
-   Html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
+   $simcard->redirectToList();
    
 //update a computer
 } else if (isset($_POST["update"])) {
