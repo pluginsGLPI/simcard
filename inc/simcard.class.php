@@ -682,6 +682,16 @@ class PluginSimcardSimcard extends CommonDBTM {
       }
       return $types;
    }
+
+   /**
+    * Actions done when item is deleted from the database
+    *
+    * @return nothing
+   **/
+   function cleanDBonPurge() {
+   	   $link = new PluginSimcardSimcard_Item();
+   	   $link->cleanDBonItemDelete($this->getType(), $this->getID());
+    }
 }
 
 ?>
