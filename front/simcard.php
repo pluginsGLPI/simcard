@@ -30,10 +30,13 @@
 
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
-Html::header($LANG['plugin_simcard']['profile'][1], '', "plugins", "simcard", "simcard");
+
+// Affichage du fil d'Ariane
+Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard", "simcard");
 
 $simcard = new PluginSimcardSimcard();
-if ($simcard->canView() || Session::haveRight("simcard", "w")) {
+// TODO Is Checking canCreate useful before showing a list ? 
+if (PluginSimcardSimcard::canView() || PluginSimcardSimcard::canCreate()) {
    Search::show("PluginSimcardSimcard");
 } else {
    echo "<div align='center'><br><br><img src=\"".
@@ -42,6 +45,3 @@ if ($simcard->canView() || Session::haveRight("simcard", "w")) {
 }
 
 Html::footer();
-
-
-?>

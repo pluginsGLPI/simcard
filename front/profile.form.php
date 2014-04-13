@@ -31,13 +31,13 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-Session::checkRight("profile", "r");
+//Session::checkRight("profile", "r");
+Profile::canView();
 
-$prof = new PluginSimcardProfile();
+$profile = new PluginSimcardProfile();
 
 //Save profile
 if (isset ($_POST['update'])) {
-   $prof->update($_POST);
+   $profile->update($_POST);
 }
 Html::back();
-?>

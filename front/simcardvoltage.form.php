@@ -33,4 +33,3 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 $dropdown = new PluginSimcardSimcardVoltage();
 include (GLPI_ROOT . "/front/dropdown.common.form.php");
-?>

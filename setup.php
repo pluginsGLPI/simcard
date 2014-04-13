@@ -28,12 +28,12 @@
  @since     2009
  ---------------------------------------------------------------------- */
 
-define ("PLUGIN_SIMCARD_VERSION", "1.3");
+define ("PLUGIN_SIMCARD_VERSION", "1.4");
 
 // Minimal GLPI version, inclusive
-define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.84");
+define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.85");
 // Maximum GLPI version, exclusive
-define ("PLUGIN_SIMCARD_GLPI_MAX_VERSION", "0.85");
+define ("PLUGIN_SIMCARD_GLPI_MAX_VERSION", "0.86");
 
 // Init the hooks of the plugins -Needed
 function plugin_init_simcard() {
@@ -43,9 +43,10 @@ function plugin_init_simcard() {
    
    $plugin = new Plugin();
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
-      $PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
       
       //load changeprofile function
+   	  $PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+      
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
 
       $PLUGIN_HOOKS['pre_item_purge']['simcard'] =
@@ -79,24 +80,31 @@ function plugin_init_simcard() {
       if (Session::getLoginUserID()) {
           
          // Display a menu entry ?
-         if (Session::haveRight("simcard", "r")) {
+         //if (Session::haveRight("simcard", "r")) {
+         if (PluginSimcardSimcard::canCreate() 
+            || PluginSimcardSimcard::canUpdate ()
+            || PluginSimcardSimcard::canDelete()
+            || PluginSimcardSimcard::canView())
+         {
             //menu entry
-            $PLUGIN_HOOKS['menu_entry']['simcard'] = 'front/simcard.php';
+            //$PLUGIN_HOOKS['menu_entry']['simcard'] = 'front/simcard.php';
+         	$PLUGIN_HOOKS['menu_toadd']['simcard'] = array('assets' => 'PluginSimcardSimcard');
             //search link
-            $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['search']
-               = '/plugins/simcard/front/simcard.php';
+            //$PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['search']
+            //   = '/plugins/simcard/front/simcard.php';
             //add simcard to items details
             $PLUGIN_HOOKS['headings']['simcard']           = 'plugin_get_headings_simcard';
             $PLUGIN_HOOKS['headings_action']['simcard']    = 'plugin_headings_actions_simcard';
             $PLUGIN_HOOKS['headings_actionpdf']['simcard'] = 'plugin_headings_actionpdf_simcard';
          }
              
-         if (Session::haveRight("simcard", "w")) {
+         //if (Session::haveRight("simcard", "w")) {
+         if (PluginSimcardSimcard::canCreate()) {
             //add link
-            $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['add']
-               = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=1';
-            $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['template']
-               = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=0';
+//             $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['add']
+//                = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=1';
+//             $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['template']
+//                = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=0';
             
             //use massiveaction in the plugin
             $PLUGIN_HOOKS['use_massive_action']['simcard']=1;
@@ -141,6 +149,13 @@ function plugin_simcard_check_config() {
    return true;
 }
 
+/**
+ * 
+ * Migrate itemtype integer (0.72) to string (0.80)
+ * 
+ * @param array $types
+ * @return string
+ */
 function plugin_datainjection_migratetypes_simcard($types) {
    $types[1300] = 'PluginSimcardsSimcard';
    return $types;

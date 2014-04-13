@@ -31,7 +31,8 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-Session::checkRight("simcard", "r");
+//Session::checkRight("simcard", "r");
+PluginSimcardSimcard::canView();
 
 if (!isset($_GET["id"])) {
    $_GET["id"] = "";
@@ -52,50 +53,51 @@ if (!isset($_GET["withtemplate"])) {
 $simcard = new PluginSimcardSimcard();
 //Add a new computer
 if (isset($_POST["add"])) {
-   $simcard->check(-1, 'w', $_POST);
+   $simcard->check(-1, UPDATE, $_POST);
    if ($newID = $simcard->add($_POST)) {
    }
    Html::back();
 
 // delete a computer
 } else if (isset($_POST["delete"])) {
-   $simcard->check($_POST['id'], 'd');
+   $simcard->check($_POST['id'], DELETE);
    $ok = $simcard->delete($_POST);
    if ($ok) {
    }
-   Html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
+   $simcard->redirectToList();
 
 } else if (isset($_POST["restore"])) {
-   $simcard->check($_POST['id'], 'd');
+   $simcard->check($_POST['id'], UPDATE);
    if ($simcard->restore($_POST)) {
       Event::log($_POST["id"],"computers", 4, "inventory",
                  //TRANS: %s is the user login
                  sprintf(__('%s restores the item'), $_SESSION["glpiname"]));
    }
-   html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
+   $simcard->redirectToList();
    
 } else if (isset($_REQUEST["purge"])) {
-   $simcard->check($_REQUEST['id'], 'd');
+   $simcard->check($_REQUEST['id'], PURGE);
    if ($simcard->delete($_REQUEST,1)) {
    }
-   Html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
+   $simcard->redirectToList();
    
 //update a computer
 } else if (isset($_POST["update"])) {
-   $simcard->check($_POST['id'], 'w');
+   $simcard->check($_POST['id'], UPDATE);
    $simcard->update($_POST);
    Html::back();
 
 } else if (isset($_GET["unglobalize"])) {
-   $simcard->check($_GET["id"],'w');
+   $simcard->check($_GET["id"], UPDATE);
 
-
-  Html::redirect(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
+   //TODO There is probably a bug here... 
+   Html::redirect(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
    
 } else {//print computer information
-   Html::header(PluginSimcardSimcard::getTypeName(2), $_SERVER['PHP_SELF'], "plugins", "simcard", "simcard");
+   // Affichage du fil d'Ariane
+   Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard", "simcard");
+
    //show computer form to add
-   $simcard->showForm($_GET["id"], $_GET);
+   $simcard->display(array('id' => $_GET["id"]));
    html::footer();
 }
-?>

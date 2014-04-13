@@ -31,22 +31,21 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-Session::checkRight("simcard", "w");
+PluginSimcardSimcard::canUpdate();
 
 $simcard_item = new PluginSimcardSimcard_Item();
 if (isset($_POST["additem"])) {
-   $simcard_item->check(-1, 'w', $_POST);
+	$simcard_item->can(-1, CREATE, $_POST);
    if ($newID = $simcard_item->add($_POST)) {
    }
 } else if (isset($_POST["delete_items"])) {
    if (isset($_POST['todelete'])) {
       foreach ($_POST['todelete'] as $id => $val) {
          if ($val == 'on') {
-            $simcard_item->check($id, 'd', $_POST);
+            $simcard_item->can($id, DELETE, $_POST);
             $ok = $simcard_item->delete(array('id' => $id));
          }
       }
    }
 }
 Html::back();
-?>

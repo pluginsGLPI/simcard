@@ -34,4 +34,3 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 $dropdown = new PluginSimcardPhoneOperator();
 include (GLPI_ROOT . "/front/dropdown.common.php");
-?>

@@ -32,119 +32,139 @@ if (!defined('GLPI_ROOT')){
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginSimcardProfile extends CommonDBTM {
+class PluginSimcardProfile extends Profile {
 
+   const RIGHT_SIMCARD_OPEN_TICKET = "simcard:open_ticket";
+   const RIGHT_SIMCARD_SIMCARD = "simcard:simcard";
+	
+   static $rightname = 'profile'; 
+	
    static function purgeProfiles(Profile $prof) {
       $plugprof = new self();
       $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
    }
    
-   function getFromDBByProfile($profiles_id) {
-      global $DB;
+//    function getFromDBByProfile($profiles_id) {
+//       global $DB;
       
-      $query = "SELECT * FROM `".$this->getTable()."`
-               WHERE `profiles_id` = '" . $profiles_id . "' ";
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
-            return false;
-         }
-         $this->fields = $DB->fetch_assoc($result);
-         if (is_array($this->fields) && count($this->fields)) {
-            return true;
-         } else {
-            return false;
-         }
-      }
-      return false;
-   }
+//       $query = "SELECT * FROM `".$this->getTable()."`
+//                WHERE `profiles_id` = '" . $profiles_id . "' ";
+//       if ($result = $DB->query($query)) {
+//          if ($DB->numrows($result) != 1) {
+//             return false;
+//          }
+//          $this->fields = $DB->fetch_assoc($result);
+//          if (is_array($this->fields) && count($this->fields)) {
+//             return true;
+//          } else {
+//             return false;
+//          }
+//       }
+//       return false;
+//    }
 
    function createAccess($ID) {
       $this->add(array('profiles_id' => $ID));
    }
    
    static function createFirstAccess($ID) {
-      $myProf = new self();
-      if (!$myProf->getFromDBByProfile($ID)) {
-         $myProf->add(array('profiles_id' => $ID, 'simcard' => 'w', 'open_ticket'=>1));
-      }
+      $profileRight = new ProfileRight();
+      
+      $currentRights = ProfileRight::getProfileRights(
+      	$ID, 
+      	array(self::RIGHT_SIMCARD_SIMCARD, self::RIGHT_SIMCARD_OPEN_TICKET)
+      );
+      $firstAccessRights = array_merge($currentRights, array(self::RIGHT_SIMCARD_SIMCARD => ALLSTANDARDRIGHT, self::RIGHT_SIMCARD_OPEN_TICKET => 1));
+      $profileRight->updateProfileRights($ID, $firstAccessRights);
+
+      //Add right to the current session
+      $_SESSION['glpiactiveprofile'][self::RIGHT_SIMCARD_SIMCARD] = $firstAccessRights[self::RIGHT_SIMCARD_SIMCARD];
+      $_SESSION['glpiactiveprofile'][self::RIGHT_SIMCARD_OPEN_TICKET] = $firstAccessRights[self::RIGHT_SIMCARD_OPEN_TICKET];
+      
+//       if (!$myProf->getFromDBByProfile($ID)) {
+//          $myProf->add(array('profiles_id' => $ID, 'simcard' => CREATE, 'open_ticket'=>1));
+//       }
    }
 
-   static function changeProfile() {
-      $prof = new self();
-      if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
-         if ($prof->fields['simcard']) {
-            $_SESSION["glpiactiveprofile"]['simcard'] = $prof->fields['simcard'];
-            $_SESSION["glpiactiveprofile"]['simcard_open_ticket'] = $prof->fields['open_ticket'];
-         }
-      } else {
-         unset($_SESSION["glpiactiveprofile"]['simcard']);
-         unset($_SESSION["glpiactiveprofile"]['simcard_open_ticket']);
-      }
-   }
+//    static function changeProfile() {
+//       $profile = new self();
+//       if ($profile->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
+//          if ($profile->fields[self::RIGHT_SIMCARD_SIMCARD]) {
+//             $_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_SIMCARD] = $profile->fields[self::RIGHT_SIMCARD_SIMCARD];
+//             $_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_OPEN_TICKET] = $profile->fields[self::RIGHT_SIMCARD_OPEN_TICKET];
+//          }
+//       } else {
+//          unset($_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_SIMCARD]);
+//          unset($_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_OPEN_TICKET]);
+//       }
+//    }
    
    //profiles modification
-   function showForm($ID){
+   function showForm($ID, $options = array()){
       global $LANG;
 
-      if (!Session::haveRight("profile", "r")) {
+      if (!Profile::canView()) {
          return false;
       }
-      $canedit = Session::haveRight("profile", "w");
-      $prof    = new Profile();
+      $canedit = self::canUpdate();
+      $profile    = new Profile();
       if ($ID){
-         $this->getFromDBByProfile($ID);
-         $prof->getFromDB($ID);
+         //$this->getFromDBByProfile($ID);
+         $profile->getFromDB($ID);
       }
-
-      echo "<form action='".Toolbox::getItemTypeFormURL(__CLASS__)."' method='post'>";
+      if ($canedit) {
+      	echo "<form action='".$profile->getFormURL()."' method='post'>";
+      }
+      
+      $rights = $this->getAllRights();
+      $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
+                                                      'default_class' => 'tab_bg_2',
+                                                      'title'         => __('General')));
+      
       echo "<table class='tab_cadre_fixe'>";
 
       echo "<th colspan='4' align='center'><strong>" .
-         $LANG['plugin_simcard']['profile'][0] . " " . $prof->fields["name"] . "</strong></th>";
-         
+         $LANG['plugin_simcard']['profile'][0] . " " . $profile->fields["name"] . "</strong></th>";
+       
       echo "<tr class='tab_bg_2'>";
-      echo "<td>".$LANG['plugin_simcard']['profile'][1].":</td><td>";
-      Profile::dropdownNoneReadWrite("simcard", $this->fields["simcard"],1,1,1);
+      echo "<td width='20%'>" . __("Associable items to a ticket") . " - " . $LANG['plugin_simcard']['profile'][1] . ":</td>";
+      echo "<td colspan='5'>";
+      $effective_rights = ProfileRight::getProfileRights($ID, array(self::RIGHT_SIMCARD_OPEN_TICKET));
+
+      Html::showCheckbox(array('name'    => '_' . self::RIGHT_SIMCARD_OPEN_TICKET . '[1_0]',
+      	 'checked' => $effective_rights[self::RIGHT_SIMCARD_OPEN_TICKET],
+      	 'readonly' => !( Ticket::canCreate() )
+      ));
       echo "</td>";
       echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-      echo "<td>" . __("Associable items to a ticket") . " - " . $LANG['plugin_simcard']['profile'][1] . ":</td><td>";
-      if ($prof->fields['create_ticket']) {
-         Dropdown::showYesNo("open_ticket" , $this->fields["open_ticket"]);
-      } else {
-         echo Dropdown::getYesNo(0);
-      }
-      echo "</td>";
-      echo "</tr>";
-
-      if ($canedit) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td align='center' colspan='2'>";
-         echo "<input type='hidden' name='id' value=".$this->getID().">";
-         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
-         echo "</td></tr>";
-      }
       echo "</table>";
+      
+      if ($canedit) {
+         echo "<div class='center'>";
+         echo "<input type='hidden' name='id' value=".$ID.">";
+         echo "<input type='submit' name='update' value=\""._sx('button', 'Save')."\" class='submit'>";
+         echo "</div>";
+      }
       Html::closeForm();
+      $this->showLegend();
    }
     
    static function install(Migration $migration) {
       global $DB;
-      $table = getTableForItemType(__CLASS__);
-      if (!TableExists($table)) {
-         $query = "CREATE TABLE IF NOT EXISTS `$table` (
-               `id` int(11) NOT NULL auto_increment,
-               `profiles_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
-               `simcard` char(1) collate utf8_unicode_ci default NULL,
-               `open_ticket` char(1) collate utf8_unicode_ci default NULL,
-               PRIMARY KEY  (`id`),
-               KEY `profiles_id` (`profiles_id`)
-            ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-         $DB->query($query) or die($DB->error());
-      }
+//       $table = getTableForItemType(__CLASS__);
+//       if (!TableExists($table)) {
+//          $query = "CREATE TABLE IF NOT EXISTS `$table` (
+//                `id` int(11) NOT NULL auto_increment,
+//                `profiles_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
+//                `simcard` char(1) collate utf8_unicode_ci default NULL,
+//                `open_ticket` char(1) collate utf8_unicode_ci default NULL,
+//                PRIMARY KEY  (`id`),
+//                KEY `profiles_id` (`profiles_id`)
+//             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+//          $DB->query($query) or die($DB->error());
+//       }
       PluginSimcardProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
-      self::changeProfile();
+//      self::changeProfile();
    }
     
    /**
@@ -154,22 +174,72 @@ class PluginSimcardProfile extends CommonDBTM {
     **/
    static function upgrade(Migration $migration) {
       global $DB;
+      
+      $table = getTableForItemType(__CLASS__);
+      switch (plugin_simcard_currentVersion()) {
+      	case '1.3':           
+            $matching = array('simcard'    => self::RIGHT_SIMCARD_SIMCARD, 
+                           'open_ticket' => self::RIGHT_SIMCARD_OPEN_TICKET);
+      		$query = "SELECT * FROM `glpi_plugin_simcard_profiles`";
+      		$result = $DB->query($query);
+      		while ($data = $DB->fetch_assoc($result)) {
+      			// Lire les droits dans le nouveau système d'ACLs GLPI 0.85
+      			$current_rights = ProfileRight::getProfileRights($data['profiles_id'], array_values($matching));
+      			foreach ($matching as $old => $new) {
+      				if (!isset($current_rights[$new])) {
+      					$query = "INSERT INTO `glpi_profilerights`
+                                  SET `rights`='" . self::translateARight($data[$old]) . "',
+      			                  `profiles_id`='" . $data['profiles_id'] . "',
+      			                  `name`='" . $new . "'";
+      					$DB->query($query) or die($DB->error());
+      				}
+      			}
+      		}
+      		$query = "DROP TABLE `glpi_plugin_simcard_profiles`";
+      		$DB->query($query) or die($DB->error());
+      }
+  }
 
-   }
+   /**
+    * Init profiles
+    *
+    **/
    
+   static function translateARight($old_right) {
+   	  switch ($old_right) {
+   		 case '':
+   			return 0;
+   			
+   		 case 'r' :
+   			return READ;
+   			
+   		 case 'w':
+   			return ALLSTANDARDRIGHT;
+   			
+   		 case '0':
+   		 case '1':
+   			return $old_right;
+   
+   		 default :
+   			return 0;
+   	  }
+   }
+      
    static function uninstall() {
       global $DB;
 
-      $table = getTableForItemType(__CLASS__);
-      $DB->query("DROP TABLE IF EXISTS `$table`");
-      unset($_SESSION["glpiactiveprofile"]['simcard']);
-      unset($_SESSION["glpiactiveprofile"]['simcard_open_ticket']);
+      ProfileRight::deleteProfileRights(array(
+         self::RIGHT_SIMCARD_SIMCARD,
+         self::RIGHT_SIMCARD_OPEN_TICKET
+      ));
+      unset($_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_SIMCARD]);
+      unset($_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_OPEN_TICKET]);
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $LANG;
-      if (get_class($item) == 'Profile') {
-         return array(1 => $LANG['plugin_simcard']['profile'][1]);
+      if ($item->getType()=='Profile') {
+         return $LANG['plugin_simcard']['profile'][1];
       }
       return '';
    }
@@ -177,15 +247,26 @@ class PluginSimcardProfile extends CommonDBTM {
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       
-      if (get_class($item) == 'Profile') {
+      if ($item->getType() == 'Profile') {
          $profile = new self();
-         if (!$profile->getFromDBByProfile($item->getField('id'))) {
-            $profile->createAccess($item->getField('id'));
-         }
+//          if (!$profile->getFromDBByProfile($item->getField('id'))) {
+//             $profile->createAccess($item->getID());
+//          }
          $profile->showForm($item->getField('id'));
       }
       return true;
    }
+
+   function getAllRights() {
+      $rights = array(
+          array('itemtype'  => 'PluginSimcardSimcard',
+                'label'     => _n('Simcard', 'Simcards', 2, 'simcard'),
+                'field'     => 'simcard:simcard'
+          ),
+      );
+      return $rights;
+   }
+
 }
 
 ?>

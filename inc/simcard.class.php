@@ -38,8 +38,12 @@ class PluginSimcardSimcard extends CommonDBTM {
    // From CommonDBTM
    //static $types = array('');
   public $dohistory = true;
+  
+  static $rightname = 'simcard:simcard';
+  
   //~ static $types = array('Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer', 'Software', 'Entity');
   static $types = array('Phone' , 'Entity');
+  
    /**
     * Name of the type
     *
@@ -47,20 +51,22 @@ class PluginSimcardSimcard extends CommonDBTM {
    **/
    static function getTypeName($nb=0) {
       global $LANG;
+      return _n('Simcard', 'Simcards', 2, 'simcard');
       return $LANG['plugin_simcard']['profile'][1];
    }
 
    static function canCreate() {
-      return Session::haveRight('simcard', 'w');
+      return Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, CREATE);
    }
 
    static function canView() {
-      return Session::haveRight('simcard', 'r');
+      return Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, READ);
    }
 
    function defineTabs($options=array()) {
       global $LANG;
       $ong     = array();
+      $this->addDefaultFormTab($ong);
       if ($this->fields['id'] > 0) {
          if (!isset($options['withtemplate']) || empty($options['withtemplate'])) {
             $this->addStandardTab('PluginSimcardSimcard_Item', $ong, $options);
@@ -101,6 +107,8 @@ class PluginSimcardSimcard extends CommonDBTM {
     function showForm($ID, $options=array()) {
       global $CFG_GLPI, $DB, $LANG;
 
+      if (!$this->canView()) return false;
+      
       $target       = $this->getFormURL();
       $withtemplate = '';
 
@@ -111,15 +119,15 @@ class PluginSimcardSimcard extends CommonDBTM {
       if (isset($options['withtemplate'])) {
          $withtemplate = $options['withtemplate'];
       }
-      
-      if ($ID > 0) {
-         $this->check($ID,'r');
-      } else {
-         // Create item
-         $this->check(-1,'w');
-      }
 
-      $this->showTabs($options);
+//       if ($ID > 0) {
+//          $this->check($ID,'r');
+//       } else {
+//          // Create item
+//          $this->check(-1,'w');
+//       }
+
+      //$this->showTabs($options);
       $this->showFormHeader($options);
 
       if (isset($options['itemtype']) && isset($options['items_id'])) {
@@ -260,7 +268,8 @@ class PluginSimcardSimcard extends CommonDBTM {
 //       echo "</td></tr>\n";
       
       //Only show PIN and PUK code to users who can write (theses informations are highly sensible)
-      if (Session::haveRight('simcard', 'w')) {
+      //if (Session::haveRight('simcard', 'w')) {
+      if (PluginSimcardSimcard::canUpdate()) {
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][3]."</td>";
          echo "<td>";
@@ -286,9 +295,8 @@ class PluginSimcardSimcard extends CommonDBTM {
          echo "</td></tr>\n";
       }
 
-      
       $this->showFormButtons($options);
-      $this->addDivForTabs();
+      //$this->addDivForTabs();
 
       return true;
    }
@@ -439,7 +447,8 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[27]['displaytype']    = 'text';
       $tab[27]['injectable']     = true;
       
-      if (Session::haveRight('simcard', 'w')) {
+      //if (Session::haveRight('simcard', 'w')) {
+      if (PluginSimcardSimcard::canUpdate()) {
          $tab[28]['table']       = $this->getTable();
          $tab[28]['field']       = 'pin';
          $tab[28]['name']        = $LANG['plugin_simcard'][3];
@@ -682,6 +691,39 @@ class PluginSimcardSimcard extends CommonDBTM {
       }
       return $types;
    }
+   
+   /**
+    * Add menu entries the plugin needs to show
+    * 
+    * @return array
+    */
+   static function getMenuContent() {
+   	  global $CFG_GLPI;
+   		
+   	  $menu = array();
+      $menu['title'] = self::getTypeName(2);
+   	  $menu['page']  = "/plugins/simcard/front/simcard.php";
+      $menu['page']  = self::getSearchURL(false);
+      $menu['options']['simcard']['title'] = self::getTypeName(2);
+      $menu['options']['simcard']['page']  = self::getSearchURL(false);
+      $menu['options']['simcard']['links']['search'] = self::getSearchURL(false);
+
+      if (self::canCreate()) {
+         $menu['options']['simcard']['links']['add'] = self::getFormURL(false);
+      }
+      return $menu;
+   }
+      
+
+   /**
+    * Actions done when item is deleted from the database
+    *
+    * @return nothing
+   **/
+   function cleanDBonPurge() {
+   	   $link = new PluginSimcardSimcard_Item();
+   	   $link->cleanDBonItemDelete($this->getType(), $this->getID());
+    }
 }
 
 ?>
