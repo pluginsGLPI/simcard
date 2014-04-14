@@ -73,10 +73,6 @@ class PluginSimcardProfile extends CommonDBTM {
       $prof = new self();
       if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
       	$_SESSION["glpi_plugin_simcard_profile"] = $prof->fields;
-         if ($prof->fields['simcard']) {
-            $_SESSION["glpi_plugin_simcard_profile"]['simcard'] = $prof->fields['simcard'];
-            $_SESSION["glpi_plugin_simcard_profile"]['simcard_open_ticket'] = $prof->fields['open_ticket'];
-         }
       } else {
          unset($_SESSION["glpi_plugin_simcard_profile"]);
       }

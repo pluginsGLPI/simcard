@@ -173,7 +173,7 @@ function plugin_simcard_getDropdown() {
 function plugin_simcard_AssignToTicket($types) {
    global $LANG;
 
-   if (plugin_simcard_haveRight("simcard_open_ticket", "1")) {
+   if (plugin_simcard_haveRight("open_ticket", "1")) {
       $types['PluginSimcardSimcard'] = $LANG['plugin_simcard']['profile'][1];
    }
 
