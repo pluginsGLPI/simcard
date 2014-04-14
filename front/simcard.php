@@ -33,7 +33,7 @@ include (GLPI_ROOT."/inc/includes.php");
 Html::header($LANG['plugin_simcard']['profile'][1], '', "plugins", "simcard", "simcard");
 
 $simcard = new PluginSimcardSimcard();
-if ($simcard->canView() || Session::haveRight("simcard", "w")) {
+if ($simcard->canView()) {
    Search::show("PluginSimcardSimcard");
 } else {
    echo "<div align='center'><br><br><img src=\"".

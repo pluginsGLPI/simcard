@@ -43,7 +43,7 @@ function plugin_init_simcard() {
    
    $plugin = new Plugin();
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
-      $PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+      $PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile', 'changeProfile');
       
       //load changeprofile function
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
@@ -79,7 +79,7 @@ function plugin_init_simcard() {
       if (Session::getLoginUserID()) {
           
          // Display a menu entry ?
-         if (Session::haveRight("simcard", "r")) {
+         if (PluginSimcardSimcard::canView()) {
             //menu entry
             $PLUGIN_HOOKS['menu_entry']['simcard'] = 'front/simcard.php';
             //search link
@@ -91,7 +91,7 @@ function plugin_init_simcard() {
             $PLUGIN_HOOKS['headings_actionpdf']['simcard'] = 'plugin_headings_actionpdf_simcard';
          }
              
-         if (Session::haveRight("simcard", "w")) {
+         if (PluginSimcardSimcard::canCreate()) {
             //add link
             $PLUGIN_HOOKS['submenu_entry']['simcard']['options']['simcard']['links']['add']
                = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=1';
@@ -144,6 +144,23 @@ function plugin_simcard_check_config() {
 function plugin_datainjection_migratetypes_simcard($types) {
    $types[1300] = 'PluginSimcardsSimcard';
    return $types;
+}
+
+function plugin_simcard_haveRight($module, $right) {
+	$matches=array(
+			""  => array("","r","w"), // ne doit pas arriver normalement
+			"r" => array("r","w"),
+			"w" => array("w"),
+			"1" => array("1"),
+			"0" => array("0","1"), // ne doit pas arriver non plus
+	);
+	if (isset($_SESSION["glpi_plugin_simcard_profile"][$module])
+	   && in_array($_SESSION["glpi_plugin_simcard_profile"][$module],$matches[$right])
+	) {
+	   return true;
+	} else { 
+	   return false;
+	}
 }
 
 ?>

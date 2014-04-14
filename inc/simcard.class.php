@@ -51,11 +51,11 @@ class PluginSimcardSimcard extends CommonDBTM {
    }
 
    static function canCreate() {
-      return Session::haveRight('simcard', 'w');
+   	  return plugin_simcard_haveRight('simcard', 'w');
    }
 
    static function canView() {
-      return Session::haveRight('simcard', 'r');
+   	return plugin_simcard_haveRight('simcard', 'r');
    }
 
    function defineTabs($options=array()) {
@@ -260,7 +260,7 @@ class PluginSimcardSimcard extends CommonDBTM {
 //       echo "</td></tr>\n";
       
       //Only show PIN and PUK code to users who can write (theses informations are highly sensible)
-      if (Session::haveRight('simcard', 'w')) {
+      if (plugin_simcard_haveRight('simcard', 'w')) {
          echo "<tr class='tab_bg_1'>";
          echo "<td>".$LANG['plugin_simcard'][3]."</td>";
          echo "<td>";
@@ -439,7 +439,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[27]['displaytype']    = 'text';
       $tab[27]['injectable']     = true;
       
-      if (Session::haveRight('simcard', 'w')) {
+      if (plugin_simcard_haveRight('simcard', 'w')) {
          $tab[28]['table']       = $this->getTable();
          $tab[28]['field']       = 'pin';
          $tab[28]['name']        = $LANG['plugin_simcard'][3];
@@ -692,6 +692,6 @@ class PluginSimcardSimcard extends CommonDBTM {
    	   $link = new PluginSimcardSimcard_Item();
    	   $link->cleanDBonItemDelete($this->getType(), $this->getID());
     }
-}
 
+}
 ?>

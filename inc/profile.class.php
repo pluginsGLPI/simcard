@@ -65,20 +65,20 @@ class PluginSimcardProfile extends CommonDBTM {
    static function createFirstAccess($ID) {
       $myProf = new self();
       if (!$myProf->getFromDBByProfile($ID)) {
-         $myProf->add(array('profiles_id' => $ID, 'simcard' => 'w', 'open_ticket'=>1));
+         $myProf->add(array('profiles_id' => $ID, 'simcard' => 'w', 'open_ticket'=> 1));
       }
    }
 
    static function changeProfile() {
       $prof = new self();
       if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
+      	$_SESSION["glpi_plugin_simcard_profile"] = $prof->fields;
          if ($prof->fields['simcard']) {
-            $_SESSION["glpiactiveprofile"]['simcard'] = $prof->fields['simcard'];
-            $_SESSION["glpiactiveprofile"]['simcard_open_ticket'] = $prof->fields['open_ticket'];
+            $_SESSION["glpi_plugin_simcard_profile"]['simcard'] = $prof->fields['simcard'];
+            $_SESSION["glpi_plugin_simcard_profile"]['simcard_open_ticket'] = $prof->fields['open_ticket'];
          }
       } else {
-         unset($_SESSION["glpiactiveprofile"]['simcard']);
-         unset($_SESSION["glpiactiveprofile"]['simcard_open_ticket']);
+         unset($_SESSION["glpi_plugin_simcard_profile"]);
       }
    }
    
@@ -162,8 +162,8 @@ class PluginSimcardProfile extends CommonDBTM {
 
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
-      unset($_SESSION["glpiactiveprofile"]['simcard']);
-      unset($_SESSION["glpiactiveprofile"]['simcard_open_ticket']);
+      unset($_SESSION["glpi_plugin_simcard_profile"]['simcard']);
+      unset($_SESSION["glpi_plugin_simcard_profile"]['simcard_open_ticket']);
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {

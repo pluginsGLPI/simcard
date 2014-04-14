@@ -31,7 +31,8 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-Session::checkRight("simcard", "r");
+//Session::checkRight("simcard", "r");
+PluginSimcardSimcard::canCreate();
 
 if (!isset($_GET["id"])) {
    $_GET["id"] = "";
