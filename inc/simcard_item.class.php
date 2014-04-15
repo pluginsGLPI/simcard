@@ -206,7 +206,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    static function showForItem(CommonDBTM $item) {
       global $DB, $LANG;
       
-      if (!$item->can($item->getID(),'r')) {
+      if (!$item->canView()) {
          return false;
       }
       

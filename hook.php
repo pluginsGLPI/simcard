@@ -205,7 +205,7 @@ function plugin_simcard_getAddSearchOptions($itemtype) {
    
    if (in_array($itemtype,PluginSimcardSimcard_Item::getClasses())) {
       //if (Session::haveRight("simcard","r")) {
-   	  if (PluginSimcardSimcard::canRead()) {
+   	  if (PluginSimcardSimcard::canView()) {
          $sopt[$reservedTypeIndex]['table']         = 'glpi_plugin_simcard_simcards';
          $sopt[$reservedTypeIndex]['field']         = 'name';
          $sopt[$reservedTypeIndex]['name']          = $LANG['plugin_simcard']['profile'][1]." - ".__s('Name');
