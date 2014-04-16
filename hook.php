@@ -223,6 +223,15 @@ function plugin_simcard_getAddSearchOptions($itemtype) {
          $sopt[$reservedTypeIndex]['joinparams']    = array('beforejoin'
                                                             => array('table'      => 'glpi_plugin_simcard_simcards_items',
                                                             'joinparams' => array('jointype' => 'itemtype_item')));
+         $reservedTypeIndex++;
+         $sopt[$reservedTypeIndex]['table']         = 'glpi_plugin_simcard_simcards';
+         $sopt[$reservedTypeIndex]['field']         = 'serial';
+         $sopt[$reservedTypeIndex]['name']          = $LANG['plugin_simcard']['profile'][1]." - ".$LANG['plugin_simcard'][8];
+         $sopt[$reservedTypeIndex]['massiveaction'] = false;
+         $sopt[$reservedTypeIndex]['forcegroupby']  = true;
+         $sopt[$reservedTypeIndex]['joinparams']    = array('beforejoin'
+                                                            => array('table'      => 'glpi_plugin_simcard_simcards_items',
+                                                            'joinparams' => array('jointype' => 'itemtype_item')));
       }
    }
    return $sopt;
