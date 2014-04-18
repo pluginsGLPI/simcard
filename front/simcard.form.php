@@ -95,7 +95,7 @@ if (isset($_POST["add"])) {
    
 } else {//print computer information
    // Affichage du fil d'Ariane
-   Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard", "simcard");
+   Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard");
 
    //show computer form to add
    $simcard->display(array('id' => $_GET["id"]));

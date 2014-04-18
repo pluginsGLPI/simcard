@@ -32,7 +32,7 @@ define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
 // Affichage du fil d'Ariane
-Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard", "simcard");
+Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard");
 
 $simcard = new PluginSimcardSimcard();
 // TODO Is Checking canCreate useful before showing a list ? 
