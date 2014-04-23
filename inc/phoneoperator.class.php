@@ -37,7 +37,7 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
 
    static function getTypeName($nb=0) {
       global $LANG;
-      return $LANG['plugin_simcard'][7];
+      return __('Provider', 'simcard');
    }
 
    static function install(Migration $migration) {

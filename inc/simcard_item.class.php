@@ -146,11 +146,11 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       echo "<tr><th colspan='6'>".__("Associated item")."</th></tr>";
       if (!empty($results)) {
          echo "<tr><th></th>";
-         echo "<th>".__("Type")."</th>";
-         echo "<th>".__("Entity")."</th>";
-         echo "<th>".__("Name")."</th>";
-         echo "<th>".__("Serial Number")."</th>";
-         echo "<th>".__("Inventory Number")."</th>";
+         echo "<th>".__s("Type")."</th>";
+         echo "<th>".__s("Entity")."</th>";
+         echo "<th>".__s("Name")."</th>";
+         echo "<th>".__s("Serial Number")."</th>";
+         echo "<th>".__s("Inventory Number")."</th>";
          echo "</tr>";
          foreach ($results as $data) {
             $item = new $data['itemtype'];
@@ -214,7 +214,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       if (PluginSimcardSimcard::canCreate()) {
          $url = Toolbox::getItemTypeFormURL('PluginSimcardSimcard');
          $url.= "?itemtype=".$item->getType()."&items_id=".$item->getID()."&id=-1";
-         echo "<div class='center'><a href='$url'>".$LANG['plugin_simcard'][10]."</a></div><br>";
+         echo "<div class='center'><a href='$url'>".__s('New SIM card', 'simcard')."</a></div><br>";
       }
       $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
                                      "`items_id` = '".$item->getID()."' AND `itemtype`='".get_class($item)."'");
@@ -291,7 +291,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       global $LANG;
       
       if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())) {
-         return array(1 => $LANG['plugin_simcard']['profile'][1]);
+         return array(1 => _sn('SIM card', 'SIM cards', 2, 'simcard'));
       } elseif (get_class($item) == 'PluginSimcardSimcard') {
          return _n('Associated item','Associated items',2);
          return _n('connect');

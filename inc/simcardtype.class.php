@@ -38,7 +38,7 @@ class PluginSimcardSimcardType extends CommonDropdown {
 
    static function getTypeName($nb=0) {
       global $LANG;
-      return $LANG['plugin_simcard'][11];
+      return __s('Type of SIM card', 'simcard');
    }
 
    static function install(Migration $migration) {

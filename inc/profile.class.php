@@ -124,10 +124,10 @@ class PluginSimcardProfile extends Profile {
       echo "<table class='tab_cadre_fixe'>";
 
       echo "<th colspan='4' align='center'><strong>" .
-         $LANG['plugin_simcard']['profile'][0] . " " . $profile->fields["name"] . "</strong></th>";
+         __s('Right manager', 'simcard') . " " . $profile->fields["name"] . "</strong></th>";
        
       echo "<tr class='tab_bg_2'>";
-      echo "<td width='20%'>" . __("Associable items to a ticket") . " - " . $LANG['plugin_simcard']['profile'][1] . ":</td>";
+      echo "<td width='20%'>" . __s("Associable items to a ticket") . " - " . _sn('SIM card', 'SIM cards', 2, 'simcard') . ":</td>";
       echo "<td colspan='5'>";
       $effective_rights = ProfileRight::getProfileRights($ID, array(self::RIGHT_SIMCARD_OPEN_TICKET));
 
@@ -239,7 +239,7 @@ class PluginSimcardProfile extends Profile {
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $LANG;
       if ($item->getType()=='Profile') {
-         return $LANG['plugin_simcard']['profile'][1];
+         return _sn('SIM card', 'SIM cards', 2, 'simcard');
       }
       return '';
    }
@@ -260,7 +260,7 @@ class PluginSimcardProfile extends Profile {
    function getAllRights() {
       $rights = array(
           array('itemtype'  => 'PluginSimcardSimcard',
-                'label'     => _n('Simcard', 'Simcards', 2, 'simcard'),
+                'label'     => _n('SIM card', 'SIM cards', 2, 'simcard'),
                 'field'     => 'simcard:simcard'
           ),
       );

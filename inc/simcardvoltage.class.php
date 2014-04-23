@@ -38,7 +38,7 @@ class PluginSimcardSimcardVoltage extends CommonDropdown {
 
    static function getTypeName($nb=0) {
       global $LANG;
-      return $LANG['plugin_simcard'][9];
+      return __s('Voltage', 'simcard');
    }
 
    static function install(Migration $migration) {
