@@ -586,18 +586,9 @@ class PluginSimcardSimcard extends CommonDBTM {
    }
    
    static function upgrade(Migration $migration) {
-      global $DB;
-      
-      switch (plugin_simcard_currentVersion()) {
-      	 case '1.2':
-      	    $sql = "ALTER TABLE `glpi_plugin_simcard_simcards`
-                    ADD `plugin_simcard_simcardtypes_id` int(11) NOT NULL DEFAULT '0' AFTER `plugin_simcard_simcardvoltages_id`,
-      	            ADD `groups_id_tech` int(11) NOT NULL DEFAULT '0' AFTER `groups_id`";
-      	     
-      	    $DB->query($sql) or die($DB->error());
-      	    break;
-      	    
-      }
+      $migration->addField('glpi_plugin_simcard_simcards', 'plugin_simcard_simcardtypes_id', 'int');
+      $migration->addField('glpi_plugin_simcard_simcards', 'groups_id_tech', 'int');
+      $migration->migrationOneTable('glpi_plugin_simcard_simcards');
    }
    
    static function uninstall() {
