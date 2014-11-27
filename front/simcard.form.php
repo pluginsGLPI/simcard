@@ -51,14 +51,14 @@ if (!isset($_GET["withtemplate"])) {
 }
 
 $simcard = new PluginSimcardSimcard();
-//Add a new computer
+//Add a new simcard
 if (isset($_POST["add"])) {
    $simcard->check(-1, UPDATE, $_POST);
    if ($newID = $simcard->add($_POST)) {
    }
    Html::back();
 
-// delete a computer
+// delete a simcard
 } else if (isset($_POST["delete"])) {
    $simcard->check($_POST['id'], DELETE);
    $ok = $simcard->delete($_POST);
@@ -81,7 +81,7 @@ if (isset($_POST["add"])) {
    }
    $simcard->redirectToList();
    
-//update a computer
+//update a simcard
 } else if (isset($_POST["update"])) {
    $simcard->check($_POST['id'], UPDATE);
    $simcard->update($_POST);
@@ -97,7 +97,7 @@ if (isset($_POST["add"])) {
    // Affichage du fil d'Ariane
    Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard");
 
-   //show computer form to add
+   //show simcard form to add
    $simcard->display(array('id' => $_GET["id"]));
    html::footer();
 }
