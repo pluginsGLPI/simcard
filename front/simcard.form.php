@@ -53,7 +53,7 @@ if (!isset($_GET["withtemplate"])) {
 $simcard = new PluginSimcardSimcard();
 //Add a new simcard
 if (isset($_POST["add"])) {
-   $simcard->check(-1, UPDATE, $_POST);
+   $simcard->check(-1, CREATE, $_POST);
    if ($newID = $simcard->add($_POST)) {
    }
    Html::back();
@@ -67,7 +67,7 @@ if (isset($_POST["add"])) {
    $simcard->redirectToList();
 
 } else if (isset($_POST["restore"])) {
-   $simcard->check($_POST['id'], UPDATE);
+   $simcard->check($_POST['id'], PURGE);
    if ($simcard->restore($_POST)) {
       Event::log($_POST["id"],"computers", 4, "inventory",
                  //TRANS: %s is the user login
