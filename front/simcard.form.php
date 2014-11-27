@@ -104,7 +104,7 @@ if (isset($_POST["add"])) {
    //TODO There is probably a bug here... 
    Html::redirect(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
    
-} else {//print computer information
+} else {//print simcard information
    // Affichage du fil d'Ariane
    Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard");
 
