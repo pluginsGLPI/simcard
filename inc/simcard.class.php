@@ -697,11 +697,11 @@ class PluginSimcardSimcard extends CommonDBTM {
     * @return array
     */
    static function getMenuContent() {
-   	  global $CFG_GLPI;
+   	global $CFG_GLPI;
    		
-   	  $menu = array();
+   	$menu = array();
       $menu['title'] = self::getTypeName(2);
-   	  $menu['page']  = "/plugins/simcard/front/simcard.php";
+   	$menu['page']  = "/plugins/simcard/front/simcard.php";
       $menu['page']  = self::getSearchURL(false);
       $menu['options']['simcard']['title'] = self::getTypeName(2);
       $menu['options']['simcard']['page']  = self::getSearchURL(false);
