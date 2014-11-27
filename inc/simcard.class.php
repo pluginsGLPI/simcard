@@ -704,7 +704,8 @@ class PluginSimcardSimcard extends CommonDBTM {
       $menu['page']  = self::getSearchURL(false);
       $menu['links']['search'] = self::getSearchURL(false);
       if (self::canCreate()) {
-         $menu['links']['add'] = self::getFormURL(false);
+         $menu['links']['add'] = self::getFormURL(false) . "?add=1";
+         $menu['links']['template'] = self::getFormURL(false) . "?add=0";
       }
       return $menu;
    }
