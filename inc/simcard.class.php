@@ -697,18 +697,15 @@ class PluginSimcardSimcard extends CommonDBTM {
     * @return array
     */
    static function getMenuContent() {
-   	  global $CFG_GLPI;
+   	global $CFG_GLPI;
    		
-   	  $menu = array();
+   	$menu = array();
       $menu['title'] = self::getTypeName(2);
-   	  $menu['page']  = "/plugins/simcard/front/simcard.php";
       $menu['page']  = self::getSearchURL(false);
-      $menu['options']['simcard']['title'] = self::getTypeName(2);
-      $menu['options']['simcard']['page']  = self::getSearchURL(false);
-      $menu['options']['simcard']['links']['search'] = self::getSearchURL(false);
-
+      $menu['links']['search'] = self::getSearchURL(false);
       if (self::canCreate()) {
-         $menu['options']['simcard']['links']['add'] = self::getFormURL(false);
+         $menu['links']['add'] = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=1';
+         $menu['links']['template'] = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=0';
       }
       return $menu;
    }

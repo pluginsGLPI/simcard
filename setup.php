@@ -45,7 +45,7 @@ function plugin_init_simcard() {
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
       
       //load changeprofile function
-   	  $PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+   	$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
       
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
 
@@ -107,7 +107,7 @@ function plugin_init_simcard() {
 //                = '/front/setup.templates.php?itemtype=PluginSimcardSimcard&add=0';
             
             //use massiveaction in the plugin
-            $PLUGIN_HOOKS['use_massive_action']['simcard']=1;
+            $PLUGIN_HOOKS['use_massive_action']['simcard'] = 1;
          }
 
           

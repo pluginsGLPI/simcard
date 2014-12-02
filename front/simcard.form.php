@@ -51,25 +51,30 @@ if (!isset($_GET["withtemplate"])) {
 }
 
 $simcard = new PluginSimcardSimcard();
-//Add a new computer
+//Add a new simcard
 if (isset($_POST["add"])) {
-   $simcard->check(-1, UPDATE, $_POST);
+   $simcard->check(-1, CREATE, $_POST);
    if ($newID = $simcard->add($_POST)) {
+      Event::log($newID, "simcard", 4, "inventory",
+                 sprintf(__('%1$s adds the item %2$s'), $_SESSION["glpiname"], $_POST["name"]));
    }
    Html::back();
 
-// delete a computer
+// delete a simcard
 } else if (isset($_POST["delete"])) {
    $simcard->check($_POST['id'], DELETE);
    $ok = $simcard->delete($_POST);
    if ($ok) {
+      Event::log($_POST["id"], "simcard", 4, "inventory",
+                 //TRANS: %s is the user login
+                 sprintf(__('%s deletes an item'), $_SESSION["glpiname"]));
    }
    $simcard->redirectToList();
 
 } else if (isset($_POST["restore"])) {
-   $simcard->check($_POST['id'], UPDATE);
+   $simcard->check($_POST['id'], PURGE);
    if ($simcard->restore($_POST)) {
-      Event::log($_POST["id"],"computers", 4, "inventory",
+      Event::log($_POST["id"],"simcard", 4, "inventory",
                  //TRANS: %s is the user login
                  sprintf(__('%s restores the item'), $_SESSION["glpiname"]));
    }
@@ -77,14 +82,20 @@ if (isset($_POST["add"])) {
    
 } else if (isset($_REQUEST["purge"])) {
    $simcard->check($_REQUEST['id'], PURGE);
-   if ($simcard->delete($_REQUEST,1)) {
+   if ($simcard->delete($_REQUEST, 1)) {
+      Event::log($_POST["id"], "simcard", 4, "inventory",
+                 //TRANS: %s is the user login
+                 sprintf(__('%s purges an item'), $_SESSION["glpiname"]));
    }
    $simcard->redirectToList();
    
-//update a computer
+//update a simcard
 } else if (isset($_POST["update"])) {
    $simcard->check($_POST['id'], UPDATE);
    $simcard->update($_POST);
+   Event::log($_POST["id"], "simcard", 4, "inventory",
+              //TRANS: %s is the user login
+              sprintf(__('%s updates an item'), $_SESSION["glpiname"]));
    Html::back();
 
 } else if (isset($_GET["unglobalize"])) {
@@ -93,11 +104,12 @@ if (isset($_POST["add"])) {
    //TODO There is probably a bug here... 
    Html::redirect(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
    
-} else {//print computer information
+} else {//print simcard information
    // Affichage du fil d'Ariane
    Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard");
 
-   //show computer form to add
-   $simcard->display(array('id' => $_GET["id"]));
+   //show simcard form to add
+   $simcard->display(array('id' => $_GET["id"],
+                            'withtemplate' => $_GET["withtemplate"]));
    html::footer();
 }
