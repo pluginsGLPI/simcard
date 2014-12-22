@@ -102,7 +102,7 @@ if (isset($_POST["add"])) {
    $simcard->check($_GET["id"], UPDATE);
 
    //TODO There is probably a bug here... 
-   Html::redirect(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
+   Html::redirect(Toolbox::getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
    
 } else {//print simcard information
    // Affichage du fil d'Ariane
