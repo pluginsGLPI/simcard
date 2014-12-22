@@ -63,7 +63,7 @@ if (isset($_POST["add"])) {
    $ok = $simcard->delete($_POST);
    if ($ok) {
    }
-   Html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginSimcardSimcard'));
 
 } else if (isset($_POST["restore"])) {
    $simcard->check($_POST['id'], 'd');
@@ -72,13 +72,13 @@ if (isset($_POST["add"])) {
                  //TRANS: %s is the user login
                  sprintf(__('%s restores the item'), $_SESSION["glpiname"]));
    }
-   html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
+   html::redirect(Toolbox::getItemTypeSearchURL('PluginSimcardSimcard'));
    
 } else if (isset($_REQUEST["purge"])) {
    $simcard->check($_REQUEST['id'], 'd');
    if ($simcard->delete($_REQUEST,1)) {
    }
-   Html::redirect(getItemTypeSearchURL('PluginSimcardSimcard'));
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginSimcardSimcard'));
    
 //update a computer
 } else if (isset($_POST["update"])) {
@@ -90,7 +90,7 @@ if (isset($_POST["add"])) {
    $simcard->check($_GET["id"],'w');
 
 
-  Html::redirect(getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
+  Html::redirect(Toolbox::getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
    
 } else {//print computer information
    Html::header(PluginSimcardSimcard::getTypeName(2), $_SERVER['PHP_SELF'], "plugins", "simcard", "simcard");
