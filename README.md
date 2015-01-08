@@ -1,5 +1,8 @@
-glpi_simcard_0.84
+Simcard management for GLPI
 =================
+
+Download here : https://github.com/pluginsGLPI/simcard/releases
+
 Installation
 =================
 Télécharger l'archive et décompresser la dans votre dossier glpi/plugins/
