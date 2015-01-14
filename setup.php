@@ -123,7 +123,7 @@ function plugin_version_simcard() {
                    'version'        => PLUGIN_SIMCARD_VERSION,
                    'author'         => $author,
                    'license'        => 'GPLv2+',
-                   'homepage'       => 'https://forge.indepnet.net/projects/show/simcard',
+                   'homepage'       => 'https://github.com/pluginsGLPI/simcard',
                    'minGlpiVersion' => PLUGIN_SIMCARD_GLPI_MIN_VERSION);
 }
 
