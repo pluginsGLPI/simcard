@@ -28,7 +28,7 @@
  @since     2009
  ---------------------------------------------------------------------- */
 
-define ("PLUGIN_SIMCARD_VERSION", "1.3");
+define ("PLUGIN_SIMCARD_VERSION", "1.3.1");
 
 // Minimal GLPI version, inclusive
 define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.84");
