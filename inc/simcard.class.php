@@ -34,6 +34,7 @@ if (!defined('GLPI_ROOT')) {
 
 /// Class Simcard
 class PluginSimcardSimcard extends CommonDBTM {
+   const RIGHT_SIMCARD_OPEN_TICKET = 32;
 
    // From CommonDBTM
    //static $types = array('');
@@ -60,6 +61,18 @@ class PluginSimcardSimcard extends CommonDBTM {
 
    static function canView() {
       return Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, READ);
+   }
+
+   /**
+    * @since version 0.85
+    *
+    * @see commonDBTM::getRights()
+    **/
+   function getRights($interface='central') {
+      $rights = parent::getRights();
+      $rights[self::RIGHT_SIMCARD_OPEN_TICKET] = __('Associable to a ticket');
+     
+     return $rights;
    }
 
    function defineTabs($options=array()) {
