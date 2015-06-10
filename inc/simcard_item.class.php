@@ -195,7 +195,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          }
    
          if (!empty($results)) {
-            Html::openArrowMassives('items');
+            Html::openArrowMassives('items', true);
             Html::closeArrowMassives(array('delete_items' => _sx('button', 'Disconnect')));
          }
       }
@@ -279,7 +279,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "</td></tr>";
          
          if (!empty($results)) {
-            Html::openArrowMassives('items');
+            Html::openArrowMassives('items', true);
             Html::closeArrowMassives(array ('delete_items' => _sx('button', 'Disconnect')));
          }
       }
