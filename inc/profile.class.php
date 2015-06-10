@@ -44,24 +44,7 @@ class PluginSimcardProfile extends Profile {
       $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
    }
    
-//    function getFromDBByProfile($profiles_id) {
-//       global $DB;
-      
-//       $query = "SELECT * FROM `".$this->getTable()."`
-//                WHERE `profiles_id` = '" . $profiles_id . "' ";
-//       if ($result = $DB->query($query)) {
-//          if ($DB->numrows($result) != 1) {
-//             return false;
-//          }
-//          $this->fields = $DB->fetch_assoc($result);
-//          if (is_array($this->fields) && count($this->fields)) {
-//             return true;
-//          } else {
-//             return false;
-//          }
-//       }
-//       return false;
-//    }
+
 
    function createAccess($ID) {
       $this->add(array('profiles_id' => $ID));
@@ -81,23 +64,6 @@ class PluginSimcardProfile extends Profile {
       $_SESSION['glpiactiveprofile'][self::RIGHT_SIMCARD_SIMCARD] = $firstAccessRights[self::RIGHT_SIMCARD_SIMCARD];
       $_SESSION['glpiactiveprofile'][self::RIGHT_SIMCARD_OPEN_TICKET] = $firstAccessRights[self::RIGHT_SIMCARD_OPEN_TICKET];
       
-//       if (!$myProf->getFromDBByProfile($ID)) {
-//          $myProf->add(array('profiles_id' => $ID, 'simcard' => CREATE, 'open_ticket'=>1));
-//       }
-   }
-
-//    static function changeProfile() {
-//       $profile = new self();
-//       if ($profile->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
-//          if ($profile->fields[self::RIGHT_SIMCARD_SIMCARD]) {
-//             $_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_SIMCARD] = $profile->fields[self::RIGHT_SIMCARD_SIMCARD];
-//             $_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_OPEN_TICKET] = $profile->fields[self::RIGHT_SIMCARD_OPEN_TICKET];
-//          }
-//       } else {
-//          unset($_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_SIMCARD]);
-//          unset($_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_OPEN_TICKET]);
-//       }
-//    }
    
    //profiles modification
    function showForm($ID, $options = array()){
@@ -151,20 +117,8 @@ class PluginSimcardProfile extends Profile {
     
    static function install(Migration $migration) {
       global $DB;
-//       $table = getTableForItemType(__CLASS__);
-//       if (!TableExists($table)) {
-//          $query = "CREATE TABLE IF NOT EXISTS `$table` (
-//                `id` int(11) NOT NULL auto_increment,
-//                `profiles_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
-//                `simcard` char(1) collate utf8_unicode_ci default NULL,
-//                `open_ticket` char(1) collate utf8_unicode_ci default NULL,
-//                PRIMARY KEY  (`id`),
-//                KEY `profiles_id` (`profiles_id`)
-//             ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
-//          $DB->query($query) or die($DB->error());
-//       }
+
       PluginSimcardProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
-//      self::changeProfile();
    }
     
    /**
@@ -249,9 +203,6 @@ class PluginSimcardProfile extends Profile {
       
       if ($item->getType() == 'Profile') {
          $profile = new self();
-//          if (!$profile->getFromDBByProfile($item->getField('id'))) {
-//             $profile->createAccess($item->getID());
-//          }
          $profile->showForm($item->getField('id'));
       }
       return true;
