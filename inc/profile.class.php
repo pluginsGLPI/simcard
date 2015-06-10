@@ -34,7 +34,6 @@ if (!defined('GLPI_ROOT')){
 
 class PluginSimcardProfile extends Profile {
 
-   const RIGHT_SIMCARD_OPEN_TICKET = "simcard:open_ticket";
    const RIGHT_SIMCARD_SIMCARD = "simcard:simcard";
 	
    static $rightname = 'profile'; 
@@ -55,14 +54,13 @@ class PluginSimcardProfile extends Profile {
       
       $currentRights = ProfileRight::getProfileRights(
       	$ID, 
-      	array(self::RIGHT_SIMCARD_SIMCARD, self::RIGHT_SIMCARD_OPEN_TICKET)
+      	array(self::RIGHT_SIMCARD_SIMCARD)
       );
       $firstAccessRights = array_merge($currentRights, array(self::RIGHT_SIMCARD_SIMCARD => ALLSTANDARDRIGHT, self::RIGHT_SIMCARD_OPEN_TICKET => 1));
       $profileRight->updateProfileRights($ID, $firstAccessRights);
 
       //Add right to the current session
       $_SESSION['glpiactiveprofile'][self::RIGHT_SIMCARD_SIMCARD] = $firstAccessRights[self::RIGHT_SIMCARD_SIMCARD];
-      $_SESSION['glpiactiveprofile'][self::RIGHT_SIMCARD_OPEN_TICKET] = $firstAccessRights[self::RIGHT_SIMCARD_OPEN_TICKET];
    
    }   
    
@@ -85,26 +83,8 @@ class PluginSimcardProfile extends Profile {
       
       $rights = $this->getAllRights();
       $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
-                                                      'default_class' => 'tab_bg_2',
-                                                      'title'         => __('General')));
+                                                         'default_class' => 'tab_bg_2'));
       
-      echo "<table class='tab_cadre_fixe'>";
-
-      echo "<th colspan='4' align='center'><strong>" .
-         __s('Right manager', 'simcard') . " " . $profile->fields["name"] . "</strong></th>";
-       
-      echo "<tr class='tab_bg_2'>";
-      echo "<td width='20%'>" . __s("Associable items to a ticket") . " - " . _sn('SIM card', 'SIM cards', 2, 'simcard') . ":</td>";
-      echo "<td colspan='5'>";
-      $effective_rights = ProfileRight::getProfileRights($ID, array(self::RIGHT_SIMCARD_OPEN_TICKET));
-
-      Html::showCheckbox(array('name'    => '_' . self::RIGHT_SIMCARD_OPEN_TICKET . '[1_0]',
-      	 'checked' => $effective_rights[self::RIGHT_SIMCARD_OPEN_TICKET],
-      	 'readonly' => !( Ticket::canCreate() )
-      ));
-      echo "</td>";
-      echo "</tr>";
-      echo "</table>";
       
       if ($canedit) {
          echo "<div class='center'>";
@@ -133,22 +113,16 @@ class PluginSimcardProfile extends Profile {
       $table = getTableForItemType(__CLASS__);
       switch (plugin_simcard_currentVersion()) {
       	case '1.3':           
-            $matching = array('simcard'    => self::RIGHT_SIMCARD_SIMCARD, 
-                           'open_ticket' => self::RIGHT_SIMCARD_OPEN_TICKET);
       		$query = "SELECT * FROM `glpi_plugin_simcard_profiles`";
       		$result = $DB->query($query);
       		while ($data = $DB->fetch_assoc($result)) {
       			// Lire les droits dans le nouveau système d'ACLs GLPI 0.85
       			$current_rights = ProfileRight::getProfileRights($data['profiles_id'], array_values($matching));
-      			foreach ($matching as $old => $new) {
-      				if (!isset($current_rights[$new])) {
-      					$query = "INSERT INTO `glpi_profilerights`
-                                  SET `rights`='" . self::translateARight($data[$old]) . "',
-      			                  `profiles_id`='" . $data['profiles_id'] . "',
-      			                  `name`='" . $new . "'";
-      					$DB->query($query) or die($DB->error());
-      				}
-      			}
+					$query = "INSERT INTO `glpi_profilerights`
+                            SET `rights`='" . self::translateARight($data[$old]) . "',
+			                  `profiles_id`='" . $data['profiles_id'] . "',
+			                  `name`='" . self::RIGHT_SIMCARD_SIMCARD . "'";
+					$DB->query($query) or die($DB->error());
       		}
       		$query = "DROP TABLE `glpi_plugin_simcard_profiles`";
       		$DB->query($query) or die($DB->error());
@@ -184,11 +158,9 @@ class PluginSimcardProfile extends Profile {
       global $DB;
 
       ProfileRight::deleteProfileRights(array(
-         self::RIGHT_SIMCARD_SIMCARD,
-         self::RIGHT_SIMCARD_OPEN_TICKET
+         self::RIGHT_SIMCARD_SIMCARD
       ));
       unset($_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_SIMCARD]);
-      unset($_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_OPEN_TICKET]);
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
