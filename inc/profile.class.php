@@ -63,7 +63,8 @@ class PluginSimcardProfile extends Profile {
       //Add right to the current session
       $_SESSION['glpiactiveprofile'][self::RIGHT_SIMCARD_SIMCARD] = $firstAccessRights[self::RIGHT_SIMCARD_SIMCARD];
       $_SESSION['glpiactiveprofile'][self::RIGHT_SIMCARD_OPEN_TICKET] = $firstAccessRights[self::RIGHT_SIMCARD_OPEN_TICKET];
-      
+   
+   }   
    
    //profiles modification
    function showForm($ID, $options = array()){
