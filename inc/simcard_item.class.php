@@ -268,7 +268,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
                       AND `id` IN (SELECT `plugin_simcard_simcards_id`
                                    FROM `glpi_plugin_simcard_simcards_items`)";
          foreach ($DB->request($query) as $use) {
-            $used[$use['id']] = $use['id'];
+            $used[] = $use['id'];
          }
          Dropdown::show('PluginSimcardSimcard',
                         array ('name' => "plugin_simcard_simcards_id",
