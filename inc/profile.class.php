@@ -35,7 +35,8 @@ if (!defined('GLPI_ROOT')){
 class PluginSimcardProfile extends Profile {
 
    const RIGHT_SIMCARD_SIMCARD = "simcard:simcard";
-	
+   const RIGHT_SIMCARD_OPEN_TICKET = "simcard:open-ticket";
+   
    static $rightname = 'profile'; 
 	
    static function purgeProfiles(Profile $prof) {
