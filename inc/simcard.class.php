@@ -496,7 +496,7 @@ class PluginSimcardSimcard extends CommonDBTM {
 
       $tab[31]['table']          = 'glpi_states';
       $tab[31]['field']          = 'name';
-      $tab[31]['name']           = __('Statut');
+      $tab[31]['name']           = __('Status');
       $tab[31]['datatype']       = 'dropdown';
       $tab[31]['checktype']      = 'text';
       $tab[31]['displaytype']    = 'dropdown';
