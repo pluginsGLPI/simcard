@@ -66,7 +66,7 @@ class PluginSimcardConfig extends CommonDBTM {
       $DB->query($query) or die($DB->error());
       $query = "INSERT INTO `".$table."` 
                 (`type`,`value`)
-               VALUES ('Version', " . PLUGIN_SIMCARD_VERSION . ")";
+               VALUES ('Version', '" . PLUGIN_SIMCARD_VERSION . "')";
       $DB->query($query) or die($DB->error());
       
    }
