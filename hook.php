@@ -228,7 +228,7 @@ function plugin_simcard_getAddSearchOptions($itemtype) {
          $reservedTypeIndex++;
          $sopt[$reservedTypeIndex]['table']         = 'glpi_plugin_simcard_simcards';
          $sopt[$reservedTypeIndex]['field']         = 'serial';
-         $sopt[$reservedTypeIndex]['name']          = _sn('SIM card', 'SIM cards', 2, 'simcard')." - ".__s('Voltage', 'simcard');
+         $sopt[$reservedTypeIndex]['name']          = _sn('SIM card', 'SIM cards', 2, 'simcard')." - ".__s('IMSI', 'simcard');
          $sopt[$reservedTypeIndex]['massiveaction'] = false;
          $sopt[$reservedTypeIndex]['forcegroupby']  = true;
          $sopt[$reservedTypeIndex]['joinparams']    = array('beforejoin'
