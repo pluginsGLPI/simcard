@@ -638,6 +638,8 @@ class PluginSimcardSimcard extends CommonDBTM {
          PluginCustomfieldsItemtype::unregisterItemtype('PluginSimcardSimcard');
       }
       
+      FieldUnicity::deleteForItemtype("SimcardSimcard");
+      
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
    }
