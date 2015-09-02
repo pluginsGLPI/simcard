@@ -730,11 +730,110 @@ class PluginSimcardSimcard extends CommonDBTM {
     * Actions done when item is deleted from the database
     *
     * @return nothing
-   **/
+    * */
    function cleanDBonPurge() {
-   	   $link = new PluginSimcardSimcard_Item();
-   	   $link->cleanDBonItemDelete($this->getType(), $this->getID());
-    }
+      $link = new PluginSimcardSimcard_Item();
+      $link->cleanDBonItemDelete($this->getType(), $this->getID());
+   }
+
+   /**
+    * @since version 0.85
+    *
+    * @see CommonDBTM::getSpecificMassiveActions()
+    * */
+   function getSpecificMassiveActions($checkitem = NULL) {
+      $isadmin = static::canUpdate();
+      $actions = parent::getSpecificMassiveActions($checkitem);
+
+      if ($_SESSION['glpiactiveprofile']['interface'] == 'central') {
+         if ($isadmin) {
+            if (Session::haveRight('transfer', READ) && Session::isMultiEntitiesMode()) {
+               $actions['PluginSimcardSimcard'.MassiveAction::CLASS_ACTION_SEPARATOR.'transfer'] = __('Transfer');
+            }
+         }
+      }
+      return $actions;
+   }
+
+   /**
+    * @since version 0.85
+    *
+    * @see CommonDBTM::showMassiveActionsSubForm()
+    * */
+   static function showMassiveActionsSubForm(MassiveAction $ma) {
+
+      switch ($ma->getAction()) {
+         case "transfer" :
+            Dropdown::show('Entity');
+            echo Html::submit(_x('button', 'Post'), array('name' => 'massiveaction'));
+            return true;
+            break;
+      }
+      return parent::showMassiveActionsSubForm($ma);
+   }
+
+   /**
+    * @since version 0.85
+    *
+    * @see CommonDBTM::processMassiveActionsForOneItemtype()
+    * */
+   static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item, array $ids) {
+      global $DB;
+
+      switch ($ma->getAction()) {
+         case "transfer" :
+            $input = $ma->getInput();
+            if ($item->getType() == 'PluginSimcardSimcard') {
+               foreach ($ids as $key) {
+                  // Types
+                  $item->getFromDB($key);
+                  $type = PluginSimcardSimcardType::transfer($item->fields["plugin_simcard_simcardtypes_id"], $input['entities_id']);
+                  if ($type > 0) {
+                     $values["id"]                              = $key;
+                     $values["plugin_simcard_simcardtypes_id"] = $type;
+                     $item->update($values);
+                  }
+                  
+                  // Size
+                  $size = PluginSimcardSimcardSize::transfer($item->fields["plugin_simcard_simcardsizes_id"], $input['entities_id']);
+                  if ($size > 0) {
+                     $values["id"]                             = $key;
+                     $values["plugin_simcard_simcardsizes_id"] = $size;
+                     $item->update($values);
+                  }
+                  
+                  // Voltage
+                  $voltage = PluginSimcardSimcardVoltage::transfer($item->fields["plugin_simcard_simcardvoltages_id"], $input['entities_id']);
+                  if ($voltage > 0) {
+                     $values["id"]                                = $key;
+                     $values["plugin_simcard_simcardvoltages_id"] = $voltage;
+                     $item->update($values);
+                  }
+                  
+                  // Phoneoperator
+                  $phoneoperator = PluginSimcardPhoneOperator::transfer($item->fields["plugin_simcard_phoneoperators_id"], $input['entities_id']);
+                  if ($phoneoperator > 0) {
+                     $values["id"]                                = $key;
+                     $values["plugin_simcard_phoneoperators_id"] = $phoneoperator;
+                     $item->update($values);
+                  }
+
+                  unset($values);
+                  $values["id"]          = $key;
+                  $values["entities_id"] = $input['entities_id'];
+
+                  if ($item->update($values)) {
+                     $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
+                  } else {
+                     $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
+                  }
+               }
+            }
+            return;
+      }
+      parent::processMassiveActionsForOneItemtype($ma, $item, $ids);
+   }
+
 }
 
 ?>

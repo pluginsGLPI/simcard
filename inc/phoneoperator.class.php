@@ -75,5 +75,36 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
    }
+
+   static function transfer($ID, $entity) {
+      global $DB;
+
+      $phoneOperator = new self();
+
+      if ($ID > 0) {
+         // Not already transfer
+         // Search init item
+         $query = "SELECT *
+                   FROM `".$phoneOperator->getTable()."`
+                   WHERE `id` = '$ID'";
+
+         if ($result = $DB->query($query)) {
+            if ($DB->numrows($result)) {
+               $data                 = $DB->fetch_assoc($result);
+               $data                 = Toolbox::addslashes_deep($data);
+               $input['name']        = $data['name'];
+               $input['entities_id'] = $entity;
+               $newID                = $phoneOperator->getID($input);
+
+               if ($newID < 0) {
+                  $newID = $phoneOperator->import($input);
+               }
+
+               return $newID;
+            }
+         }
+      }
+      return 0;
+   }
 }
 ?>
