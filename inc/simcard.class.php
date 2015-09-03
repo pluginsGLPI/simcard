@@ -578,7 +578,6 @@ class PluginSimcardSimcard extends CommonDBTM {
               `is_global` tinyint(1) NOT NULL DEFAULT '0',
               `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
               `template_name` varchar(255) COLLATE utf8_unicode_ci NULL,
-              `notepad` longtext COLLATE utf8_unicode_ci NULL,
               `ticket_tco` decimal(20,4) DEFAULT '0.0000',
               `is_helpdesk_visible` tinyint(1) NOT NULL DEFAULT '1',
               PRIMARY KEY (`id`),
@@ -617,7 +616,29 @@ class PluginSimcardSimcard extends CommonDBTM {
       	     
       	    $DB->query($sql) or die($DB->error());
       	    break;
-      	    
+
+      	 case '1.3':
+      	 case '1.3.1':
+      	 case '1.4':
+      	 	// Migrate notepad data
+      	 	if (FieldExists('glpi_plugin_simcard_simcards', 'notepad')) {
+      	 		$query = "SELECT id, notepad
+      	 		FROM `glpi_plugin_simcard_simcards`
+      	 		WHERE notepad IS NOT NULL
+      	 		AND notepad <> ''";
+      	 		foreach ($DB->request($query) as $data) {
+      	 			$iq = "INSERT INTO `glpi_notepads`
+                             (`itemtype`, `items_id`, `content`, `date`, `date_mod`)
+                      VALUES ('".getItemTypeForTable('glpi_plugin_simcard_simcards')."', '".$data['id']."',
+                              '".addslashes($data['notepad'])."', NOW(), NOW())";
+      	 			$DB->queryOrDie($iq, "0.85 migrate notepad data");
+      	 		}
+      	 		$sql = "ALTER TABLE `glpi_plugin_simcard_simcards`
+                    DROP `notepad`";
+      	     
+      	    	$DB->query($sql) or die($DB->error());
+      	 	}
+      	 	break;
       }
    }
    

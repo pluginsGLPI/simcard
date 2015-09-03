@@ -113,22 +113,28 @@ class PluginSimcardProfile extends Profile {
       
       $table = getTableForItemType(__CLASS__);
       switch (plugin_simcard_currentVersion()) {
-      	case '1.3':           
+      	case '1.3':
+      	case '1.3.1':
       		$query = "SELECT * FROM `glpi_plugin_simcard_profiles`";
       		$result = $DB->query($query);
       		while ($data = $DB->fetch_assoc($result)) {
-      			// Lire les droits dans le nouveau système d'ACLs GLPI 0.85
-      			$current_rights = ProfileRight::getProfileRights($data['profiles_id'], array_values($matching));
-					$query = "INSERT INTO `glpi_profilerights`
-                            SET `rights`='" . self::translateARight($data[$old]) . "',
+      			// Write the access rights into the new ACLs system of GLPI 0.85 
+      			$current_rights = ProfileRight::getProfileRights($data['profiles_id']);
+      			$query = "INSERT INTO `glpi_profilerights`
+                            SET `rights`='" . self::translateARight($data['simcard']) . "',
 			                  `profiles_id`='" . $data['profiles_id'] . "',
 			                  `name`='" . self::RIGHT_SIMCARD_SIMCARD . "'";
-					$DB->query($query) or die($DB->error());
+      			$DB->query($query) or die($DB->error());
+      			$query = "INSERT INTO `glpi_profilerights`
+                            SET `rights`='" . self::translateARight($data['open_ticket']) . "',
+			                  `profiles_id`='" . $data['profiles_id'] . "',
+			                  `name`='" . self::RIGHT_SIMCARD_OPEN_TICKET . "'";
+      			$DB->query($query) or die($DB->error());
       		}
       		$query = "DROP TABLE `glpi_plugin_simcard_profiles`";
       		$DB->query($query) or die($DB->error());
       }
-  }
+   }
 
    /**
     * Init profiles
