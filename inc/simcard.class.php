@@ -645,7 +645,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $DB->query("DROP TABLE IF EXISTS `$table`");
    }
 
-     function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $LANG;
 
       if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())
