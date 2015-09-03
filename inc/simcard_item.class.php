@@ -289,18 +289,39 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
+      global $CFG_GLPI;
       
-      if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())) {
-         return array(1 => _sn('SIM card', 'SIM cards', 2, 'simcard'));
-      } elseif (get_class($item) == 'PluginSimcardSimcard') {
-         return _n('Associated item','Associated items',2);
-         return _n('connect');
+      if (PluginSimcardSimcard::canView()) {
+         switch ($item->getType()) {
+            case 'PluginSimcardSimcard' :
+               if ($_SESSION['glpishow_count_on_tabs']) {
+                  return self::createTabEntry(_n('Associated item', 'Associated items', Session::getPluralNumber()), self::countForSimcard($item));
+               }
+               return _n('Associated item', 'Associated items', Session::getPluralNumber());
+
+            default :
+               if ($_SESSION['glpishow_count_on_tabs']) {
+                  return self::createTabEntry(PluginSimcardSimcard::getTypeName(Session::getPluralNumber()), self::countForItem($item->getField("id")));
+               }
+               return _n('SIM card', 'SIM cards', Session::getPluralNumber());
+
+         }
       }
       return '';
    }
 
+   
+   /**
+    * @param $item   Simcard object
+    **/
+   static function countForSimcard(PluginSimcardSimcard $item) {
+   
+      $restrict = "`glpi_plugin_simcard_simcards_items`.`plugin_simcard_simcards_id` = '".$item->getField('id')."'";
+   
+      return countElementsInTable(array('glpi_plugin_simcard_simcards_items'), $restrict);
+   }
 
+   
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       
       if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())) {
