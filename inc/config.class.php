@@ -101,6 +101,9 @@ class PluginSimcardConfig extends CommonDBTM {
    static function uninstall() {
       global $DB;
       
+      $displayPreference = new DisplayPreference();
+      $displayPreference->deleteByCriteria(array("`num` >= " . self::RESERVED_TYPE_RANGE_MIN . " AND `num` <= " . self::RESERVED_TYPE_RANGE_MAX));
+
       $table = getTableForItemType(__CLASS__);
       $query = "DROP TABLE IF EXISTS `". $table ."`";
 

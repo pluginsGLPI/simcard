@@ -72,6 +72,10 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
       $displayPreference = new DisplayPreference();
       $displayPreference->deleteByCriteria(array('itemtype' => __CLASS__));
       
+      // Remove dropdowns localization
+      $dropdownTranslation = new DropdownTranslation();
+      $dropdownTranslation->deleteByCriteria(array("itemtype LIKE 'PluginSimcardPhoneOperator'"), 1);
+
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
    }

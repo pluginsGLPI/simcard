@@ -624,11 +624,14 @@ class PluginSimcardSimcard extends CommonDBTM {
    static function uninstall() {
       global $DB;
 
-      foreach (array('DisplayPreference', 'Document_Item', 'Bookmark', 'Log') as $itemtype) {
+      // Remove unicity constraints on simcards
+      FieldUnicity::deleteForItemtype("SimcardSimcard");
+
+      foreach (array('DisplayPreference', 'Contract_Item', 'Fieldblacklist', 'Document_Item', 'Bookmark', 'Log') as $itemtype) {
          $item = new $itemtype();
          $item->deleteByCriteria(array('itemtype' => __CLASS__));
       }
-
+      
       $plugin = new Plugin();
       if ($plugin->isActivated('datainjection') && class_exists('PluginDatainjectionModel')) {
          PluginDatainjectionModel::clean(array('itemtype' => __CLASS__));
@@ -637,8 +640,6 @@ class PluginSimcardSimcard extends CommonDBTM {
       if ($plugin->isInstalled('customfields') && $plugin->isActivated('customfields')) {
          PluginCustomfieldsItemtype::unregisterItemtype('PluginSimcardSimcard');
       }
-      
-      FieldUnicity::deleteForItemtype("SimcardSimcard");
       
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
