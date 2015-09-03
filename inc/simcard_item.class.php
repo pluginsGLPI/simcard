@@ -149,8 +149,8 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<th>".__s("Type")."</th>";
          echo "<th>".__s("Entity")."</th>";
          echo "<th>".__s("Name")."</th>";
-         echo "<th>".__s("Serial Number")."</th>";
-         echo "<th>".__s("Inventory Number")."</th>";
+         echo "<th>".__s("Serial number")."</th>";
+         echo "<th>".__s("Inventory number")."</th>";
          echo "</tr>";
          foreach ($results as $data) {
             $item = new $data['itemtype'];
@@ -227,7 +227,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<tr><th></th>";
          echo "<th>".__s('Entity')."</th>";
          echo "<th>".__s('Name')."</th>";
-         echo "<th>".__s('Serial Number')."</th>";
+         echo "<th>".__s('IMSI')."</th>";
          echo "<th>".__s('Inventory number')."</th>";
          echo "</tr>";
          foreach ($results as $data) {
