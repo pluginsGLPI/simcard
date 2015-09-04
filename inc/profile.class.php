@@ -62,7 +62,7 @@ class PluginSimcardProfile extends Profile {
 
       //Add right to the current session
       $_SESSION['glpiactiveprofile'][self::RIGHT_SIMCARD_SIMCARD] = $firstAccessRights[self::RIGHT_SIMCARD_SIMCARD];
-   
+      $_SESSION['glpiactiveprofile']['helpdesk_item_type'][] = 'PluginSimcardSimcard';
    }   
    
    //profiles modification
@@ -120,11 +120,15 @@ class PluginSimcardProfile extends Profile {
       		while ($data = $DB->fetch_assoc($result)) {
       			// Write the access rights into the new ACLs system of GLPI 0.85 
       			$translatedRight = self::translateARight($data['simcard']) + self::translateARight($data['open_ticket']);
-      			$query = "INSERT INTO `glpi_profilerights`
-                            SET `rights`='" . $translatedRight . "',
-			                  `profiles_id`='" . $data['profiles_id'] . "',
-			                  `name`='" . self::RIGHT_SIMCARD_SIMCARD . "'";
-      			$DB->query($query) or die($DB->error());
+      			$profileRight = new ProfileRight();
+      			$profileRightFields['profiles_id'] = $data['profiles_id'];
+      			$profileRightFields['name'] = self::RIGHT_SIMCARD_SIMCARD;
+      			$profileRightFields['rights'] = $translatedRight;
+      			if ($profileRight->add($profileRightFields) === false) {
+      				die('Fatal error migrating profile rights');	
+      			}
+      			// The plugin is not yet active, the hook will not trigger automatically
+      			plugin_simcard_profileRightUpdate($profileRight);
       		}
       		$query = "DROP TABLE `glpi_plugin_simcard_profiles`";
       		$DB->query($query) or die($DB->error());

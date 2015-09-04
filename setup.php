@@ -57,8 +57,11 @@ function plugin_init_simcard() {
       
       foreach (PluginSimcardSimcard_Item::getClasses() as $type) {
          $PLUGIN_HOOKS['item_purge']['simcard'][$type] = 'plugin_item_purge_simcard';
-       }
-       
+      }
+      
+      $PLUGIN_HOOKS['item_update']['simcard']['ProfileRight'] = 'plugin_simcard_profileRightUpdate';
+      $PLUGIN_HOOKS['item_add']['simcard']['ProfileRight'] = 'plugin_simcard_profileRightUpdate';
+      
       Plugin::registerClass('PluginSimcardSimcard_Item',
                             array('addtabon' => PluginSimcardSimcard_Item::getClasses()));
       Plugin::registerClass('PluginSimcardProfile',
