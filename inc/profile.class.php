@@ -35,7 +35,7 @@ if (!defined('GLPI_ROOT')){
 class PluginSimcardProfile extends Profile {
 
    const RIGHT_SIMCARD_SIMCARD = "simcard:simcard";
-   const SIMCARD_ASSOCIATE_TICKET = 32;
+   const SIMCARD_ASSOCIATE_TICKET = 128;
    
    static $rightname = 'profile'; 
 	
