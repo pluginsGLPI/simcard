@@ -662,6 +662,11 @@ class PluginSimcardSimcard extends CommonDBTM {
          PluginCustomfieldsItemtype::unregisterItemtype('PluginSimcardSimcard');
       }
       
+      //Cleanup notes of simcards
+      $query = "DELETE FROM `glpi_notepads`
+         WHERE `itemtype` = 'PluginSimcardSimcard'";
+      $DB->query($query);
+      
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
    }

@@ -126,10 +126,10 @@ class PluginSimcardProfile extends Profile {
       			// Write the access rights into the new ACLs system of GLPI 0.85 
       			$translatedRight = self::translateARight($data['simcard']) + self::translateARight($data['open_ticket']);
       			if ($translatedRight & READ) {
-      				$translatedRight += READNOTE;
+      				$translatedRight = $translatedRight | READNOTE;
       			}
       		    if ($translatedRight & UPDATE) {
-      				$translatedRight += READNOTE + UPDATENOTE;
+      				$translatedRight = $translatedRight | READNOTE | UPDATENOTE;
       			}
       			$profileRight = new ProfileRight();
       			$profileRightFields['profiles_id'] = $data['profiles_id'];
