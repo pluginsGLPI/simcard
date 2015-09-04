@@ -40,6 +40,7 @@ class PluginSimcardSimcard extends CommonDBTM {
   public $dohistory = true;
   
   static $rightname = PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD;
+  protected $usenotepadrights         = true;
   
   //~ static $types = array('Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer', 'Software', 'Entity');
   static $types = array('Phone' , 'Entity');
