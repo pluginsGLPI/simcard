@@ -80,9 +80,11 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       return parent::can($ID, $right, $input);
    }
 
-   static function countForItem($ID) {
-      return countElementsInTable(getTableForItemType(__CLASS__),
-               "`plugin_simcard_simcards_id`='$ID'");
+   static function countForItem(CommonDBTM $item) {
+      $id = $item->getField('id');
+      $itemtype = $item->getType();
+   	  return countElementsInTable(getTableForItemType(__CLASS__),
+               "`plugin_simcard_simcards_id`='$id' AND `itemtype`='$itemtype'");
    }
    /**
     * Hook called After an item is uninstall or purge
@@ -301,7 +303,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
 
             default :
                if ($_SESSION['glpishow_count_on_tabs']) {
-                  return self::createTabEntry(PluginSimcardSimcard::getTypeName(Session::getPluralNumber()), self::countForItem($item->getField("id")));
+                  return self::createTabEntry(PluginSimcardSimcard::getTypeName(Session::getPluralNumber()), self::countForItem($item));
                }
                return _n('SIM card', 'SIM cards', Session::getPluralNumber());
 
