@@ -57,7 +57,12 @@ class PluginSimcardProfile extends Profile {
       	$ID, 
       	array(self::RIGHT_SIMCARD_SIMCARD)
       );
-      $firstAccessRights = array_merge($currentRights, array(self::RIGHT_SIMCARD_SIMCARD => ALLSTANDARDRIGHT + self::SIMCARD_ASSOCIATE_TICKET));
+      $firstAccessRights = array_merge($currentRights, array(
+      		self::RIGHT_SIMCARD_SIMCARD => ALLSTANDARDRIGHT 
+      		+ self::SIMCARD_ASSOCIATE_TICKET
+      		+ READNOTE
+      		+ UPDATENOTE
+      ));
       $profileRight->updateProfileRights($ID, $firstAccessRights);
 
       //Add right to the current session
@@ -120,6 +125,7 @@ class PluginSimcardProfile extends Profile {
       		while ($data = $DB->fetch_assoc($result)) {
       			// Write the access rights into the new ACLs system of GLPI 0.85 
       			$translatedRight = self::translateARight($data['simcard']) + self::translateARight($data['open_ticket']);
+      			$translatedRight += READNOTE + UPDATENOTE;
       			$profileRight = new ProfileRight();
       			$profileRightFields['profiles_id'] = $data['profiles_id'];
       			$profileRightFields['name'] = self::RIGHT_SIMCARD_SIMCARD;
