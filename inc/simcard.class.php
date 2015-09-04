@@ -34,13 +34,12 @@ if (!defined('GLPI_ROOT')) {
 
 /// Class Simcard
 class PluginSimcardSimcard extends CommonDBTM {
-   const RIGHT_SIMCARD_OPEN_TICKET = 32;
 
    // From CommonDBTM
    //static $types = array('');
   public $dohistory = true;
   
-  static $rightname = 'simcard:simcard';
+  static $rightname = PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD;
   
   //~ static $types = array('Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer', 'Software', 'Entity');
   static $types = array('Phone' , 'Entity');
@@ -70,7 +69,7 @@ class PluginSimcardSimcard extends CommonDBTM {
     **/
    function getRights($interface='central') {
       $rights = parent::getRights();
-      $rights[self::RIGHT_SIMCARD_OPEN_TICKET] = __('Associable to a ticket');
+      $rights[PluginSimcardProfile::SIMCARD_ASSOCIATE_TICKET] = __('Associable to a ticket');
      
      return $rights;
    }

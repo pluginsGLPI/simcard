@@ -174,7 +174,7 @@ function plugin_simcard_AssignToTicket($types) {
    global $LANG;
 
    //if (Session::haveRight("simcard_open_ticket", "1")) {
-   if (Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, PluginSimcardSimcard::RIGHT_SIMCARD_OPEN_TICKET)) {
+   if (Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, PluginSimcardProfile::SIMCARD_ASSOCIATE_TICKET)) {
       $types['PluginSimcardSimcard'] = _sn('SIM card', 'SIM cards', 2, 'simcard');
    }
 

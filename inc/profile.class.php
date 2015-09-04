@@ -35,7 +35,7 @@ if (!defined('GLPI_ROOT')){
 class PluginSimcardProfile extends Profile {
 
    const RIGHT_SIMCARD_SIMCARD = "simcard:simcard";
-   const RIGHT_SIMCARD_OPEN_TICKET = "simcard:open-ticket";
+   const SIMCARD_ASSOCIATE_TICKET = 32;
    
    static $rightname = 'profile'; 
 	
@@ -57,7 +57,7 @@ class PluginSimcardProfile extends Profile {
       	$ID, 
       	array(self::RIGHT_SIMCARD_SIMCARD)
       );
-      $firstAccessRights = array_merge($currentRights, array(self::RIGHT_SIMCARD_SIMCARD => ALLSTANDARDRIGHT, self::RIGHT_SIMCARD_OPEN_TICKET => 1));
+      $firstAccessRights = array_merge($currentRights, array(self::RIGHT_SIMCARD_SIMCARD => ALLSTANDARDRIGHT + self::SIMCARD_ASSOCIATE_TICKET));
       $profileRight->updateProfileRights($ID, $firstAccessRights);
 
       //Add right to the current session
@@ -119,20 +119,20 @@ class PluginSimcardProfile extends Profile {
       		$result = $DB->query($query);
       		while ($data = $DB->fetch_assoc($result)) {
       			// Write the access rights into the new ACLs system of GLPI 0.85 
-      			$current_rights = ProfileRight::getProfileRights($data['profiles_id']);
+      			$translatedRight = self::translateARight($data['simcard']) + self::translateARight($data['open_ticket']);
       			$query = "INSERT INTO `glpi_profilerights`
-                            SET `rights`='" . self::translateARight($data['simcard']) . "',
+                            SET `rights`='" . $translatedRight . "',
 			                  `profiles_id`='" . $data['profiles_id'] . "',
 			                  `name`='" . self::RIGHT_SIMCARD_SIMCARD . "'";
-      			$DB->query($query) or die($DB->error());
-      			$query = "INSERT INTO `glpi_profilerights`
-                            SET `rights`='" . self::translateARight($data['open_ticket']) . "',
-			                  `profiles_id`='" . $data['profiles_id'] . "',
-			                  `name`='" . self::RIGHT_SIMCARD_OPEN_TICKET . "'";
       			$DB->query($query) or die($DB->error());
       		}
       		$query = "DROP TABLE `glpi_plugin_simcard_profiles`";
       		$DB->query($query) or die($DB->error());
+      		break;
+      		
+      	case '1.4':
+      	case '1.4.1':
+      		
       }
    }
 
@@ -150,7 +150,7 @@ class PluginSimcardProfile extends Profile {
    			return ALLSTANDARDRIGHT;
    			
    		 case '1':
-   			return $old_right;
+   			return self::SIMCARD_ASSOCIATE_TICKET;
    
    		 case '0':
    		 case '':
