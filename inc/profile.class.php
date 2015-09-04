@@ -143,20 +143,18 @@ class PluginSimcardProfile extends Profile {
    
    static function translateARight($old_right) {
    	  switch ($old_right) {
-   		 case '':
-   			return 0;
-   			
    		 case 'r' :
    			return READ;
    			
    		 case 'w':
    			return ALLSTANDARDRIGHT;
    			
-   		 case '0':
    		 case '1':
    			return $old_right;
    
-   		 default :
+   		 case '0':
+   		 case '':
+   		 default:
    			return 0;
    	  }
    }
