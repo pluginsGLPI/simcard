@@ -648,7 +648,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       // Remove unicity constraints on simcards
       FieldUnicity::deleteForItemtype("SimcardSimcard");
 
-      foreach (array('DisplayPreference', 'Contract_Item', 'Fieldblacklist', 'Document_Item', 'Bookmark', 'Log') as $itemtype) {
+      foreach (array('Notepad', 'DisplayPreference', 'Contract_Item', 'Fieldblacklist', 'Document_Item', 'Bookmark', 'Log') as $itemtype) {
          $item = new $itemtype();
          $item->deleteByCriteria(array('itemtype' => __CLASS__));
       }
@@ -661,11 +661,6 @@ class PluginSimcardSimcard extends CommonDBTM {
       if ($plugin->isInstalled('customfields') && $plugin->isActivated('customfields')) {
          PluginCustomfieldsItemtype::unregisterItemtype('PluginSimcardSimcard');
       }
-      
-      //Cleanup notes of simcards
-      $query = "DELETE FROM `glpi_notepads`
-         WHERE `itemtype` = 'PluginSimcardSimcard'";
-      $DB->query($query);
       
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
