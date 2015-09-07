@@ -88,6 +88,7 @@ class PluginSimcardSimcard extends CommonDBTM {
             $this->addStandardTab('Contract_Item', $ong, $options);
             if ($this->fields['is_helpdesk_visible'] == 1) {
                $this->addStandardTab('Ticket',$ong,$options);
+               $this->addStandardTab('Item_Problem', $ong, $options);
             }
             $this->addStandardTab('Notepad',$ong,$options);
             $this->addStandardTab('Log',$ong,$options);
