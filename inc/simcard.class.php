@@ -759,6 +759,31 @@ class PluginSimcardSimcard extends CommonDBTM {
    }
 
    /**
+    * Delete an item in the database.
+    *
+    * @see CommonDBTM::delete()
+    *
+    * @param $input     array    the _POST vars returned by the item form when press delete
+    * @param $force     boolean  force deletion (default 0)
+    * @param $history   boolean  do history log ? (default 1)
+    *
+    * @return boolean : true on success
+   **/
+   function delete(array $input, $force=0, $history=1) {
+      $deleteSuccessful = parent::delete($input, $force, $history);
+      if ($deleteSuccessful != false) {
+	      if ($force == 1) {
+	      	$notepad = new Notepad();
+	      	$notepad->deleteByCriteria(array(
+	      	   'itemtype' => 'PluginSimcardSimcard',
+	      	   'items_id' => $input['id']
+	      	));
+	      }
+      }
+      return $deleteSuccessful;
+   }
+   
+   /**
     * @since version 0.85
     *
     * @see CommonDBTM::getSpecificMassiveActions()
