@@ -221,14 +221,14 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          return false;
       }
       
-      if (PluginSimcardSimcard::canCreate()) {
-      	 if ($item->canEdit($item->getField('id'))) {
-	         $url = Toolbox::getItemTypeFormURL('PluginSimcardSimcard');
-	         $url.= "?itemtype=".$item->getType()."&items_id=".$item->getID()."&id=-1";
-	         echo "<div class='center'><a href='$url'>".__s('New SIM card', 'simcard')."</a></div><br>";
+//       if (PluginSimcardSimcard::canCreate()) {
+//       	 if ($item->canEdit($item->getField('id'))) {
+// 	         $url = Toolbox::getItemTypeFormURL('PluginSimcardSimcard');
+// 	         $url.= "?itemtype=".$item->getType()."&items_id=".$item->getID()."&id=-1";
+// 	         echo "<div class='center'><a href='$url'>".__s('New SIM card', 'simcard')."</a></div><br>";
 
-      	 }
-      }
+//       	 }
+//       }
       $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
                                      "`items_id` = '".$item->getID()."' AND `itemtype`='".get_class($item)."'");
       echo "<div class='spaced'>";
