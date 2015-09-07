@@ -173,7 +173,6 @@ function plugin_simcard_getDropdown() {
 function plugin_simcard_AssignToTicket($types) {
    global $LANG;
 
-   //if (Session::haveRight("simcard_open_ticket", "1")) {
    if (Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, PluginSimcardProfile::SIMCARD_ASSOCIATE_TICKET)) {
       $types['PluginSimcardSimcard'] = _sn('SIM card', 'SIM cards', 2, 'simcard');
    }
@@ -204,7 +203,6 @@ function plugin_simcard_getAddSearchOptions($itemtype) {
    $reservedTypeIndex = PluginSimcardConfig::RESERVED_TYPE_RANGE_MIN;
    
    if (in_array($itemtype,PluginSimcardSimcard_Item::getClasses())) {
-      //if (Session::haveRight("simcard","r")) {
    	  if (PluginSimcardSimcard::canView()) {
          $sopt[$reservedTypeIndex]['table']         = 'glpi_plugin_simcard_simcards';
          $sopt[$reservedTypeIndex]['field']         = 'name';
