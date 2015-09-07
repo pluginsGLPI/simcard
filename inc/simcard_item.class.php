@@ -147,7 +147,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    static function showForSimcard(PluginSimcardSimcard $simcard) {
       global $DB, $LANG;
       
-      //if (!$simcard->can($simcard->getID(), 'r')) {
       if (!$simcard->canView()) {
          return false;
       }
@@ -170,7 +169,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             $item->getFromDB($data['items_id']);
             echo "<tr>";
             echo "<td>";
-            //if (Session::haveRight('simcard', 'w')) {
             if (PluginSimcardSimcard::canUpdate()) {
                echo "<input type='checkbox' name='todelete[".$data['id']."]'>";
             }
@@ -194,7 +192,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          }
       }
       
-      //if (Session::haveRight('simcard', 'w')) {
       if (PluginSimcardsimcard::canUpdate()) {
          echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
          if (empty($results)) {
@@ -224,7 +221,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          return false;
       }
       
-      //if (Session::haveRight('simcard', 'w')) {
       if (PluginSimcardSimcard::canCreate()) {
          $url = Toolbox::getItemTypeFormURL('PluginSimcardSimcard');
          $url.= "?itemtype=".$item->getType()."&items_id=".$item->getID()."&id=-1";
@@ -248,7 +244,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             $tmp->getFromDB($data['plugin_simcard_simcards_id']);
             echo "<tr>";
             echo "<td>";
-            //if (Session::haveRight('simcard', 'w')) {
             if (PluginSimcardSimcard::canDelete()) {
                echo "<input type='checkbox' name='todelete[".$data['id']."]'>";
             }
@@ -269,7 +264,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          }
       }
       
-      //if (Session::haveRight('simcard', 'w')) {
       if (PluginSimcardSimcard::canUpdate()) {
          echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
          echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";

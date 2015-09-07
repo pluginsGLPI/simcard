@@ -132,14 +132,6 @@ class PluginSimcardSimcard extends CommonDBTM {
          $withtemplate = $options['withtemplate'];
       }
 
-//       if ($ID > 0) {
-//          $this->check($ID,'r');
-//       } else {
-//          // Create item
-//          $this->check(-1,'w');
-//       }
-
-      //$this->showTabs($options);
       $this->showFormHeader($options);
 
       if (isset($options['itemtype']) && isset($options['items_id'])) {
@@ -268,19 +260,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       Html::autocompletionTextField($this,'serial');
       echo "</td></tr>\n";
       
-//       echo "<tr class='tab_bg_1'>";
-//       echo "<td>".__s("Inventory number").
-//                           (isset($options['withtemplate']) && $options['withtemplate']?"*":"").
-//            "</td>";
-//       echo "<td>";
-//       $objectName = autoName($this->fields["otherserial"], "otherserial",
-//                              (isset($options['withtemplate']) && $options['withtemplate']==2),
-//                              $this->getType(), $this->fields["entities_id"]);
-//       Html::autocompletionTextField($this, 'otherserial', array('value' => $objectName));
-//       echo "</td></tr>\n";
-      
       //Only show PIN and PUK code to users who can write (theses informations are highly sensible)
-      //if (Session::haveRight('simcard', 'w')) {
       if (PluginSimcardSimcard::canUpdate()) {
          echo "<tr class='tab_bg_1'>";
          echo "<td>".__s('Pin 1', 'simcard')."</td>";
@@ -459,7 +439,6 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[27]['displaytype']    = 'text';
       $tab[27]['injectable']     = true;
       
-      //if (Session::haveRight('simcard', 'w')) {
       if (PluginSimcardSimcard::canUpdate()) {
          $tab[28]['table']       = $this->getTable();
          $tab[28]['field']       = 'pin';
@@ -681,17 +660,6 @@ class PluginSimcardSimcard extends CommonDBTM {
 
  static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       
-//       switch (get_class($item)) {
-//          case 'Profile':
-//             $profile      = new PluginSimcardProfile();
-//             if (!$profile->getFromDBByProfile($item->getField('id'))) {
-//                $profile->createAccess($item->getField('id'));
-//             }
-//             $profile->showForm($item->getField('id'));
-//             break;
-//          default:
-//             PluginSimcardSimcard_Item::showForItem($item);
-//             break;
     $self=new self();
     if($item->getType()=='PluginSimcardSimcard') {
 	   $self->showtotal($item->getField('id'));
@@ -882,5 +850,4 @@ class PluginSimcardSimcard extends CommonDBTM {
    }
 
 }
-
 ?>
