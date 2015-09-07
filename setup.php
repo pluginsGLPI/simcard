@@ -77,7 +77,9 @@ function plugin_init_simcard() {
                                   'helpdesk_visible_types' => true,
                                   'infocom_types'          => true,
                                   'unicity_types'          => true,
-                                  'reservation_types'      => true));
+                                  'reservation_types'      => true,
+                                  'location_types'         => true
+                            ));
        array_push($CFG_GLPI['state_types'], 'PluginSimcardSimcard');
       //if glpi is loaded
       if (Session::getLoginUserID()) {
