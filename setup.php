@@ -33,7 +33,7 @@ define ("PLUGIN_SIMCARD_VERSION", "1.4.1");
 // Minimal GLPI version, inclusive
 define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.85");
 // Maximum GLPI version, exclusive
-define ("PLUGIN_SIMCARD_GLPI_MAX_VERSION", "0.86");
+define ("PLUGIN_SIMCARD_GLPI_MAX_VERSION", "0.92");
 
 // Init the hooks of the plugins -Needed
 function plugin_init_simcard() {
@@ -120,14 +120,14 @@ function plugin_version_simcard() {
    global $LANG;
 
    $author = "<a href='http://www.elsendero.es'>El Sendero</a>";
-   $author.= ", <a href='http://www.teclib.com'>Walid Nouh</a>";
+   $author.= ", <a href='http://www.teclib.com'>Walid Nouh, Thierry Bugier Pineau</a>";
    $author.= ", Anthony Piesset";
    $author.= ", <a href='mailto:dethegeek@gmail.com'>Dethegeek</a>";
    return array ('name'           => __s('Sim cards management', 'simcard'),
                    'version'        => PLUGIN_SIMCARD_VERSION,
                    'author'         => $author,
                    'license'        => 'GPLv2+',
-                   'homepage'       => 'https://forge.indepnet.net/projects/show/simcard',
+                   'homepage'       => 'https://github.com/pluginsglpi/simcard',
                    'minGlpiVersion' => PLUGIN_SIMCARD_GLPI_MIN_VERSION);
 }
 
