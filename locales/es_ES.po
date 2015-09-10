@@ -21,7 +21,7 @@ msgstr ""
 #: hook.php:163 inc/simcard.class.php:181 inc/simcard.class.php:427
 #: inc/simcardsize.class.php:41
 msgid "Size"
-msgstr "Size"
+msgstr "Tamaño"
 
 #: hook.php:164 inc/phoneoperator.class.php:40 inc/simcard.class.php:204
 #: inc/simcard.class.php:435
@@ -31,15 +31,15 @@ msgstr "Proveedor"
 #: hook.php:165 hook.php:231 inc/simcard.class.php:197
 #: inc/simcard.class.php:409 inc/simcardvoltage.class.php:41
 msgid "Voltage"
-msgstr "Voltage"
+msgstr "Voltaje"
 
 #: hook.php:166 inc/simcard.class.php:167 inc/simcardtype.class.php:41
 msgid "Type of SIM card"
-msgstr "Type of SIM card"
+msgstr "Tipo de tarjeta SIM"
 
 #: hook.php:222 inc/simcard.class.php:243 inc/simcard.class.php:443
 msgid "Phone number"
-msgstr "Phone number"
+msgstr "Número de Teléfono"
 
 #: setup.php:130
 msgid "Sim cards management"
@@ -77,4 +77,4 @@ msgstr ""
 
 #: inc/simcard_item.class.php:217
 msgid "New SIM card"
-msgstr "New SIM card"
+msgstr "Nueva tarjeta SIM"
