@@ -120,7 +120,8 @@ function plugin_version_simcard() {
    global $LANG;
 
    $author = "<a href='http://www.elsendero.es'>El Sendero</a>";
-   $author.= ", <a href='http://www.teclib.com'>Walid Nouh, Thierry Bugier Pineau</a>";
+   $author.= ", <a href='http://www.teclib.com'>Walid Nouh</a>";
+   $author.= ", <a href='http://www.teclib.com'>Thierry Bugier Pineau</a>";
    $author.= ", Anthony Piesset";
    $author.= ", <a href='mailto:dethegeek@gmail.com'>Dethegeek</a>";
    return array ('name'           => __s('Sim cards management', 'simcard'),
