@@ -81,6 +81,8 @@ function plugin_init_simcard() {
                                   'location_types'         => true
                             ));
        array_push($CFG_GLPI['state_types'], 'PluginSimcardSimcard');
+       array_push($CFG_GLPI['globalsearch_types'], 'PluginSimcardSimcard');
+
       //if glpi is loaded
       if (Session::getLoginUserID()) {
           
