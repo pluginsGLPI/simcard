@@ -86,6 +86,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    }
 
    /**
+    * Count the number of relations having the itemtype of $item
     * 
     * @param CommonDBTM $item Item whose relations to simcards shall be counted
     * @return integer count of relations between the item and simcards
@@ -322,6 +323,9 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
 
    
    /**
+    * 
+    * Count the number of associated items for a simcard item
+    * 
     * @param $item   Simcard object
     **/
    static function countForSimcard(PluginSimcardSimcard $item) {
@@ -330,7 +334,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    	
       return countElementsInTable(array('glpi_plugin_simcard_simcards_items'), $restrict);
    }
-
    
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       
