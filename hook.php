@@ -285,6 +285,7 @@ function plugin_simcard_postinit() {
  * @since 1.4.1
  */
 function plugin_simcard_profileRightUpdate($item) {
+   if ($_SESSION['glpiactiveprofile']['id'] == $item->fields['profiles_id']) {
 	if ($item->fields['name'] == PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD) {
 		$profile = new Profile();
 		$profile->getFromDB($item->fields['profiles_id']);
@@ -312,5 +313,6 @@ function plugin_simcard_profileRightUpdate($item) {
     	$tmp = array('id' => $profile->fields['id'], 'helpdesk_item_type' => json_encode($helpdeskItemTypes));
     	$profile->update($tmp, false);
 	}
+   }
 }
 ?>
