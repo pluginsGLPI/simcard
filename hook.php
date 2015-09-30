@@ -286,33 +286,36 @@ function plugin_simcard_postinit() {
  */
 function plugin_simcard_profileRightUpdate($item) {
    if ($_SESSION['glpiactiveprofile']['id'] == $item->fields['profiles_id']) {
-	if ($item->fields['name'] == PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD) {
-		$profile = new Profile();
-		$profile->getFromDB($item->fields['profiles_id']);
-		$helpdeskItemTypes = json_decode($profile->fields['helpdesk_item_type'], true);
-      	$index = array_search('PluginSimcardSimcard', $helpdeskItemTypes);
-      	if ($item->fields['rights'] & PluginSimcardProfile::SIMCARD_ASSOCIATE_TICKET) {
-			if ($index === false) {
-				$helpdeskItemTypes[] = 'PluginSimcardSimcard';
-				if ($_SESSION['glpiactiveprofile']['id'] == $profile->fields['id']) {
-					$_SESSION['glpiactiveprofile']['helpdesk_item_type'][] = 'PluginSimcardSimcard';
-				}
-			}
-		} else {
-			if ($index !== false) {
-				unset($helpdeskItemTypes[$index]);
-				if ($_SESSION['glpiactiveprofile']['id'] == $profile->fields['id']) {
-					// Just in case this is not the same index in the session vars
-					$index = array_search('PluginSimcardSimcard', $_SESSION['glpiactiveprofile']['helpdesk_item_type']);
-					if ($index !== false) {
-						unset($_SESSION['glpiactiveprofile']['helpdesk_item_type'][$index]);
-					}
-				}
-			}
-		}
-    	$tmp = array('id' => $profile->fields['id'], 'helpdesk_item_type' => json_encode($helpdeskItemTypes));
-    	$profile->update($tmp, false);
-	}
+      if ($item->fields['name'] == PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD) {
+         $profile = new Profile();
+         $profile->getFromDB($item->fields['profiles_id']);
+         $helpdeskItemTypes = json_decode($profile->fields['helpdesk_item_type'], true);
+         $index = array_search('PluginSimcardSimcard', $helpdeskItemTypes);
+         if ($item->fields['rights'] & PluginSimcardProfile::SIMCARD_ASSOCIATE_TICKET) {
+            if ($index === false) {
+               $helpdeskItemTypes[] = 'PluginSimcardSimcard';
+               if ($_SESSION['glpiactiveprofile']['id'] == $profile->fields['id']) {
+                  $_SESSION['glpiactiveprofile']['helpdesk_item_type'][] = 'PluginSimcardSimcard';
+               }
+            }
+         } else {
+            if ($index !== false) {
+               unset($helpdeskItemTypes[$index]);
+               if ($_SESSION['glpiactiveprofile']['id'] == $profile->fields['id']) {
+                  // Just in case this is not the same index in the session vars
+                  $index = array_search('PluginSimcardSimcard', $_SESSION['glpiactiveprofile']['helpdesk_item_type']);
+                  if ($index !== false) {
+                     unset($_SESSION['glpiactiveprofile']['helpdesk_item_type'][$index]);
+                  }
+               }
+            }
+         }
+         $tmp = array(
+               'id' => $profile->fields['id'],
+               'helpdesk_item_type' => json_encode($helpdeskItemTypes)
+         );
+         $profile->update($tmp, false);
+      }
    }
 }
 ?>
