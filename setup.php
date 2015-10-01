@@ -33,7 +33,7 @@ define ("PLUGIN_SIMCARD_VERSION", "1.4.1");
 // Minimal GLPI version, inclusive
 define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.85");
 // Maximum GLPI version, exclusive
-define ("PLUGIN_SIMCARD_GLPI_MAX_VERSION", "0.86");
+define ("PLUGIN_SIMCARD_GLPI_MAX_VERSION", "0.91");
 
 // Init the hooks of the plugins -Needed
 function plugin_init_simcard() {
