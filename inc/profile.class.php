@@ -38,13 +38,6 @@ class PluginSimcardProfile extends Profile {
    const SIMCARD_ASSOCIATE_TICKET = 128;
    
    static $rightname = 'profile'; 
-	
-   static function purgeProfiles(Profile $prof) {
-      $plugprof = new self();
-      $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
-   }
-   
-
 
    function createAccess($ID) {
       $this->add(array('profiles_id' => $ID));
@@ -104,7 +97,9 @@ class PluginSimcardProfile extends Profile {
     
    static function install(Migration $migration) {
       global $DB;
-
+      
+      // Table no longer needed in GLPI 0.85+; drop it. Needed for upgrades
+      $migration->dropTable(getTableForItemType(__CLASS__));
       PluginSimcardProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    }
     
