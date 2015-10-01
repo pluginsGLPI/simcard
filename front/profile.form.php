@@ -31,7 +31,6 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-//Session::checkRight("profile", "r");
 Profile::canView();
 
 $profile = new PluginSimcardProfile();
