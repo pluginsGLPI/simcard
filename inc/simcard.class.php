@@ -55,14 +55,6 @@ class PluginSimcardSimcard extends CommonDBTM {
       return _n('SIM card', 'SIM cards', $nb, 'simcard');
    }
 
-   static function canCreate() {
-      return Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, CREATE);
-   }
-
-   static function canView() {
-      return Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, READ);
-   }
-
    /**
     * @since version 0.85
     *
