@@ -45,12 +45,10 @@ function plugin_init_simcard() {
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
       
       //load changeprofile function
-   	$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+   	  $PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
       
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
 
-      $PLUGIN_HOOKS['pre_item_purge']['simcard'] =
-         array('Profile' => array('PluginSimcardsProfile', 'purgeProfiles'));
       $PLUGIN_HOOKS['plugin_datainjection_populate']['simcard']
          = 'plugin_datainjection_populate_simcard';
       $PLUGIN_HOOKS['item_purge']['simcard'] = array();
@@ -108,7 +106,6 @@ function plugin_init_simcard() {
             $PLUGIN_HOOKS['use_massive_action']['simcard'] = 1;
          }
 
-          
          // Import from Data_Injection plugin
          $PLUGIN_HOOKS['migratetypes']['simcard']             = 'plugin_datainjection_migratetypes_simcard';
          $PLUGIN_HOOKS['menu']['simcard']                     = true;
