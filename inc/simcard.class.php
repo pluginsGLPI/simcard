@@ -23,7 +23,7 @@
  @copyright Copyright (c) 2010-2011 Simcard plugin team
  @license   GPLv2+
             http://www.gnu.org/licenses/gpl.txt
- @link      https://forge.indepnet.net/projects/simcard
+ @link      https://github.com/pluginsglpi/simcard
  @link      http://www.glpi-project.org/
  @since     2009
  ---------------------------------------------------------------------- */
@@ -53,14 +53,6 @@ class PluginSimcardSimcard extends CommonDBTM {
    static function getTypeName($nb=0) {
       global $LANG;
       return _n('SIM card', 'SIM cards', $nb, 'simcard');
-   }
-
-   static function canCreate() {
-      return Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, CREATE);
-   }
-
-   static function canView() {
-      return Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, READ);
    }
 
    /**
