@@ -44,8 +44,8 @@ function plugin_init_simcard() {
    $plugin = new Plugin();
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
       
-      //load changeprofile function
-   	  $PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+      //load changeprofile function (does not exist anymore in this version)
+   	  //$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
       
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
 

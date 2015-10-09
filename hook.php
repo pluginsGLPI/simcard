@@ -146,8 +146,8 @@ function plugin_simcard_getDatabaseRelations() {
                   "glpi_groups" => array("glpi_plugin_simcard_simcards"=>"groups_id_tech"),
                   "glpi_manufacturers" => array("glpi_plugin_simcard_simcards" => "manufacturers_id"),
                   "glpi_states" => array("glpi_plugin_simcard_simcards" => "states_id"),
-                  "glpi_locations" => array("glpi_plugin_simcard_simcards"=>"locations_id"),
-                  "glpi_profiles" => array ("glpi_plugin_simcard_profiles" => "profiles_id"));
+                  "glpi_locations" => array("glpi_plugin_simcard_simcards"=>"locations_id"));
+                  //"glpi_profiles" => array ("glpi_plugin_simcard_profiles" => "profiles_id"));
    } else {
       return array();
    }
@@ -290,6 +290,9 @@ function plugin_simcard_profileRightUpdate($item) {
          $profile = new Profile();
          $profile->getFromDB($item->fields['profiles_id']);
          $helpdeskItemTypes = json_decode($profile->fields['helpdesk_item_type'], true);
+         if (!is_array($helpdeskItemTypes)) {
+            $helpdeskItemTypes = array();
+         }
          $index = array_search('PluginSimcardSimcard', $helpdeskItemTypes);
          if ($item->fields['rights'] & PluginSimcardProfile::SIMCARD_ASSOCIATE_TICKET) {
             if ($index === false) {
