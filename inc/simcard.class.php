@@ -286,7 +286,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       return true;
    }
 
-     function prepareInputForAdd($input) {
+   function prepareInputForAdd($input) {
 
       if (isset($input["id"]) && $input["id"]>0) {
          $input["_oldID"] = $input["id"];
@@ -294,10 +294,10 @@ class PluginSimcardSimcard extends CommonDBTM {
       unset($input['id']);
       unset($input['withtemplate']);
 
-       return $input;
+      return $input;
    }
    
-    function post_addItem() {
+   function post_addItem() {
       global $DB, $CFG_GLPI;
 
       // Manage add from template
@@ -305,8 +305,8 @@ class PluginSimcardSimcard extends CommonDBTM {
          Infocom::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
          Contract_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);
          Document_Item::cloneItem($this->getType(), $this->input["_oldID"], $this->fields['id']);          
-     }
-
+      }
+   
       if (isset($this->input['_itemtype']) && isset($this->input['_items_id'])) {
          $simcard_item = new PluginSimcardSimcard_Item();
          $tmp['plugin_simcard_simcards_id'] = $this->getID();
@@ -374,6 +374,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[16]['injectable']     = true;
       
       $tab += Location::getSearchOptionsToAdd();
+      $tab += Notepad::getSearchOptionsToAdd();
 
       $tab[3]['checktype']       = 'text';
       $tab[3]['displaytype']     = 'dropdown';
@@ -518,7 +519,12 @@ class PluginSimcardSimcard extends CommonDBTM {
       return $tab;
    }
    
-  static function install(Migration $migration) {
+   /**
+    * Installation of the itemtype
+    * 
+    * @param Migration $migration migration helper instance
+    */
+   static function install(Migration $migration) {
       global $DB;
       $table = getTableForItemType(__CLASS__);
       if (!TableExists($table)) {
@@ -650,15 +656,21 @@ class PluginSimcardSimcard extends CommonDBTM {
       return '';
   }
 
-
- static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   /**
+    *  Show tab content for a simcard item
+    * 
+    * @param CommonGLPI $item
+    * @param number $tabnum
+    * @param number $withtemplate
+    */
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       
-    $self=new self();
-    if($item->getType()=='PluginSimcardSimcard') {
-	   $self->showtotal($item->getField('id'));
-	}
-    return true;
- }
+      $self=new self();
+      if($item->getType()=='PluginSimcardSimcard') {
+         $self->showtotal($item->getField('id'));
+      }
+      return true;
+   }
 
   /**
     * Type than could be linked to a Rack

@@ -38,13 +38,6 @@ class PluginSimcardProfile extends Profile {
    const SIMCARD_ASSOCIATE_TICKET = 128;
    
    static $rightname = 'profile'; 
-	
-   static function purgeProfiles(Profile $prof) {
-      $plugprof = new self();
-      $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
-   }
-   
-
 
    function createAccess($ID) {
       $this->add(array('profiles_id' => $ID));
@@ -91,7 +84,6 @@ class PluginSimcardProfile extends Profile {
       $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
                                                          'default_class' => 'tab_bg_2'));
       
-      
       if ($canedit) {
          echo "<div class='center'>";
          echo "<input type='hidden' name='id' value=".$ID.">";
@@ -104,7 +96,9 @@ class PluginSimcardProfile extends Profile {
     
    static function install(Migration $migration) {
       global $DB;
-
+      
+      // Table no longer needed in GLPI 0.85+; drop it. Needed for upgrades
+      $migration->dropTable(getTableForItemType(__CLASS__));
       PluginSimcardProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    }
     
@@ -136,7 +130,7 @@ class PluginSimcardProfile extends Profile {
       			$profileRightFields['name'] = self::RIGHT_SIMCARD_SIMCARD;
       			$profileRightFields['rights'] = $translatedRight;
       			if ($profileRight->add($profileRightFields) === false) {
-      				die('Fatal error migrating profile rights');	
+      				die('Fatal error migrating profile rights');
       			}
       			// The plugin is not yet active, the hook will not trigger automatically
       			plugin_simcard_profileRightUpdate($profileRight);
@@ -204,7 +198,7 @@ class PluginSimcardProfile extends Profile {
    function getAllRights() {
       $rights = array(
           array('itemtype'  => 'PluginSimcardSimcard',
-                'label'     => _n('SIM card', 'SIM cards', 2, 'simcard'),
+                'label'     => PluginSimcardSimcard::getTypeName(2),
                 'field'     => 'simcard:simcard'
           ),
       );

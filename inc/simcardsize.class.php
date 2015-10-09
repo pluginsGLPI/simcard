@@ -76,8 +76,10 @@ class PluginSimcardSimcardSize extends CommonDropdown {
    static function uninstall() {
       global $DB;
 
-      $displayPreference = new DisplayPreference();
-      $displayPreference->deleteByCriteria(array('itemtype' => __CLASS__));
+      foreach (array('DisplayPreference', 'Bookmark') as $itemtype) {
+         $item = new $itemtype();
+         $item->deleteByCriteria(array('itemtype' => __CLASS__));
+      }
       
       // Remove dropdowns localization
       $dropdownTranslation = new DropdownTranslation();

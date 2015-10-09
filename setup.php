@@ -33,7 +33,7 @@ define ("PLUGIN_SIMCARD_VERSION", "1.4.1");
 // Minimal GLPI version, inclusive
 define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.85");
 // Maximum GLPI version, exclusive
-define ("PLUGIN_SIMCARD_GLPI_MAX_VERSION", "0.92");
+define ("PLUGIN_SIMCARD_GLPI_MAX_VERSION", "0.91");
 
 // Init the hooks of the plugins -Needed
 function plugin_init_simcard() {
@@ -44,13 +44,11 @@ function plugin_init_simcard() {
    $plugin = new Plugin();
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
       
-      //load changeprofile function
-   	$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+      //load changeprofile function (does not exist anymore in this version)
+   	  //$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
       
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
 
-      $PLUGIN_HOOKS['pre_item_purge']['simcard'] =
-         array('Profile' => array('PluginSimcardsProfile', 'purgeProfiles'));
       $PLUGIN_HOOKS['plugin_datainjection_populate']['simcard']
          = 'plugin_datainjection_populate_simcard';
       $PLUGIN_HOOKS['item_purge']['simcard'] = array();
@@ -81,6 +79,8 @@ function plugin_init_simcard() {
                                   'location_types'         => true
                             ));
        array_push($CFG_GLPI['state_types'], 'PluginSimcardSimcard');
+       array_push($CFG_GLPI['globalsearch_types'], 'PluginSimcardSimcard');
+
       //if glpi is loaded
       if (Session::getLoginUserID()) {
           
@@ -106,7 +106,6 @@ function plugin_init_simcard() {
             $PLUGIN_HOOKS['use_massive_action']['simcard'] = 1;
          }
 
-          
          // Import from Data_Injection plugin
          $PLUGIN_HOOKS['migratetypes']['simcard']             = 'plugin_datainjection_migratetypes_simcard';
          $PLUGIN_HOOKS['menu']['simcard']                     = true;
