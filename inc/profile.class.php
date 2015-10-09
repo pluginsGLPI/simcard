@@ -84,7 +84,6 @@ class PluginSimcardProfile extends Profile {
       $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
                                                          'default_class' => 'tab_bg_2'));
       
-      
       if ($canedit) {
          echo "<div class='center'>";
          echo "<input type='hidden' name='id' value=".$ID.">";
@@ -131,7 +130,7 @@ class PluginSimcardProfile extends Profile {
       			$profileRightFields['name'] = self::RIGHT_SIMCARD_SIMCARD;
       			$profileRightFields['rights'] = $translatedRight;
       			if ($profileRight->add($profileRightFields) === false) {
-      				die('Fatal error migrating profile rights');	
+      				die('Fatal error migrating profile rights');
       			}
       			// The plugin is not yet active, the hook will not trigger automatically
       			plugin_simcard_profileRightUpdate($profileRight);
@@ -199,7 +198,7 @@ class PluginSimcardProfile extends Profile {
    function getAllRights() {
       $rights = array(
           array('itemtype'  => 'PluginSimcardSimcard',
-                'label'     => _n('SIM card', 'SIM cards', 2, 'simcard'),
+                'label'     => PluginSimcardSimcard::getTypeName(2),
                 'field'     => 'simcard:simcard'
           ),
       );
