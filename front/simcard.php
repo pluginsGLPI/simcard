@@ -35,7 +35,7 @@ Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcards
 
 $simcard = new PluginSimcardSimcard();
 // TODO Is Checking canCreate useful before showing a list ? 
-if (true || PluginSimcardSimcard::canView() || PluginSimcardSimcard::canCreate()) {
+if (PluginSimcardSimcard::canView() || PluginSimcardSimcard::canCreate()) {
    Search::show("PluginSimcardSimcard");
 } else {
    echo "<div align='center'><br><br><img src=\"".
