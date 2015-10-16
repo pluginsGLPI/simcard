@@ -306,15 +306,15 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          switch ($item->getType()) {
             case 'PluginSimcardSimcard' :
                if ($_SESSION['glpishow_count_on_tabs']) {
-                  return self::createTabEntry(_n('Associated item', 'Associated items', Session::getPluralNumber()), self::countForSimcard($item));
+                  return self::createTabEntry(_n('Associated item', 'Associated items', 2), self::countForSimcard($item));
                }
-               return _n('Associated item', 'Associated items', Session::getPluralNumber());
+               return _n('Associated item', 'Associated items', 2);
 
             default :
                if ($_SESSION['glpishow_count_on_tabs']) {
-                  return self::createTabEntry(PluginSimcardSimcard::getTypeName(Session::getPluralNumber()), self::countForItemByItemtype($item));
+                  return self::createTabEntry(PluginSimcardSimcard::getTypeName(2), self::countForItemByItemtype($item));
                }
-               return _n('SIM card', 'SIM cards', Session::getPluralNumber());
+               return _n('SIM card', 'SIM cards', 2);
 
          }
       }
