@@ -109,7 +109,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    }
    
    static function getClasses() {
-      return array('Computer', 'Peripheral', 'Phone');
+      return array('Computer', 'Peripheral', 'Phone', 'Printer');
    }
    
    static function install(Migration $migration) {
