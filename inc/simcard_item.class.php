@@ -41,6 +41,15 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
 
    static public $itemtype_2 = 'itemtype';
    static public $items_id_2 = 'items_id';
+   
+   // Itemtypes simcards may be linked to
+   static protected $linkableClasses = array(
+         'Computer', 
+         'Peripheral', 
+         'Phone', 
+         'Printer', 
+         'NetworkEquipment'
+   );
 
    /**
     * Name of the type
@@ -109,7 +118,18 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    }
    
    static function getClasses() {
-      return array('Computer', 'Peripheral', 'Phone', 'Printer', 'NetworkEquipment');
+      return self::$linkableClasses;
+   }
+   
+   /**
+    * Declare a new itemtype to be linkable to a simcard
+    */
+   static function registerItemtype($itemtype) {
+      if (!in_array($itemtype, self::$linkableClasses)) {
+         array_push(self::$linkableClasses, $itemtype);
+         Plugin::registerClass('PluginSimcardSimcard_Item',
+               array('addtabon' => $itemtype));
+      }
    }
    
    static function install(Migration $migration) {
@@ -184,10 +204,16 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             echo $item->getLink();
             echo "</td>";
             echo "<td>";
-            echo $item->fields['serial'];
+            if (isset($item->fields['serial'])) {
+               echo $item->fields['serial'];
+            } else {
+               
+            }
             echo "</td>";
             echo "<td>";
-            echo $item->fields['otherserial'];
+            if (isset($item->fields['otherserial'])) {
+               echo $item->fields['otherserial'];
+            }
             echo "</td>";
             echo "</tr>";
          }
