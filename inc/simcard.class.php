@@ -514,7 +514,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[90]['linkfield']      = 'notepad';
       $tab[90]['checktype']      = 'text';
       $tab[90]['displaytype']    = 'multiline_text';
-      $tab[90]['injectable']     = true;
+      $tab[90]['injectable']     = false;
       
       return $tab;
    }
