@@ -206,8 +206,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             echo "<td>";
             if (isset($item->fields['serial'])) {
                echo $item->fields['serial'];
-            } else {
-
             }
             echo "</td>";
             echo "<td>";
