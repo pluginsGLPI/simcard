@@ -1,0 +1,81 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Ryszard Jeziorski <ryszard.jeziorski@gmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Plugin - Simcard\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-04-23 21:04+0200\n"
+"PO-Revision-Date: 2015-10-14 18:12+0000\n"
+"Last-Translator: Ryszard Jeziorski <ryszard.jeziorski@gmail.com>\n"
+"Language-Team: Polish (Poland) (http://www.transifex.com/teclib/glpi-project-plugin-simcard/language/pl_PL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: hook.php:163 inc/simcard.class.php:181 inc/simcard.class.php:427
+#: inc/simcardsize.class.php:41
+msgid "Size"
+msgstr "Rozmiar"
+
+#: hook.php:164 inc/phoneoperator.class.php:40 inc/simcard.class.php:204
+#: inc/simcard.class.php:435
+msgid "Provider"
+msgstr "Dostawca"
+
+#: hook.php:165 hook.php:231 inc/simcard.class.php:197
+#: inc/simcard.class.php:409 inc/simcardvoltage.class.php:41
+msgid "Voltage"
+msgstr "Zasilanie"
+
+#: hook.php:166 inc/simcard.class.php:167 inc/simcardtype.class.php:41
+msgid "Type of SIM card"
+msgstr "Typ karty SIM"
+
+#: hook.php:222 inc/simcard.class.php:243 inc/simcard.class.php:443
+msgid "Phone number"
+msgstr "Numer telefonu"
+
+#: setup.php:130
+msgid "Sim cards management"
+msgstr "Zarządzanie kartami SIM"
+
+#: inc/profile.class.php:127
+msgid "Right manager"
+msgstr "Menedżer uprawnień"
+
+#: inc/profile.class.php:263 inc/simcard.class.php:54
+msgid "SIM card"
+msgid_plural "SIM cards"
+msgstr[0] "Karta SIM"
+msgstr[1] "Karty SIM"
+msgstr[2] "Karty SIM"
+
+#: inc/simcard.class.php:253 inc/simcard.class.php:367
+msgid "IMSI"
+msgstr "IMSI"
+
+#: inc/simcard.class.php:273 inc/simcard.class.php:453
+msgid "Pin 1"
+msgstr "PIN 1"
+
+#: inc/simcard.class.php:279 inc/simcard.class.php:469
+msgid "Pin 2"
+msgstr "PIN 2"
+
+#: inc/simcard.class.php:285 inc/simcard.class.php:461
+msgid "Puk 1"
+msgstr "PUK 1"
+
+#: inc/simcard.class.php:291 inc/simcard.class.php:477
+msgid "Puk 2"
+msgstr "PUK 2"
+
+#: inc/simcard_item.class.php:217
+msgid "New SIM card"
+msgstr "Nowa karta SIM"
