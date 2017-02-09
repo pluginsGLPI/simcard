@@ -42,7 +42,7 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
 
    static function install(Migration $migration) {
       global $DB;
-      
+
       $table = getTableForItemType(__CLASS__);
       if (!TableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
@@ -55,9 +55,9 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
          $DB->query($query) or die($DB->error());
       }
    }
-   
+
    /**
-    * 
+    *
     *
     * @since 1.3
     **/
@@ -65,15 +65,15 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
       global $DB;
 
    }
-   
+
    static function uninstall() {
       global $DB;
-      
+
       foreach (array('DisplayPreference', 'Bookmark') as $itemtype) {
          $item = new $itemtype();
          $item->deleteByCriteria(array('itemtype' => __CLASS__));
       }
-      
+
       // Remove dropdowns localization
       $dropdownTranslation = new DropdownTranslation();
       $dropdownTranslation->deleteByCriteria(array("itemtype LIKE 'PluginSimcardPhoneOperator'"), 1);
@@ -113,4 +113,3 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
       return 0;
    }
 }
-?>

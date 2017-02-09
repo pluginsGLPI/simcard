@@ -58,7 +58,7 @@ if (isset($_POST["add"])) {
    }
    Html::back();
 
-// delete a simcard
+   // delete a simcard
 } else if (isset($_POST["delete"])) {
    $simcard->check($_POST['id'], DELETE);
    $ok = $simcard->delete($_POST);
@@ -72,12 +72,12 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["restore"])) {
    $simcard->check($_POST['id'], PURGE);
    if ($simcard->restore($_POST)) {
-      Event::log($_POST["id"],"simcard", 4, "inventory",
+      Event::log($_POST["id"], "simcard", 4, "inventory",
                  //TRANS: %s is the user login
                  sprintf(__('%s restores the item'), $_SESSION["glpiname"]));
    }
    $simcard->redirectToList();
-   
+
 } else if (isset($_REQUEST["purge"])) {
    $simcard->check($_REQUEST['id'], PURGE);
    if ($simcard->delete($_REQUEST, 1)) {
@@ -86,8 +86,8 @@ if (isset($_POST["add"])) {
                  sprintf(__('%s purges an item'), $_SESSION["glpiname"]));
    }
    $simcard->redirectToList();
-   
-//update a simcard
+
+   //update a simcard
 } else if (isset($_POST["update"])) {
    $simcard->check($_POST['id'], UPDATE);
    $simcard->update($_POST);
@@ -99,9 +99,9 @@ if (isset($_POST["add"])) {
 } else if (isset($_GET["unglobalize"])) {
    $simcard->check($_GET["id"], UPDATE);
 
-   //TODO There is probably a bug here... 
+   //TODO There is probably a bug here...
    Html::redirect(Toolbox::getItemTypeFormURL('PluginSimcardSimcard')."?id=".$_GET["id"]);
-   
+
 } else {//print simcard information
    // Affichage du fil d'Ariane
    Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard", "simcard");
