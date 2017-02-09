@@ -27,13 +27,13 @@
  @link      http://www.glpi-project.org/
  @since     2009
  ---------------------------------------------------------------------- */
- 
- if (!defined('GLPI_ROOT')) {
+
+if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
 /**
- * 
+ *
  * @author dethegeek
  * @since 1.3
  *
@@ -44,17 +44,17 @@ class PluginSimcardConfig extends CommonDBTM {
    // Reserved range   : [10126, 10135]
    const RESERVED_TYPE_RANGE_MIN = 10126;
    const RESERVED_TYPE_RANGE_MAX = 10135;
-   
+
    static $config = array();
 
    /**
-    * 
     *
-    * 
+    *
+    *
     **/
    static function install(Migration $migration) {
       global $DB;
-      
+
       $table = getTableForItemType(__CLASS__);
       $query = "CREATE TABLE `".$table."` (
                 `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -68,23 +68,23 @@ class PluginSimcardConfig extends CommonDBTM {
                 (`type`,`value`)
                VALUES ('Version', '" . PLUGIN_SIMCARD_VERSION . "')";
       $DB->query($query) or die($DB->error());
-      
+
    }
-   
+
    /**
-    * 
     *
-    * 
+    *
+    *
     **/
    static function upgrade(Migration $migration) {
       global $DB;
-      
-      switch (plugin_simcard_currentVersion()) {
-      	case '1.2':
-      	   self::install($migration);
-      	   break;
 
-      	default:
+      switch (plugin_simcard_currentVersion()) {
+         case '1.2':
+            self::install($migration);
+             break;
+
+         default:
             $table = getTableForItemType(__CLASS__);
             $query = "UPDATE `".$table."`
                       SET `value`= '" . PLUGIN_SIMCARD_VERSION . "'
@@ -92,15 +92,15 @@ class PluginSimcardConfig extends CommonDBTM {
             $DB->query($query) or die($DB->error());
       }
    }
-    
+
    /**
-    * 
     *
-    * 
+    *
+    *
     **/
    static function uninstall() {
       global $DB;
-      
+
       $displayPreference = new DisplayPreference();
       $displayPreference->deleteByCriteria(array("`num` >= " . self::RESERVED_TYPE_RANGE_MIN . " AND `num` <= " . self::RESERVED_TYPE_RANGE_MAX));
 
@@ -111,13 +111,13 @@ class PluginSimcardConfig extends CommonDBTM {
    }
 
    /**
-    * 
     *
-    * 
+    *
+    *
     **/
    static function loadCache() {
       global $DB;
-   
+
       $table = getTableForItemType(__CLASS__);
       self::$config = array();
       $query = "SELECT * FROM `". $table ."`";
@@ -163,7 +163,7 @@ class PluginSimcardConfig extends CommonDBTM {
       }
       return NULL;
    }
-   
+
    /**
     * Update configuration value
     *

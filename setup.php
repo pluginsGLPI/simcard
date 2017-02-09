@@ -36,33 +36,33 @@ define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.85");
 // Init the hooks of the plugins -Needed
 function plugin_init_simcard() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
-    
+
    $PLUGIN_HOOKS['csrf_compliant']['simcard'] = true;
-   
+
    $plugin = new Plugin();
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
-      
+
       //load changeprofile function (does not exist anymore in this version)
-   	  //$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
-      
+         //$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
 
       $PLUGIN_HOOKS['plugin_datainjection_populate']['simcard']
          = 'plugin_datainjection_populate_simcard';
       $PLUGIN_HOOKS['item_purge']['simcard'] = array();
-      
+
       foreach (PluginSimcardSimcard_Item::getClasses() as $type) {
          $PLUGIN_HOOKS['item_purge']['simcard'][$type] = 'plugin_item_purge_simcard';
       }
-      
+
       $PLUGIN_HOOKS['item_update']['simcard']['ProfileRight'] = 'plugin_simcard_profileRightUpdate';
       $PLUGIN_HOOKS['item_add']['simcard']['ProfileRight'] = 'plugin_simcard_profileRightUpdate';
-      
+
       Plugin::registerClass('PluginSimcardSimcard_Item',
                             array('addtabon' => PluginSimcardSimcard_Item::getClasses()));
       Plugin::registerClass('PluginSimcardProfile',
                             array('addtabon' => 'Profile'));
-                            
+
       // Params : plugin name - string type - number - class - table - form page
       Plugin::registerClass('PluginSimcardSimcard',
                             array('linkgroup_types'        => true,
@@ -81,25 +81,24 @@ function plugin_init_simcard() {
 
       //if glpi is loaded
       if (Session::getLoginUserID()) {
-          
+
          // Display a menu entry ?
-         if (PluginSimcardSimcard::canCreate() 
+         if (PluginSimcardSimcard::canCreate()
             || PluginSimcardSimcard::canUpdate ()
             || PluginSimcardSimcard::canDelete()
-            || PluginSimcardSimcard::canView())
-         {
+            || PluginSimcardSimcard::canView()) {
             //menu entry
-         	$PLUGIN_HOOKS['menu_toadd']['simcard'] = array('assets' => 'PluginSimcardSimcard');
+             $PLUGIN_HOOKS['menu_toadd']['simcard'] = array('assets' => 'PluginSimcardSimcard');
             //search link
             //add simcard to items details
             $PLUGIN_HOOKS['headings']['simcard']           = 'plugin_get_headings_simcard';
             $PLUGIN_HOOKS['headings_action']['simcard']    = 'plugin_headings_actions_simcard';
             $PLUGIN_HOOKS['headings_actionpdf']['simcard'] = 'plugin_headings_actionpdf_simcard';
          }
-             
+
          if (PluginSimcardSimcard::canCreate()) {
             //add link
-            
+
             //use massiveaction in the plugin
             $PLUGIN_HOOKS['use_massive_action']['simcard'] = 1;
          }
@@ -144,9 +143,9 @@ function plugin_simcard_check_config() {
 }
 
 /**
- * 
+ *
  * Migrate itemtype integer (0.72) to string (0.80)
- * 
+ *
  * @param array $types
  * @return string
  */
@@ -155,4 +154,3 @@ function plugin_datainjection_migratetypes_simcard($types) {
    return $types;
 }
 
-?>

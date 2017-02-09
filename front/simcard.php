@@ -34,7 +34,7 @@ include ('../../../inc/includes.php');
 Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard", "simcard");
 
 $simcard = new PluginSimcardSimcard();
-// TODO Is Checking canCreate useful before showing a list ? 
+// TODO Is Checking canCreate useful before showing a list ?
 if (PluginSimcardSimcard::canView() || PluginSimcardSimcard::canCreate()) {
    Search::show("PluginSimcardSimcard");
 } else {
