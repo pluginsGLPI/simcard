@@ -137,11 +137,11 @@ class PluginSimcardProfile extends Profile {
             }
             $query = "DROP TABLE `glpi_plugin_simcard_profiles`";
             $DB->query($query) or die($DB->error());
-              break;
+            break;
 
          case '1.4':
-            case '1.4.1':
-
+         case '1.4.1':
+            break;
       }
    }
 
