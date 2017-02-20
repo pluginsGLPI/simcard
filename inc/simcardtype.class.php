@@ -58,7 +58,7 @@ class PluginSimcardSimcardType extends CommonDropdown {
    }
 
    /**
-    * 
+    *
     *
     * @since 1.3
     * */
@@ -74,7 +74,7 @@ class PluginSimcardSimcardType extends CommonDropdown {
 
    static function uninstall() {
       global $DB;
-      
+
       foreach (array('DisplayPreference', 'Bookmark') as $itemtype) {
          $item = new $itemtype();
          $item->deleteByCriteria(array('itemtype' => __CLASS__));
@@ -90,7 +90,7 @@ class PluginSimcardSimcardType extends CommonDropdown {
 
    static function transfer($ID, $entity) {
       global $DB;
-      
+
       $simcardType = new self();
 
       if ($ID > 0) {
@@ -121,4 +121,3 @@ class PluginSimcardSimcardType extends CommonDropdown {
 
 }
 
-?>

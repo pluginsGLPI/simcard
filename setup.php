@@ -1,22 +1,28 @@
 <?php
 /*
- * @version $Id$
+ -------------------------------------------------------------------------
+ Simcard plugin for GLPI
+ Copyright (C) 2010-2017 by the Simcard Development Team.
+
+ https://github.com/pluginsGLPI/simcard
+ -------------------------------------------------------------------------
+
  LICENSE
 
-  This file is part of the simcard plugin.
+ This file is part of Simcard.
 
- Order plugin is free software; you can redistribute it and/or modify
+ Simcard is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
 
- Order plugin is distributed in the hope that it will be useful,
+ Simcard is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with GLPI; along with Simcard. If not, see <http://www.gnu.org/licenses/>.
+ along with Simcard. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  @package   simcard
  @author    the simcard plugin team
@@ -26,43 +32,48 @@
  @link      https://github.com/pluginsglpi/simcard
  @link      http://www.glpi-project.org/
  @since     2009
- ---------------------------------------------------------------------- */
+ */
 
 define ("PLUGIN_SIMCARD_VERSION", "1.4.2");
 
 // Minimal GLPI version, inclusive
 define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.85");
 
-// Init the hooks of the plugins -Needed
+/**
+ * Init hooks of the plugin.
+ * REQUIRED
+ *
+ * @return void
+ */
 function plugin_init_simcard() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
-    
+
    $PLUGIN_HOOKS['csrf_compliant']['simcard'] = true;
-   
+
    $plugin = new Plugin();
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
-      
+
       //load changeprofile function (does not exist anymore in this version)
-   	  //$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
-      
+         //$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
 
       $PLUGIN_HOOKS['plugin_datainjection_populate']['simcard']
          = 'plugin_datainjection_populate_simcard';
       $PLUGIN_HOOKS['item_purge']['simcard'] = array();
-      
+
       foreach (PluginSimcardSimcard_Item::getClasses() as $type) {
          $PLUGIN_HOOKS['item_purge']['simcard'][$type] = 'plugin_item_purge_simcard';
       }
-      
+
       $PLUGIN_HOOKS['item_update']['simcard']['ProfileRight'] = 'plugin_simcard_profileRightUpdate';
       $PLUGIN_HOOKS['item_add']['simcard']['ProfileRight'] = 'plugin_simcard_profileRightUpdate';
-      
+
       Plugin::registerClass('PluginSimcardSimcard_Item',
                             array('addtabon' => PluginSimcardSimcard_Item::getClasses()));
       Plugin::registerClass('PluginSimcardProfile',
                             array('addtabon' => 'Profile'));
-                            
+
       // Params : plugin name - string type - number - class - table - form page
       Plugin::registerClass('PluginSimcardSimcard',
                             array('linkgroup_types'        => true,
@@ -81,25 +92,24 @@ function plugin_init_simcard() {
 
       //if glpi is loaded
       if (Session::getLoginUserID()) {
-          
+
          // Display a menu entry ?
-         if (PluginSimcardSimcard::canCreate() 
+         if (PluginSimcardSimcard::canCreate()
             || PluginSimcardSimcard::canUpdate ()
             || PluginSimcardSimcard::canDelete()
-            || PluginSimcardSimcard::canView())
-         {
+            || PluginSimcardSimcard::canView()) {
             //menu entry
-         	$PLUGIN_HOOKS['menu_toadd']['simcard'] = array('assets' => 'PluginSimcardSimcard');
+             $PLUGIN_HOOKS['menu_toadd']['simcard'] = array('assets' => 'PluginSimcardSimcard');
             //search link
             //add simcard to items details
             $PLUGIN_HOOKS['headings']['simcard']           = 'plugin_get_headings_simcard';
             $PLUGIN_HOOKS['headings_action']['simcard']    = 'plugin_headings_actions_simcard';
             $PLUGIN_HOOKS['headings_actionpdf']['simcard'] = 'plugin_headings_actionpdf_simcard';
          }
-             
+
          if (PluginSimcardSimcard::canCreate()) {
             //add link
-            
+
             //use massiveaction in the plugin
             $PLUGIN_HOOKS['use_massive_action']['simcard'] = 1;
          }
@@ -112,7 +122,13 @@ function plugin_init_simcard() {
    }
 }
 
-// Get the name and the version of the plugin - Needed
+
+/**
+ * Get the name and the version of the plugin
+ * REQUIRED
+ *
+ * @return array
+ */
 function plugin_version_simcard() {
    global $LANG;
 
@@ -129,7 +145,12 @@ function plugin_version_simcard() {
                    'minGlpiVersion' => PLUGIN_SIMCARD_GLPI_MIN_VERSION);
 }
 
-// Optional : check prerequisites before install : may print errors or add to message after redirect
+/**
+ * Check pre-requisites before install
+ * OPTIONNAL, but recommanded
+ *
+ * @return boolean
+ */
 function plugin_simcard_check_prerequisites() {
    if (version_compare(GLPI_VERSION, PLUGIN_SIMCARD_GLPI_MIN_VERSION, 'lt')) {
       echo "This plugin requires GLPI >= " . PLUGIN_SIMCARD_GLPI_MIN_VERSION;
@@ -138,15 +159,21 @@ function plugin_simcard_check_prerequisites() {
    return true;
 }
 
-// Uninstall process for plugin : need to return true if succeeded : may display messages or add to message after redirect
+/**
+ * Check configuration process
+ *
+ * @param boolean $verbose Whether to display message on failure. Defaults to false
+ *
+ * @return boolean
+ */
 function plugin_simcard_check_config() {
    return true;
 }
 
 /**
- * 
+ *
  * Migrate itemtype integer (0.72) to string (0.80)
- * 
+ *
  * @param array $types
  * @return string
  */
@@ -155,4 +182,3 @@ function plugin_datainjection_migratetypes_simcard($types) {
    return $types;
 }
 
-?>
