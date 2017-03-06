@@ -281,7 +281,6 @@ class PluginSimcardSimcard extends CommonDBTM {
       }
 
       $this->showFormButtons($options);
-      //$this->addDivForTabs();
 
       return true;
    }
