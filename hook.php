@@ -39,7 +39,7 @@
  * Determine if the plugin should be installed or upgraded
  *
  * Returns 0 if the plugin is not yet installed
- * Returns 1 if the plugin is already installed
+ * Returns the plugin's version if installed
  *
  * @since 1.3
  *
@@ -171,8 +171,6 @@ function plugin_simcard_getDatabaseRelations() {
 
 // Define Dropdown tables to be manage in GLPI :
 function plugin_simcard_getDropdown() {
-   global $LANG;
-
    $plugin = new Plugin();
    if ($plugin->isActivated("simcard")) {
       return array('PluginSimcardSimcardSize'    => __('Size', 'simcard'),
@@ -186,8 +184,6 @@ function plugin_simcard_getDropdown() {
 }
 
 function plugin_simcard_AssignToTicket($types) {
-   global $LANG;
-
    if (Session::haveRight(PluginSimcardProfile::RIGHT_SIMCARD_SIMCARD, PluginSimcardProfile::SIMCARD_ASSOCIATE_TICKET)) {
       $types['PluginSimcardSimcard'] = _sn('SIM card', 'SIM cards', 2, 'simcard');
    }
@@ -211,8 +207,6 @@ function plugin_simcard_forceGroupBy($type) {
 
 
 function plugin_simcard_getAddSearchOptions($itemtype) {
-   global $LANG;
-
    $sopt = array();
 
    $reservedTypeIndex = PluginSimcardConfig::RESERVED_TYPE_RANGE_MIN;

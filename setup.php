@@ -46,7 +46,7 @@ define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.85");
  * @return void
  */
 function plugin_init_simcard() {
-   global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
+   global $PLUGIN_HOOKS, $CFG_GLPI;
 
    $PLUGIN_HOOKS['csrf_compliant']['simcard'] = true;
 
@@ -130,8 +130,6 @@ function plugin_init_simcard() {
  * @return array
  */
 function plugin_version_simcard() {
-   global $LANG;
-
    $author = "<a href='http://www.elsendero.es'>El Sendero</a>";
    $author.= ", <a href='http://www.teclib.com'>Walid Nouh</a>";
    $author.= ", <a href='http://www.teclib.com'>Thierry Bugier Pineau</a>";

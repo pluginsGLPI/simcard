@@ -57,7 +57,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
     * @param $nb  integer  number of item in the type (default 0)
    **/
    static function getTypeName($nb=0) {
-      global $LANG;
       return __s('Direct Connections');
    }
 
@@ -71,7 +70,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
     * @return boolean
    **/
    function can($ID, $right, array &$input=NULL) {
-
       if ($ID<0) {
          // Ajout
          if (!($item = new $input['itemtype'])) {
@@ -155,8 +153,6 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
     * @since 1.3
     **/
    static function upgrade(Migration $migration) {
-      global $DB;
-
    }
 
    static function uninstall() {
@@ -166,7 +162,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    }
 
    static function showForSimcard(PluginSimcardSimcard $simcard) {
-      global $DB, $LANG;
+      global $DB;
 
       if (!$simcard->canView()) {
          return false;
@@ -240,7 +236,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    }
 
    static function showForItem(CommonDBTM $item) {
-      global $DB, $LANG;
+      global $DB;
 
       if (!$item->canView()) {
          return false;
