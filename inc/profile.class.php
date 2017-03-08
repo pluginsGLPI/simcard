@@ -43,6 +43,10 @@ class PluginSimcardProfile extends Profile {
       $this->add(['profiles_id' => $ID]);
    }
 
+   /**
+    *
+    * @param integer $ID Id of the profile to update
+    */
    static function createFirstAccess($ID) {
       $profileRight = new ProfileRight();
 
@@ -63,7 +67,7 @@ class PluginSimcardProfile extends Profile {
 
       // add plugin's itemtype in helpdesk itemtypes for the current profile
       $profile = new Profile();
-      $profile->getFromDB($_SESSION['glpiactiveprofile']['id']);
+      $profile->getFromDB($ID);
       $helpdeskItemtypes = json_decode($profile->fields['helpdesk_item_type'], JSON_OBJECT_AS_ARRAY);
       $helpdeskItemtypes[] = 'PluginSimcardSimcard';
       $profile->update(array(
