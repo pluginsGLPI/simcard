@@ -68,7 +68,7 @@ class PluginSimcardProfile extends Profile {
       // add plugin's itemtype in helpdesk itemtypes for the current profile
       $profile = new Profile();
       $profile->getFromDB($ID);
-      $helpdeskItemtypes = json_decode($profile->fields['helpdesk_item_type'], JSON_OBJECT_AS_ARRAY);
+      $helpdeskItemtypes = json_decode($profile->fields['helpdesk_item_type'], true);
       $helpdeskItemtypes[] = 'PluginSimcardSimcard';
       $profile->update(array(
          'id'                 => $profile->getID(),
