@@ -314,7 +314,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab = array();
       $tab['common']             = __s('SIM card', 'simcard');
 
-      $tab[1]['table']           = static::getTable();
+      $tab[1]['table']           = $this::getTable();
       $tab[1]['field']           = 'name';
       $tab[1]['name']            = __('Name');
       $tab[1]['datatype']        = 'itemlink';
@@ -324,7 +324,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[1]['checktype']       = 'text';
       $tab[1]['displaytype']     = 'text';
 
-      $tab[2]['table']           = static::getTable();
+      $tab[2]['table']           = $this::getTable();
       $tab[2]['field']           = 'id';
       $tab[2]['name']            = __('ID');
       $tab[2]['massiveaction']   = false; // implicit field is id
@@ -339,7 +339,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[4]['displaytype']     = 'dropdown';
       $tab[4]['injectable']      = true;
 
-      $tab[5]['table']           = static::getTable();
+      $tab[5]['table']           = $this::getTable();
       $tab[5]['field']           = 'serial';
       $tab[5]['name']            = __('IMSI', 'simcard');
       $tab[5]['datatype']        = 'string';
@@ -347,7 +347,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[5]['displaytype']     = 'text';
       $tab[5]['injectable']      = true;
 
-      $tab[6]['table']           = static::getTable();
+      $tab[6]['table']           = $this::getTable();
       $tab[6]['field']           = 'otherserial';
       $tab[6]['name']            = __('Inventory number');
       $tab[6]['datatype']        = 'string';
@@ -355,7 +355,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[6]['displaytype']     = 'text';
       $tab[6]['injectable']      = true;
 
-      $tab[16]['table']          = static::getTable();
+      $tab[16]['table']          = $this::getTable();
       $tab[16]['field']          = 'comment';
       $tab[16]['name']           = __('Comments');
       $tab[16]['datatype']       = 'text';
@@ -374,7 +374,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[91]['injectable']     = false;
       $tab[93]['injectable']     = false;
 
-      $tab[19]['table']          = static::getTable();
+      $tab[19]['table']          = $this::getTable();
       $tab[19]['field']          = 'date_mod';
       $tab[19]['name']           = __('Last update');
       $tab[19]['datatype']       = 'datetime';
@@ -416,7 +416,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[26]['displaytype']    = 'dropdown';
       $tab[26]['injectable']     = true;
 
-      $tab[27]['table']          = static::getTable();
+      $tab[27]['table']          = $this::getTable();
       $tab[27]['field']          = 'phonenumber';
       $tab[27]['name']           = __('Phone number', 'simcard');
       $tab[27]['datatype']       = 'string';
@@ -425,7 +425,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[27]['injectable']     = true;
 
       if (PluginSimcardSimcard::canUpdate()) {
-         $tab[28]['table']       = static::getTable();
+         $tab[28]['table']       = $this::getTable();
          $tab[28]['field']       = 'pin';
          $tab[28]['name']        = __('Pin 1', 'simcard');
          $tab[28]['datatype']    = 'string';
@@ -433,7 +433,7 @@ class PluginSimcardSimcard extends CommonDBTM {
          $tab[28]['displaytype'] = 'text';
          $tab[28]['injectable']  = true;
 
-         $tab[29]['table']       = static::getTable();
+         $tab[29]['table']       = $this::getTable();
          $tab[29]['field']       = 'puk';
          $tab[29]['name']        = __('Puk 1', 'simcard');
          $tab[29]['datatype']    = 'string';
@@ -441,7 +441,7 @@ class PluginSimcardSimcard extends CommonDBTM {
          $tab[29]['displaytype'] = 'text';
          $tab[29]['injectable']  = true;
 
-         $tab[30]['table']       = static::getTable();
+         $tab[30]['table']       = $this::getTable();
          $tab[30]['field']       = 'pin2';
          $tab[30]['name']        = __('Pin 2', 'simcard');
          $tab[30]['datatype']    = 'string';
@@ -449,7 +449,7 @@ class PluginSimcardSimcard extends CommonDBTM {
          $tab[30]['displaytype'] = 'text';
          $tab[30]['injectable']  = true;
 
-         $tab[32]['table']       = static::getTable();
+         $tab[32]['table']       = $this::getTable();
          $tab[32]['field']       = 'puk2';
          $tab[32]['name']        = __('Puk 2', 'simcard');
          $tab[32]['datatype']    = 'string';
@@ -498,7 +498,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       $tab[80]['name']           = __('Entity');
       $tab[80]['injectable']     = false;
 
-      $tab[90]['table']          = static::getTable();
+      $tab[90]['table']          = $this::getTable();
       $tab[90]['field']          = 'notepad';
       $tab[90]['name']           = __('Notes');
       $tab[90]['massiveaction']  = false;
