@@ -5,6 +5,11 @@ Simcard management for GLPI
 * Updated by Anthony Piesset and Dethegeek for GLPi 0.84
 * Updated by Thierry Bugier Pineau for GLPi 0.85 and 0.90
 
+Integration in GLPI 9.2
+-----------------------
+
+Simcards will be available as a new component in GLPI 9.2. Therefore, for fresh isntallations of GLPI 9.2, this plugiin becomes useless. 
+
 
 Installation (en)
 -----------------
