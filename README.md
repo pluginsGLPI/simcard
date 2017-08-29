@@ -8,7 +8,7 @@ Simcard management for GLPI
 Integration in GLPI 9.2
 -----------------------
 
-Simcards will be available as a new component in GLPI 9.2. Therefore, for fresh isntallations of GLPI 9.2, this plugiin becomes useless. 
+Simcards will be available as a new component in GLPI 9.2. Therefore, for fresh installations of GLPI 9.2, this plugin becomes useless. 
 
 
 Installation (en)
