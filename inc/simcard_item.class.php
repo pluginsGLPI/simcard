@@ -298,10 +298,10 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
          $used = array();
          $query = "SELECT `id`
-                   FROM `glpi_plugin_simcard_simcards`
-                   WHERE `is_template`='0'
-                      AND `id` IN (SELECT `plugin_simcard_simcards_id`
-                                   FROM `glpi_plugin_simcard_simcards_items`)";
+                   INNER JOIN `glpi_plugin_simcard_simcards_items`
+                   ON (`glpi_plugin_simcard_simcards_items`.`plugin_simcard_simcards_id`
+                       = `glpi_plugin_simcard_simcards`.`id`)
+                    WHERE `is_template` = '0'";
          foreach ($DB->request($query) as $use) {
             $used[] = $use['id'];
          }
