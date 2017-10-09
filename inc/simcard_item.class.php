@@ -135,7 +135,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    static function install(Migration $migration) {
       global $DB;
       $table = getTableForItemType(__CLASS__);
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `items_id` int(11) NOT NULL DEFAULT '0' COMMENT 'RELATION to various table, according to itemtype (id)',
@@ -246,14 +246,14 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          return false;
       }
 
-      //       if (PluginSimcardSimcard::canCreate()) {
-      //       	 if ($item->canEdit($item->getField('id'))) {
-      // 	         $url = Toolbox::getItemTypeFormURL('PluginSimcardSimcard');
-      // 	         $url.= "?itemtype=".$item->getType()."&items_id=".$item->getID()."&id=-1";
-      // 	         echo "<div class='center'><a href='$url'>".__s('New SIM card', 'simcard')."</a></div><br>";
+      //if (PluginSimcardSimcard::canCreate()) {
+      //   if ($item->canEdit($item->getField('id'))) {
+      //      $url = Toolbox::getItemTypeFormURL('PluginSimcardSimcard');
+      //     $url.= "?itemtype=".$item->getType()."&items_id=".$item->getID()."&id=-1";
+      //     echo "<div class='center'><a href='$url'>".__s('New SIM card', 'simcard')."</a></div><br>";
 
-      //       	 }
-      //       }
+      //   }
+      //}
       $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
                                      "`items_id` = '".$item->getID()."' AND `itemtype`='".get_class($item)."'");
       echo "<div class='spaced'>";
@@ -298,10 +298,10 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
          $used = array();
          $query = "SELECT `id`
-                   FROM `glpi_plugin_simcard_simcards`
-                   WHERE `is_template`='0'
-                      AND `id` IN (SELECT `plugin_simcard_simcards_id`
-                                   FROM `glpi_plugin_simcard_simcards_items`)";
+                   INNER JOIN `glpi_plugin_simcard_simcards_items`
+                   ON (`glpi_plugin_simcard_simcards_items`.`plugin_simcard_simcards_id`
+                       = `glpi_plugin_simcard_simcards`.`id`)
+                    WHERE `is_template` = '0'";
          foreach ($DB->request($query) as $use) {
             $used[] = $use['id'];
          }
@@ -350,7 +350,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
     *
     * Count the number of associated items for a simcard item
     *
-    * @param $item   Simcard object
+    * @param $item   PluginSimcardSimcard object
     **/
    static function countForSimcard(PluginSimcardSimcard $item) {
 
