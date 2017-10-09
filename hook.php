@@ -46,19 +46,20 @@
  * @return number
  */
 function plugin_simcard_currentVersion() {
+   global $DB;
 
    // Saves the current version to not re-detect it on multiple calls
    static $currentVersion = null;
 
    if ($currentVersion === null) {
       // result not cached
-      if (!TableExists('glpi_plugin_simcard_simcards_items') &&
-         !TableExists('glpi_plugin_simcard_configs')
+      if (!$DB->tableExists('glpi_plugin_simcard_simcards_items')
+          && !$DB->tableExists('glpi_plugin_simcard_configs')
       ) {
          // the plugin seems not installed
          $currentVersion = 0;
       } else {
-         if (TableExists('glpi_plugin_simcard_configs')) {
+         if ($DB->tableExists('glpi_plugin_simcard_configs')) {
             // The plugin is at least 1.3
             // Get the current version in the plugin's configuration
             $pluginSimcardConfig = new PluginSimcardConfig();
@@ -236,8 +237,8 @@ function plugin_simcard_getAddSearchOptions($itemtype) {
          $sopt[$reservedTypeIndex]['massiveaction'] = false;
          $sopt[$reservedTypeIndex]['forcegroupby']  = true;
          $sopt[$reservedTypeIndex]['joinparams']    = array('beforejoin'
-                                                         => array('table'      => 'glpi_plugin_simcard_simcards_items',
-                                                         'joinparams' => array('jointype' => 'itemtype_item')));
+                                                            => array('table'      => 'glpi_plugin_simcard_simcards_items',
+                                                            'joinparams' => array('jointype' => 'itemtype_item')));
          $reservedTypeIndex++;
          $sopt[$reservedTypeIndex]['table']         = 'glpi_plugin_simcard_simcards';
          $sopt[$reservedTypeIndex]['field']         = 'serial';

@@ -166,7 +166,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       echo "<td>".__s('Type of SIM card', 'simcard')."</td>";
       echo "<td>";
       Dropdown::show('PluginSimcardSimcardType',
-                   array('value' => $this->fields["plugin_simcard_simcardtypes_id"]));
+                     array('value' => $this->fields["plugin_simcard_simcardtypes_id"]));
       echo "</td></tr>\n";
 
       echo "<tr class='tab_bg_1'>";
@@ -525,8 +525,9 @@ class PluginSimcardSimcard extends CommonDBTM {
     */
    static function install(Migration $migration) {
       global $DB;
+
       $table = getTableForItemType(__CLASS__);
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `entities_id` int(11) NOT NULL DEFAULT '0',
@@ -625,7 +626,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       // Remove unicity constraints on simcards
       FieldUnicity::deleteForItemtype("SimcardSimcard");
 
-      foreach (array('Notepad', 'DisplayPreference', 'Contract_Item', 'Infocom', 'Fieldblacklist', 'Document_Item', 'Bookmark', 'Log') as $itemtype) {
+      foreach (array('Notepad', 'DisplayPreference', 'Contract_Item', 'Infocom', 'Fieldblacklist', 'Document_Item', 'SavedSearch', 'Log') as $itemtype) {
          $item = new $itemtype();
          $item->deleteByCriteria(array('itemtype' => __CLASS__));
       }
