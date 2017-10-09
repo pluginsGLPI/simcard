@@ -34,10 +34,10 @@
  @since     2009
  */
 
-define ("PLUGIN_SIMCARD_VERSION", "1.4.2");
+define ("PLUGIN_SIMCARD_VERSION", "1.5.0");
 
 // Minimal GLPI version, inclusive
-define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.85");
+define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "9.2");
 
 /**
  * Init hooks of the plugin.
