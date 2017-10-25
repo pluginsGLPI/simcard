@@ -65,8 +65,6 @@ class PluginSimcardProfile extends Profile {
 
    //profiles modification
    function showForm($ID, $options = array()) {
-      global $LANG;
-
       if (!Profile::canView()) {
          return false;
       }
@@ -178,7 +176,6 @@ class PluginSimcardProfile extends Profile {
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
       if ($item->getType()=='Profile') {
          return _sn('SIM card', 'SIM cards', 2, 'simcard');
       }

@@ -36,7 +36,6 @@ if (!defined('GLPI_ROOT')) {
 class PluginSimcardPhoneOperator extends CommonDropdown {
 
    static function getTypeName($nb=0) {
-      global $LANG;
       return __('Provider', 'simcard');
    }
 
