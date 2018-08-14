@@ -36,36 +36,36 @@ define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "0.85");
 // Init the hooks of the plugins -Needed
 function plugin_init_simcard() {
    global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
-    
+
    $PLUGIN_HOOKS['csrf_compliant']['simcard'] = true;
-   
+
    $plugin = new Plugin();
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
-      
+
       //load changeprofile function (does not exist anymore in this version)
-   	  //$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
-      
+         //$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
 
       $PLUGIN_HOOKS['plugin_datainjection_populate']['simcard']
          = 'plugin_datainjection_populate_simcard';
-      $PLUGIN_HOOKS['item_purge']['simcard'] = array();
-      
+      $PLUGIN_HOOKS['item_purge']['simcard'] = [];
+
       foreach (PluginSimcardSimcard_Item::getClasses() as $type) {
          $PLUGIN_HOOKS['item_purge']['simcard'][$type] = 'plugin_item_purge_simcard';
       }
-      
+
       $PLUGIN_HOOKS['item_update']['simcard']['ProfileRight'] = 'plugin_simcard_profileRightUpdate';
       $PLUGIN_HOOKS['item_add']['simcard']['ProfileRight'] = 'plugin_simcard_profileRightUpdate';
-      
+
       Plugin::registerClass('PluginSimcardSimcard_Item',
-                            array('addtabon' => PluginSimcardSimcard_Item::getClasses()));
+                            ['addtabon' => PluginSimcardSimcard_Item::getClasses()]);
       Plugin::registerClass('PluginSimcardProfile',
-                            array('addtabon' => 'Profile'));
-                            
+                            ['addtabon' => 'Profile']);
+
       // Params : plugin name - string type - number - class - table - form page
       Plugin::registerClass('PluginSimcardSimcard',
-                            array('linkgroup_types'        => true,
+                            ['linkgroup_types'        => true,
                                   'linkuser_types'         => true,
                                   'document_types'         => true,
                                   'contract_types'         => true,
@@ -75,31 +75,30 @@ function plugin_init_simcard() {
                                   'unicity_types'          => true,
                                   'reservation_types'      => true,
                                   'location_types'         => true
-                            ));
+                            ]);
        array_push($CFG_GLPI['state_types'], 'PluginSimcardSimcard');
        array_push($CFG_GLPI['globalsearch_types'], 'PluginSimcardSimcard');
 
       //if glpi is loaded
       if (Session::getLoginUserID()) {
-          
+
          // Display a menu entry ?
-         if (PluginSimcardSimcard::canCreate() 
+         if (PluginSimcardSimcard::canCreate()
             || PluginSimcardSimcard::canUpdate ()
             || PluginSimcardSimcard::canDelete()
-            || PluginSimcardSimcard::canView())
-         {
+            || PluginSimcardSimcard::canView()) {
             //menu entry
-         	$PLUGIN_HOOKS['menu_toadd']['simcard'] = array('assets' => 'PluginSimcardSimcard');
+             $PLUGIN_HOOKS['menu_toadd']['simcard'] = ['assets' => 'PluginSimcardSimcard'];
             //search link
             //add simcard to items details
             $PLUGIN_HOOKS['headings']['simcard']           = 'plugin_get_headings_simcard';
             $PLUGIN_HOOKS['headings_action']['simcard']    = 'plugin_headings_actions_simcard';
             $PLUGIN_HOOKS['headings_actionpdf']['simcard'] = 'plugin_headings_actionpdf_simcard';
          }
-             
+
          if (PluginSimcardSimcard::canCreate()) {
             //add link
-            
+
             //use massiveaction in the plugin
             $PLUGIN_HOOKS['use_massive_action']['simcard'] = 1;
          }
@@ -121,12 +120,12 @@ function plugin_version_simcard() {
    $author.= ", <a href='http://www.teclib.com'>Thierry Bugier Pineau</a>";
    $author.= ", Anthony Piesset";
    $author.= ", <a href='mailto:dethegeek@gmail.com'>Dethegeek</a>";
-   return array ('name'           => __s('Sim cards management', 'simcard'),
+   return  ['name'           => __s('Sim cards management', 'simcard'),
                    'version'        => PLUGIN_SIMCARD_VERSION,
                    'author'         => $author,
                    'license'        => 'GPLv2+',
                    'homepage'       => 'https://github.com/pluginsglpi/simcard',
-                   'minGlpiVersion' => PLUGIN_SIMCARD_GLPI_MIN_VERSION);
+                   'minGlpiVersion' => PLUGIN_SIMCARD_GLPI_MIN_VERSION];
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
@@ -144,9 +143,9 @@ function plugin_simcard_check_config() {
 }
 
 /**
- * 
+ *
  * Migrate itemtype integer (0.72) to string (0.80)
- * 
+ *
  * @param array $types
  * @return string
  */
@@ -155,4 +154,3 @@ function plugin_datainjection_migratetypes_simcard($types) {
    return $types;
 }
 
-?>

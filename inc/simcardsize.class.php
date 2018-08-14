@@ -36,7 +36,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginSimcardSimcardSize extends CommonDropdown {
 
 
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       global $LANG;
       return __s('Size', 'simcard');
    }
@@ -53,7 +53,7 @@ class PluginSimcardSimcardSize extends CommonDropdown {
            KEY `name` (`name`)
          ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die ("Error adding table $table");
-         
+
          $query = "INSERT INTO `$table` (`id`, `name`, `comment`) VALUES
                      (1, 'Full-SIM', ''),
                      (2, 'Micro-SIM', ''),
@@ -62,9 +62,9 @@ class PluginSimcardSimcardSize extends CommonDropdown {
          $DB->query($query) or die("Error adding simcard sizes");
       }
    }
-   
+
    /**
-    * 
+    *
     *
     * @since 1.3
     **/
@@ -72,28 +72,28 @@ class PluginSimcardSimcardSize extends CommonDropdown {
       global $DB;
 
    }
-   
+
    static function uninstall() {
       global $DB;
 
-      foreach (array('DisplayPreference', 'Bookmark') as $itemtype) {
+      foreach (['DisplayPreference', 'Bookmark'] as $itemtype) {
          $item = new $itemtype();
-         $item->deleteByCriteria(array('itemtype' => __CLASS__));
+         $item->deleteByCriteria(['itemtype' => __CLASS__]);
       }
-      
+
       // Remove dropdowns localization
       $dropdownTranslation = new DropdownTranslation();
-      $dropdownTranslation->deleteByCriteria(array("itemtype = 'PluginSimcardSimcardSize'"), 1);
+      $dropdownTranslation->deleteByCriteria(["itemtype = 'PluginSimcardSimcardSize'"], 1);
 
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
    }
-   
+
    static function transfer($ID, $entity) {
       global $DB;
 
       $simcardSize = new self();
-      
+
       if ($ID > 0) {
          // Not already transfer
          // Search init item
@@ -120,4 +120,3 @@ class PluginSimcardSimcardSize extends CommonDropdown {
       return 0;
    }
 }
-?>

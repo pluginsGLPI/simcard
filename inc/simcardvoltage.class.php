@@ -36,14 +36,14 @@ if (!defined('GLPI_ROOT')) {
 class PluginSimcardSimcardVoltage extends CommonDropdown {
 
 
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       global $LANG;
       return __s('Voltage', 'simcard');
    }
 
    static function install(Migration $migration) {
       global $DB;
-      
+
       $table = getTableForItemType(__CLASS__);
       if (!TableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
@@ -54,16 +54,16 @@ class PluginSimcardSimcardVoltage extends CommonDropdown {
            KEY `name` (`name`)
          ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
          $DB->query($query) or die ("Error adding table $table");
-         
+
          $query = "INSERT INTO `$table` (`id`, `name`, `comment`) VALUES
                      (1, '3V', ''),
                      (2, '5V', '');";
          $DB->query($query) or die("Error adding simcard voltages");
       }
    }
-   
+
    /**
-    * 
+    *
     *
     * @since 1.3
     **/
@@ -71,23 +71,23 @@ class PluginSimcardSimcardVoltage extends CommonDropdown {
       global $DB;
 
    }
-   
+
    static function uninstall() {
       global $DB;
 
-      foreach (array('DisplayPreference', 'Bookmark') as $itemtype) {
+      foreach (['DisplayPreference', 'Bookmark'] as $itemtype) {
          $item = new $itemtype();
-         $item->deleteByCriteria(array('itemtype' => __CLASS__));
+         $item->deleteByCriteria(['itemtype' => __CLASS__]);
       }
-      
+
       // Remove dropdowns localization
       $dropdownTranslation = new DropdownTranslation();
-      $dropdownTranslation->deleteByCriteria(array("itemtype LIKE 'PluginSimcardSimcardVoltage'"), 1);
+      $dropdownTranslation->deleteByCriteria(["itemtype LIKE 'PluginSimcardSimcardVoltage'"], 1);
 
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
    }
-   
+
    static function transfer($ID, $entity) {
       global $DB;
 
@@ -120,4 +120,3 @@ class PluginSimcardSimcardVoltage extends CommonDropdown {
    }
 
 }
-?>

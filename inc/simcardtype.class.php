@@ -58,7 +58,7 @@ class PluginSimcardSimcardType extends CommonDropdown {
    }
 
    /**
-    * 
+    *
     *
     * @since 1.3
     * */
@@ -74,15 +74,15 @@ class PluginSimcardSimcardType extends CommonDropdown {
 
    static function uninstall() {
       global $DB;
-      
-      foreach (array('DisplayPreference', 'Bookmark') as $itemtype) {
+
+      foreach (['DisplayPreference', 'Bookmark'] as $itemtype) {
          $item = new $itemtype();
-         $item->deleteByCriteria(array('itemtype' => __CLASS__));
+         $item->deleteByCriteria(['itemtype' => __CLASS__]);
       }
 
       // Remove dropdowns localization
       $dropdownTranslation = new DropdownTranslation();
-      $dropdownTranslation->deleteByCriteria(array("itemtype = 'PluginSimcardSimcardType'"), 1);
+      $dropdownTranslation->deleteByCriteria(["itemtype = 'PluginSimcardSimcardType'"], 1);
 
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");
@@ -90,7 +90,7 @@ class PluginSimcardSimcardType extends CommonDropdown {
 
    static function transfer($ID, $entity) {
       global $DB;
-      
+
       $simcardType = new self();
 
       if ($ID > 0) {
@@ -121,4 +121,3 @@ class PluginSimcardSimcardType extends CommonDropdown {
 
 }
 
-?>
