@@ -45,7 +45,7 @@ class PluginSimcardConfig extends CommonDBTM {
    const RESERVED_TYPE_RANGE_MIN = 10126;
    const RESERVED_TYPE_RANGE_MAX = 10135;
 
-   static $config = array();
+   static $config = [];
 
    /**
     *
@@ -56,18 +56,20 @@ class PluginSimcardConfig extends CommonDBTM {
       global $DB;
 
       $table = getTableForItemType(__CLASS__);
-      $query = "CREATE TABLE `".$table."` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-                `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-                PRIMARY KEY (`id`),
-                UNIQUE KEY `unicity` (`type`)
-                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1";
-      $DB->query($query) or die($DB->error());
-      $query = "INSERT INTO `".$table."` 
-                (`type`,`value`)
-               VALUES ('Version', '" . PLUGIN_SIMCARD_VERSION . "')";
-      $DB->query($query) or die($DB->error());
+      if (!$DB->tableExists($table)) {
+         $query = "CREATE TABLE `".$table."` (
+                   `id` int(11) NOT NULL AUTO_INCREMENT,
+                   `type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                   `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                   PRIMARY KEY (`id`),
+                   UNIQUE KEY `unicity` (`type`)
+                   ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1";
+         $DB->query($query) or die($DB->error());
+         $query = "INSERT INTO `".$table."`
+                   (`type`,`value`)
+                  VALUES ('Version', '" . PLUGIN_SIMCARD_VERSION . "')";
+         $DB->query($query) or die($DB->error());
+      }
 
    }
 
@@ -102,7 +104,9 @@ class PluginSimcardConfig extends CommonDBTM {
       global $DB;
 
       $displayPreference = new DisplayPreference();
-      $displayPreference->deleteByCriteria(array("`num` >= " . self::RESERVED_TYPE_RANGE_MIN . " AND `num` <= " . self::RESERVED_TYPE_RANGE_MAX));
+      $displayPreference->deleteByCriteria([
+         "`num` >= " . self::RESERVED_TYPE_RANGE_MIN . " AND `num` <= " . self::RESERVED_TYPE_RANGE_MAX
+      ]);
 
       $table = getTableForItemType(__CLASS__);
       $query = "DROP TABLE IF EXISTS `". $table ."`";
@@ -119,7 +123,7 @@ class PluginSimcardConfig extends CommonDBTM {
       global $DB;
 
       $table = getTableForItemType(__CLASS__);
-      self::$config = array();
+      self::$config = [];
       $query = "SELECT * FROM `". $table ."`";
       $result = $DB->query($query);
       while ($data=$DB->fetch_array($result)) {
@@ -140,8 +144,10 @@ class PluginSimcardConfig extends CommonDBTM {
       if (!is_null($existing_value)) {
          return false;
       } else {
-         return $this->add(array('type'       => $name,
-                                 'value'      => $value));
+         return $this->add([
+            'type'  => $name,
+            'value' => $value
+         ]);
       }
    }
 
@@ -161,7 +167,7 @@ class PluginSimcardConfig extends CommonDBTM {
       if (isset($config['value'])) {
          return $config['value'];
       }
-      return NULL;
+      return null;
    }
 
    /**
@@ -175,9 +181,9 @@ class PluginSimcardConfig extends CommonDBTM {
    function updateValue($name, $value) {
       $config = current($this->find("`type`='".$name."'"));
       if (isset($config['id'])) {
-         return $this->update(array('id'=> $config['id'], 'value'=>$value));
+         return $this->update(['id'=> $config['id'], 'value'=>$value]);
       } else {
-         return $this->add(array('type' => $name, 'value' => $value));
+         return $this->add(['type' => $name, 'value' => $value]);
       }
    }
 }

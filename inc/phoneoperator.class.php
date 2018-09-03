@@ -35,7 +35,7 @@ if (!defined('GLPI_ROOT')) {
 /// Class PhoneOperator
 class PluginSimcardPhoneOperator extends CommonDropdown {
 
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       global $LANG;
       return __('Provider', 'simcard');
    }
@@ -69,14 +69,14 @@ class PluginSimcardPhoneOperator extends CommonDropdown {
    static function uninstall() {
       global $DB;
 
-      foreach (array('DisplayPreference', 'SavedSearch') as $itemtype) {
+      foreach (['DisplayPreference', 'SavedSearch'] as $itemtype) {
          $item = new $itemtype();
-         $item->deleteByCriteria(array('itemtype' => __CLASS__));
+         $item->deleteByCriteria(['itemtype' => __CLASS__]);
       }
 
       // Remove dropdowns localization
       $dropdownTranslation = new DropdownTranslation();
-      $dropdownTranslation->deleteByCriteria(array("itemtype LIKE 'PluginSimcardPhoneOperator'"), 1);
+      $dropdownTranslation->deleteByCriteria(["itemtype LIKE 'PluginSimcardPhoneOperator'"], 1);
 
       $table = getTableForItemType(__CLASS__);
       $DB->query("DROP TABLE IF EXISTS `$table`");

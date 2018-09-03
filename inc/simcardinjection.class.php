@@ -48,7 +48,7 @@ class PluginSimcardSimcardInjection extends PluginSimcardSimcard
 
 
    function connectedTo() {
-      return array();
+      return [];
    }
 
 
@@ -70,7 +70,7 @@ class PluginSimcardSimcardInjection extends PluginSimcardSimcard
     *
     * @return an array of IDs of newly created objects : for example array(Computer=>1, Networkport=>10)
     */
-   function addOrUpdateObject($values=array(), $options=array()) {
+   function addOrUpdateObject($values = [], $options = []) {
 
       $lib = new PluginDatainjectionCommonInjectionLib($this, $values, $options);
       $lib->processAddOrUpdate();

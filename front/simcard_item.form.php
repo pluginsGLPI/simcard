@@ -41,7 +41,7 @@ if (isset($_POST["additem"])) {
       foreach ($_POST['todelete'] as $id => $val) {
          if ($val == 'on') {
             $simcard_item->can($id, DELETE, $_POST);
-            $ok = $simcard_item->delete(array('id' => $id));
+            $ok = $simcard_item->delete(['id' => $id]);
          }
       }
    }
