@@ -82,14 +82,14 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             return false;
          }
          if ($item->getField('is_global')==0
-             && self::countForItem($ID) > 0) {
+             && self::countForID($ID) > 0) {
                return false;
          }
       }
       return parent::can($ID, $right, $input);
    }
 
-   static function countForItem($id) {
+   static function countForID($id) {
          return countElementsInTable(getTableForItemType(__CLASS__),
                "`plugin_simcard_simcards_id`='$id'");
    }
@@ -221,8 +221,10 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
          if (empty($results)) {
             echo "<input type='hidden' name='plugin_simcard_simcards_id' value='".$simcard->getID()."'>";
-            // TODO : Dropdown::showAllItems is deprecated, use Dropdown::showSelectItemFromItemtypes instead
-            Dropdown::showAllItems("items_id", 0, 0, $simcard->fields['entities_id'], self::getClasses());
+            Dropdown::showSelectItemFromItemtypes([
+               'itemtypes'       => self::getClasses(),
+               'entity_restrict' => $simcard->fields['entities_id'],
+            ]);
             echo "</td>";
             echo "<td colspan='2' class='center' class='tab_bg_2'>";
             echo "<input type='submit' name='additem' value=\""._sx('button', 'Add')."\" class='submit'>";

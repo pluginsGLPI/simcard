@@ -56,18 +56,20 @@ class PluginSimcardConfig extends CommonDBTM {
       global $DB;
 
       $table = getTableForItemType(__CLASS__);
-      $query = "CREATE TABLE `".$table."` (
-                `id` int(11) NOT NULL AUTO_INCREMENT,
-                `type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-                `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-                PRIMARY KEY (`id`),
-                UNIQUE KEY `unicity` (`type`)
-                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1";
-      $DB->query($query) or die($DB->error());
-      $query = "INSERT INTO `".$table."` 
-                (`type`,`value`)
-               VALUES ('Version', '" . PLUGIN_SIMCARD_VERSION . "')";
-      $DB->query($query) or die($DB->error());
+      if (!$DB->tableExists($table)) {
+         $query = "CREATE TABLE `".$table."` (
+                   `id` int(11) NOT NULL AUTO_INCREMENT,
+                   `type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                   `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                   PRIMARY KEY (`id`),
+                   UNIQUE KEY `unicity` (`type`)
+                   ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1";
+         $DB->query($query) or die($DB->error());
+         $query = "INSERT INTO `".$table."`
+                   (`type`,`value`)
+                  VALUES ('Version', '" . PLUGIN_SIMCARD_VERSION . "')";
+         $DB->query($query) or die($DB->error());
+      }
 
    }
 
