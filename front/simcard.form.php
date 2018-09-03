@@ -107,7 +107,7 @@ if (isset($_POST["add"])) {
    Html::header(PluginSimcardSimcard::getTypeName(2), '', "assets", "pluginsimcardsimcard", "simcard");
 
    //show simcard form to add
-   $simcard->display(array('id' => $_GET["id"],
-                            'withtemplate' => $_GET["withtemplate"]));
+   $simcard->display(['id' => $_GET["id"],
+                            'withtemplate' => $_GET["withtemplate"]]);
    html::footer();
 }

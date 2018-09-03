@@ -43,14 +43,14 @@ class PluginSimcardSimcard extends CommonDBTM {
    protected $usenotepad            = true;
 
    //~ static $types = array('Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer', 'Software', 'Entity');
-   static $types = array('Phone' , 'Entity');
+   static $types = ['Phone' , 'Entity'];
 
    /**
     * Name of the type
     *
     * @param $nb  integer  number of item in the type (default 0)
    **/
-   static function getTypeName($nb=0) {
+   static function getTypeName($nb = 0) {
       global $LANG;
       return _n('SIM card', 'SIM cards', $nb, 'simcard');
    }
@@ -60,16 +60,16 @@ class PluginSimcardSimcard extends CommonDBTM {
     *
     * @see commonDBTM::getRights()
     **/
-   function getRights($interface='central') {
+   function getRights($interface = 'central') {
       $rights = parent::getRights();
       $rights[PluginSimcardProfile::SIMCARD_ASSOCIATE_TICKET] = __('Associable to a ticket');
 
       return $rights;
    }
 
-   function defineTabs($options=array()) {
+   function defineTabs($options = []) {
       global $LANG;
-      $ong     = array();
+      $ong = [];
       $this->addDefaultFormTab($ong);
       if ($this->fields['id'] > 0) {
          if (!isset($options['withtemplate']) || empty($options['withtemplate'])) {
@@ -109,7 +109,7 @@ class PluginSimcardSimcard extends CommonDBTM {
     *
     *@return Nothing (display)
    **/
-   function showForm($ID, $options=array()) {
+   function showForm($ID, $options = []) {
       global $CFG_GLPI, $DB, $LANG;
 
       if (!$this->canView()) {
@@ -150,60 +150,70 @@ class PluginSimcardSimcard extends CommonDBTM {
       $objectName = autoName($this->fields["name"], "name",
                            (isset($options['withtemplate']) && $options['withtemplate']==2),
                            $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'name', array('value' => $objectName));
+      Html::autocompletionTextField($this, 'name', ['value' => $objectName]);
       echo "</td>";
       echo "<td>".__s('Status')."</td>";
       echo "<td>";
-      Dropdown::show('State', array('value' => $this->fields["states_id"]));
+      Dropdown::show('State', ['value' => $this->fields["states_id"]]);
       echo "</td></tr>\n";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__s('Location')."</td>";
       echo "<td>";
-      Dropdown::show('Location', array('value'  => $this->fields["locations_id"],
-                                     'entity' => $this->fields["entities_id"]));
+      Dropdown::show('Location', [
+         'value'  => $this->fields["locations_id"],
+         'entity' => $this->fields["entities_id"]
+      ]);
       echo "</td>";
       echo "<td>".__s('Type of SIM card', 'simcard')."</td>";
       echo "<td>";
-      Dropdown::show('PluginSimcardSimcardType',
-                     array('value' => $this->fields["plugin_simcard_simcardtypes_id"]));
+      Dropdown::show('PluginSimcardSimcardType', [
+         'value' => $this->fields["plugin_simcard_simcardtypes_id"]
+      ]);
       echo "</td></tr>\n";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__s('Technician in charge of the hardware')."</td>";
       echo "<td>";
-      User::dropdown(array('name'   => 'users_id_tech',
-                         'value'  => $this->fields["users_id_tech"],
-                         'right'  => 'interface',
-                         'entity' => $this->fields["entities_id"]));
+      User::dropdown([
+         'name'   => 'users_id_tech',
+         'value'  => $this->fields["users_id_tech"],
+         'right'  => 'interface',
+         'entity' => $this->fields["entities_id"]
+      ]);
       echo "</td>";
       echo "<td>".__s('Size', 'simcard')."</td>";
       echo "<td>";
-      Dropdown::show('PluginSimcardSimcardSize',
-                   array('value' => $this->fields["plugin_simcard_simcardsizes_id"]));
+      Dropdown::show('PluginSimcardSimcardSize', [
+         'value' => $this->fields["plugin_simcard_simcardsizes_id"]
+      ]);
       echo "</td></tr>\n";
 
       //       TODO : Add group in charge of hardware
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__s('Group in charge of the hardware')."</td>";
       echo "<td>";
-      Group::dropdown(array('name'      => 'groups_id_tech',
-      'value'     => $this->fields['groups_id_tech'],
-      'entity'    => $this->fields['entities_id'],
-      'condition' => '`is_assign`'));
+      Group::dropdown([
+         'name'      => 'groups_id_tech',
+         'value'     => $this->fields['groups_id_tech'],
+         'entity'    => $this->fields['entities_id'],
+         'condition' => '`is_assign`'
+      ]);
       echo "</td>";
 
       echo "<td>".__s('Voltage', 'simcard')."</td>";
       echo "<td>";
-      Dropdown::show('PluginSimcardSimcardVoltage',
-                   array('value' => $this->fields["plugin_simcard_simcardvoltages_id"]));
+      Dropdown::show('PluginSimcardSimcardVoltage', [
+         'value' => $this->fields["plugin_simcard_simcardvoltages_id"]
+      ]);
       echo "</td></tr>\n";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__s('Provider', 'simcard')."</td>";
       echo "<td>";
-      Dropdown::show('PluginSimcardPhoneOperator',
-                   array('value' => $this->fields["plugin_simcard_phoneoperators_id"]));
+      Dropdown::show('PluginSimcardPhoneOperator', [
+         'value' => $this->fields["plugin_simcard_phoneoperators_id"]
+      ]);
       echo "</td>";
 
       echo "<td>" . __s('Associable items to a ticket') . "&nbsp;:</td><td>";
@@ -213,9 +223,11 @@ class PluginSimcardSimcard extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__s('User')."</td>";
       echo "<td>";
-      User::dropdown(array('value'  => $this->fields["users_id"],
-                         'entity' => $this->fields["entities_id"],
-                         'right'  => 'all'));
+      User::dropdown([
+         'value'  => $this->fields["users_id"],
+         'entity' => $this->fields["entities_id"],
+         'right'  => 'all'
+      ]);
       echo "</td>";
 
       echo "<input type='hidden' name='is_global' value='1'>";
@@ -227,13 +239,15 @@ class PluginSimcardSimcard extends CommonDBTM {
       $objectName = autoName($this->fields["otherserial"], "otherserial",
                            (isset($options['withtemplate']) && $options['withtemplate']==2),
                            $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'otherserial', array('value' => $objectName));
+      Html::autocompletionTextField($this, 'otherserial', ['value' => $objectName]);
       echo "</td></tr>\n";
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__s('Group')."</td>";
       echo "<td>";
-      Dropdown::show('Group', array('value'     => $this->fields["groups_id"],
-                                  'entity'    => $this->fields["entities_id"]));
+      Dropdown::show('Group', [
+         'value'     => $this->fields["groups_id"],
+         'entity'    => $this->fields["entities_id"]
+      ]);
 
       echo "</td></tr>\n";
 
@@ -402,7 +416,7 @@ class PluginSimcardSimcard extends CommonDBTM {
                'displaytype'     => 'dropdown',
                'injectable'      => true,
             ];
-         } elseif ($option['id'] == 91
+         } else if ($option['id'] == 91
                    || $options['id'] == 93) {
             $options += [
                'injectable'      => true,
@@ -706,14 +720,14 @@ class PluginSimcardSimcard extends CommonDBTM {
       // Remove unicity constraints on simcards
       FieldUnicity::deleteForItemtype("SimcardSimcard");
 
-      foreach (array('Notepad', 'DisplayPreference', 'Contract_Item', 'Infocom', 'Fieldblacklist', 'Document_Item', 'SavedSearch', 'Log') as $itemtype) {
+      foreach (['Notepad', 'DisplayPreference', 'Contract_Item', 'Infocom', 'Fieldblacklist', 'Document_Item', 'SavedSearch', 'Log'] as $itemtype) {
          $item = new $itemtype();
-         $item->deleteByCriteria(array('itemtype' => __CLASS__));
+         $item->deleteByCriteria(['itemtype' => __CLASS__]);
       }
 
       $plugin = new Plugin();
       if ($plugin->isActivated('datainjection') && class_exists('PluginDatainjectionModel')) {
-         PluginDatainjectionModel::clean(array('itemtype' => __CLASS__));
+         PluginDatainjectionModel::clean(['itemtype' => __CLASS__]);
       }
 
       if ($plugin->isInstalled('customfields') && $plugin->isActivated('customfields')) {
@@ -724,12 +738,12 @@ class PluginSimcardSimcard extends CommonDBTM {
       $DB->query("DROP TABLE IF EXISTS `$table`");
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       global $LANG;
 
       if (in_array(get_class($item), PluginSimcardSimcard_Item::getClasses())
          || get_class($item) == 'Profile') {
-         return array(1 => _sn('SIM card', 'SIM cards', 2, 'simcard'));
+         return [1 => _sn('SIM card', 'SIM cards', 2, 'simcard')];
       } else if (get_class($item) == __CLASS__) {
          return _sn('SIM card', 'SIM cards', 2, 'simcard');
       }
@@ -743,7 +757,7 @@ class PluginSimcardSimcard extends CommonDBTM {
     * @param number $tabnum
     * @param number $withtemplate
     */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       $self=new self();
       if ($item->getType()=='PluginSimcardSimcard') {
@@ -759,7 +773,7 @@ class PluginSimcardSimcard extends CommonDBTM {
     *
     * @return array of types
    **/
-   static function getTypes($all=false) {
+   static function getTypes($all = false) {
 
       if ($all) {
          return self::$types;
@@ -787,9 +801,9 @@ class PluginSimcardSimcard extends CommonDBTM {
     * @return array
     */
    static function getMenuContent() {
-       global $CFG_GLPI;
+      global $CFG_GLPI;
 
-       $menu = array();
+      $menu = [];
       $menu['title'] = self::getTypeName(2);
       $menu['page']  = self::getSearchURL(false);
       $menu['links']['search'] = self::getSearchURL(false);
@@ -822,15 +836,15 @@ class PluginSimcardSimcard extends CommonDBTM {
     *
     * @return boolean : true on success
    **/
-   function delete(array $input, $force=0, $history=1) {
+   function delete(array $input, $force = 0, $history = 1) {
       $deleteSuccessful = parent::delete($input, $force, $history);
       if ($deleteSuccessful != false) {
          if ($force == 1) {
             $notepad = new Notepad();
-            $notepad->deleteByCriteria(array(
-            'itemtype' => 'PluginSimcardSimcard',
-            'items_id' => $input['id']
-            ));
+            $notepad->deleteByCriteria([
+               'itemtype' => 'PluginSimcardSimcard',
+               'items_id' => $input['id']
+            ]);
          }
       }
       return $deleteSuccessful;
@@ -841,7 +855,7 @@ class PluginSimcardSimcard extends CommonDBTM {
     *
     * @see CommonDBTM::getSpecificMassiveActions()
     * */
-   function getSpecificMassiveActions($checkitem = NULL) {
+   function getSpecificMassiveActions($checkitem = null) {
       $isadmin = static::canUpdate();
       $actions = parent::getSpecificMassiveActions($checkitem);
 
@@ -865,7 +879,7 @@ class PluginSimcardSimcard extends CommonDBTM {
       switch ($ma->getAction()) {
          case "transfer" :
             Dropdown::show('Entity');
-            echo Html::submit(_x('button', 'Post'), array('name' => 'massiveaction'));
+            echo Html::submit(_x('button', 'Post'), ['name' => 'massiveaction']);
             return true;
             break;
       }

@@ -40,7 +40,7 @@ class PluginSimcardProfile extends Profile {
    static $rightname = 'profile';
 
    function createAccess($ID) {
-      $this->add(array('profiles_id' => $ID));
+      $this->add(['profiles_id' => $ID]);
    }
 
    static function createFirstAccess($ID) {
@@ -48,14 +48,14 @@ class PluginSimcardProfile extends Profile {
 
       $currentRights = ProfileRight::getProfileRights(
           $ID,
-          array(self::RIGHT_SIMCARD_SIMCARD)
+          [self::RIGHT_SIMCARD_SIMCARD]
       );
-      $firstAccessRights = array_merge($currentRights, array(
-              self::RIGHT_SIMCARD_SIMCARD => ALLSTANDARDRIGHT
-              + self::SIMCARD_ASSOCIATE_TICKET
-              + READNOTE
-              + UPDATENOTE
-      ));
+      $firstAccessRights = array_merge($currentRights, [
+         self::RIGHT_SIMCARD_SIMCARD => ALLSTANDARDRIGHT
+         + self::SIMCARD_ASSOCIATE_TICKET
+         + READNOTE
+         + UPDATENOTE
+      ]);
       $profileRight->updateProfileRights($ID, $firstAccessRights);
 
       //Add right to the current session
@@ -64,7 +64,7 @@ class PluginSimcardProfile extends Profile {
    }
 
    //profiles modification
-   function showForm($ID, $options = array()) {
+   function showForm($ID, $options = []) {
       global $LANG;
 
       if (!Profile::canView()) {
@@ -81,8 +81,10 @@ class PluginSimcardProfile extends Profile {
       }
 
       $rights = $this->getAllRights();
-      $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
-                                                         'default_class' => 'tab_bg_2'));
+      $profile->displayRightsChoiceMatrix($rights, [
+         'canedit'       => $canedit,
+         'default_class' => 'tab_bg_2'
+      ]);
 
       if ($canedit) {
          echo "<div class='center'>";
@@ -171,13 +173,13 @@ class PluginSimcardProfile extends Profile {
    static function uninstall() {
       global $DB;
 
-      ProfileRight::deleteProfileRights(array(
+      ProfileRight::deleteProfileRights([
          self::RIGHT_SIMCARD_SIMCARD
-      ));
+      ]);
       unset($_SESSION["glpiactiveprofile"][self::RIGHT_SIMCARD_SIMCARD]);
    }
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       global $LANG;
       if ($item->getType()=='Profile') {
          return _sn('SIM card', 'SIM cards', 2, 'simcard');
@@ -186,8 +188,7 @@ class PluginSimcardProfile extends Profile {
    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
-
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       if ($item->getType() == 'Profile') {
          $profile = new self();
          $profile->showForm($item->getField('id'));
@@ -196,12 +197,11 @@ class PluginSimcardProfile extends Profile {
    }
 
    function getAllRights() {
-      $rights = array(
-          array('itemtype'  => 'PluginSimcardSimcard',
-                'label'     => PluginSimcardSimcard::getTypeName(2),
-                'field'     => 'simcard:simcard'
-          ),
-      );
+      $rights = [[
+         'itemtype'  => 'PluginSimcardSimcard',
+         'label'     => PluginSimcardSimcard::getTypeName(2),
+         'field'     => 'simcard:simcard'
+      ]];
       return $rights;
    }
 
