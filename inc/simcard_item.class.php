@@ -103,8 +103,10 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    static function countForItemByItemtype(CommonDBTM $item) {
       $id = $item->getField('id');
       $itemtype = $item->getType();
-         return countElementsInTable(getTableForItemType(__CLASS__),
-            "`items_id`='$id' AND `itemtype`='$itemtype'");
+         return countElementsInTable(getTableForItemType(__CLASS__), [
+            'items_id' => $id,
+            'itemtype' => $itemtype
+         ]);
    }
 
    /**
