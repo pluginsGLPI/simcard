@@ -411,13 +411,13 @@ class PluginSimcardSimcard extends CommonDBTM {
 
       foreach ($location_options as &$option) {
          if ($option['id'] == 3) {
-            $options += [
+            $option += [
                'checktype'       => 'text',
                'displaytype'     => 'dropdown',
                'injectable'      => true,
             ];
          } else if ($option['id'] == 91
-                   || $options['id'] == 93) {
+                   || $option['id'] == 93) {
             $option += [
                'injectable'      => true,
             ];
