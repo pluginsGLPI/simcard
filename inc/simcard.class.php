@@ -409,16 +409,16 @@ class PluginSimcardSimcard extends CommonDBTM {
 
       $location_options = Location::rawSearchOptionsToAdd();
 
-      foreach ($location_options as &$options) {
+      foreach ($location_options as &$option) {
          if ($option['id'] == 3) {
-            $options += [
+            $option += [
                'checktype'       => 'text',
                'displaytype'     => 'dropdown',
                'injectable'      => true,
             ];
          } else if ($option['id'] == 91
-                   || $options['id'] == 93) {
-            $options += [
+                   || $option['id'] == 93) {
+            $option += [
                'injectable'      => true,
             ];
          }
