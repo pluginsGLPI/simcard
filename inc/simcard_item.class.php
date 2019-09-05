@@ -91,7 +91,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
 
    static function countForID($id) {
          return countElementsInTable(getTableForItemType(__CLASS__),
-               "`plugin_simcard_simcards_id`='$id'");
+               ["plugin_simcard_simcards_id " => $id]);
    }
 
    /**
@@ -104,7 +104,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       $id = $item->getField('id');
       $itemtype = $item->getType();
          return countElementsInTable(getTableForItemType(__CLASS__),
-            "`items_id`='$id' AND `itemtype`='$itemtype'");
+            ["items_id" => $id, "itemtype" => $itemtype]);
    }
 
    /**
@@ -360,7 +360,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
     **/
    static function countForSimcard(PluginSimcardSimcard $item) {
 
-      $restrict = "`glpi_plugin_simcard_simcards_items`.`plugin_simcard_simcards_id` = '".$item->getField('id')."'";
+      $restrict = ["glpi_plugin_simcard_simcards_items.plugin_simcard_simcards_id" => $item->getField('id')];
 
       return countElementsInTable(['glpi_plugin_simcard_simcards_items'], $restrict);
    }
