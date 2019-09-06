@@ -173,8 +173,10 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       if (!$simcard->canView()) {
          return false;
       }
-      $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
-                                     "`plugin_simcard_simcards_id` = '".$simcard->getID()."'");
+      $results = getAllDatasFromTable(
+         getTableForItemType(__CLASS__),
+         ['plugin_simcard_simcards_id' => $simcard->getID()]
+      );
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<table class='tab_cadre_fixehov'>";
@@ -258,8 +260,10 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
 
       //   }
       //}
-      $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
-                                     "`items_id` = '".$item->getID()."' AND `itemtype`='".get_class($item)."'");
+      $results = getAllDatasFromTable(
+         getTableForItemType(__CLASS__),
+         ['items_id' => $item->getID(), 'itemtype' => get_class($item)]
+      );
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<table class='tab_cadre_fixehov'>";
