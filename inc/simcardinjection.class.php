@@ -58,7 +58,13 @@ class PluginSimcardSimcardInjection extends PluginSimcardSimcard
    }
 
    function getOptions($primary_type = '') {
-      return Search::getOptions(get_parent_class($this));
+      $tab = Search::getOptions(get_parent_class($this));
+
+      $options = [
+         'ignore_fields' => [],
+         'displaytype' => [],
+      ];
+      return PluginDatainjectionCommonInjectionLib::addToSearchOptions($tab, $options, $this);
    }
 
 
