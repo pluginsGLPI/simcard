@@ -28,6 +28,8 @@
  @since     2009
  ---------------------------------------------------------------------- */
 
+use Glpi\Event;
+
 include ('../../../inc/includes.php');
 
 PluginSimcardSimcard::canView();

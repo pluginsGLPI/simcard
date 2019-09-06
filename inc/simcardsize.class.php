@@ -44,7 +44,7 @@ class PluginSimcardSimcardSize extends CommonDropdown {
    static function install(Migration $migration) {
       global $DB;
       $table = getTableForItemType(__CLASS__);
-      if (!TableExists($table)) {
+      if (!$DB->TableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
            `id` int(11) NOT NULL AUTO_INCREMENT,
            `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -76,7 +76,7 @@ class PluginSimcardSimcardSize extends CommonDropdown {
    static function uninstall() {
       global $DB;
 
-      foreach (array('DisplayPreference', 'Bookmark') as $itemtype) {
+      foreach (array('DisplayPreference', 'SavedSearch') as $itemtype) {
          $item = new $itemtype();
          $item->deleteByCriteria(array('itemtype' => __CLASS__));
       }
