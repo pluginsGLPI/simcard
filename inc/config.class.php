@@ -45,7 +45,7 @@ class PluginSimcardConfig extends CommonDBTM {
    const RESERVED_TYPE_RANGE_MIN = 10126;
    const RESERVED_TYPE_RANGE_MAX = 10135;
    
-   static $config = array();
+   static $config = [];
 
    /**
     * 
@@ -119,7 +119,7 @@ class PluginSimcardConfig extends CommonDBTM {
       global $DB;
    
       $table = getTableForItemType(__CLASS__);
-      self::$config = array();
+      self::$config = [];
       $query = "SELECT * FROM `". $table ."`";
       $result = $DB->query($query);
       while ($data=$DB->fetch_array($result)) {

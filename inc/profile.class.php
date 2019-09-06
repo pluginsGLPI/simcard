@@ -50,12 +50,12 @@ class PluginSimcardProfile extends Profile {
       	$ID, 
       	array(self::RIGHT_SIMCARD_SIMCARD)
       );
-      $firstAccessRights = array_merge($currentRights, array(
+      $firstAccessRights = array_merge($currentRights, [
       		self::RIGHT_SIMCARD_SIMCARD => ALLSTANDARDRIGHT 
       		+ self::SIMCARD_ASSOCIATE_TICKET
       		+ READNOTE
       		+ UPDATENOTE
-      ));
+      ]);
       $profileRight->updateProfileRights($ID, $firstAccessRights);
 
       //Add right to the current session
@@ -64,7 +64,7 @@ class PluginSimcardProfile extends Profile {
    }   
    
    //profiles modification
-   function showForm($ID, $options = array()){
+   function showForm($ID, $options = []){
       global $LANG;
 
       if (!Profile::canView()) {
@@ -81,8 +81,8 @@ class PluginSimcardProfile extends Profile {
       }
       
       $rights = $this->getAllRights();
-      $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
-                                                         'default_class' => 'tab_bg_2'));
+      $profile->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
+                                                         'default_class' => 'tab_bg_2']);
       
       if ($canedit) {
          echo "<div class='center'>";
@@ -196,12 +196,12 @@ class PluginSimcardProfile extends Profile {
    }
 
    function getAllRights() {
-      $rights = array(
-          array('itemtype'  => 'PluginSimcardSimcard',
-                'label'     => PluginSimcardSimcard::getTypeName(2),
-                'field'     => 'simcard:simcard'
-          ),
-      );
+      $rights = [
+         ['itemtype'  => 'PluginSimcardSimcard',
+            'label'     => PluginSimcardSimcard::getTypeName(2),
+            'field'     => 'simcard:simcard'
+         ],
+      ];
       return $rights;
    }
 

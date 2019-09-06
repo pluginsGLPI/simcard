@@ -48,7 +48,7 @@ class PluginSimcardSimcardInjection extends PluginSimcardSimcard
 
 
    function connectedTo() {
-      return array();
+      return [];
    }
 
 

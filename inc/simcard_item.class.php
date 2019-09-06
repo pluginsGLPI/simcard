@@ -43,13 +43,13 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    static public $items_id_2 = 'items_id';
    
    // Itemtypes simcards may be linked to
-   static protected $linkableClasses = array(
+   static protected $linkableClasses = [
          'Computer', 
          'Peripheral', 
          'Phone', 
          'Printer', 
          'NetworkEquipment'
-   );
+];
 
    /**
     * Name of the type
@@ -90,8 +90,8 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    }
 
    static function countForItem($id) {
-   	  return countElementsInTable(getTableForItemType(__CLASS__),
-               "`plugin_simcard_simcards_id`='$id'");
+   	   return countElementsInTable(getTableForItemType(__CLASS__),
+               ["plugin_simcard_simcards_id" => $id]);
    }
 
    /**
@@ -103,8 +103,8 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    static function countForItemByItemtype(CommonDBTM $item) {
       $id = $item->getField('id');
       $itemtype = $item->getType();
-   	  return countElementsInTable(getTableForItemType(__CLASS__),
-   		 "`items_id`='$id' AND `itemtype`='$itemtype'");
+   	   return countElementsInTable(getTableForItemType(__CLASS__),
+   		   ["items_id" => $id , "itemtype" => $itemtype]);
    }
     
    /**
@@ -113,8 +113,8 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    static function cleanForItem(CommonDBTM $item) {
       $temp = new self();
       $temp->deleteByCriteria(
-         array('itemtype' => $item->getType(),
-               'items_id' => $item->getField('id')));
+         ['itemtype' => $item->getType(),
+               'items_id' => $item->getField('id')]);
    }
    
    static function getClasses() {
@@ -128,7 +128,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
       if (!in_array($itemtype, self::$linkableClasses)) {
          array_push(self::$linkableClasses, $itemtype);
          Plugin::registerClass('PluginSimcardSimcard_Item',
-               array('addtabon' => $itemtype));
+               ['addtabon' => $itemtype]);
       }
    }
    
@@ -172,7 +172,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          return false;
       }
       $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
-                                     "`plugin_simcard_simcards_id` = '".$simcard->getID()."'");
+                                     ["plugin_simcard_simcards_id" => $simcard->getID()]);
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<table class='tab_cadre_fixehov'>";
@@ -195,7 +195,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
             }
             echo "</td>";
             echo "<td>";
-            echo call_user_func(array($data['itemtype'], 'getTypeName'));
+            echo call_user_func([$data['itemtype'], 'getTypeName']);
             echo "</td>";
             echo "<td>";
             echo Dropdown::getDropdownName('glpi_entities', $item->fields['entities_id']);
@@ -223,8 +223,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
          if (empty($results)) {
             echo "<input type='hidden' name='plugin_simcard_simcards_id' value='".$simcard->getID()."'>";
-            // TODO : Dropdown::showAllItems is deprecated, use Dropdown::showSelectItemFromItemtypes instead
-            Dropdown::showAllItems("items_id",0,0,$simcard->fields['entities_id'], self::getClasses());
+            Dropdown::showSelectItemFromItemtypes(["itemtypes" => self::getClasses()]);
             echo "</td>";
             echo "<td colspan='2' class='center' class='tab_bg_2'>";
             echo "<input type='submit' name='additem' value=\""._sx('button', 'Add')."\" class='submit'>";
@@ -233,7 +232,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    
          if (!empty($results)) {
             Html::openArrowMassives('items', true);
-            Html::closeArrowMassives(array('delete_items' => _sx('button', 'Disconnect')));
+            Html::closeArrowMassives(['delete_items' => _sx('button', 'Disconnect')]);
          }
       }
       echo "</table>" ;
@@ -257,7 +256,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
 //       	 }
 //       }
       $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
-                                     "`items_id` = '".$item->getID()."' AND `itemtype`='".get_class($item)."'");
+                                     ["items_id" => $item->getID(), "itemtype" => get_class($item)]);
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
       echo "<table class='tab_cadre_fixehov'>";
@@ -298,18 +297,20 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
          echo "<input type='hidden' name='items_id' value='".$item->getID()."'>";
          echo "<input type='hidden' name='itemtype' value='".$item->getType()."'>";
-         $used = array();
+         $used = [];
          $query = "SELECT `id`
                    FROM `glpi_plugin_simcard_simcards`
-                   WHERE `is_template`='0'
+                   WHERE `is_template`='0' ANd
+                   `is_helpdesk_visible`= '1'
                       AND `id` IN (SELECT `plugin_simcard_simcards_id`
                                    FROM `glpi_plugin_simcard_simcards_items`)";
          foreach ($DB->request($query) as $use) {
             $used[] = $use['id'];
          }
          Dropdown::show('PluginSimcardSimcard',
-                        array ('name' => "plugin_simcard_simcards_id",
-                               'entity' => $item->fields['entities_id'], 'used' => $used));
+                        ['name'  => "plugin_simcard_simcards_id",
+                        'entity' => $item->fields['entities_id'], 
+                        'used'   => $used]);
          echo "</td>";
          echo "<td colspan='2' class='center' class='tab_bg_2'>";
          echo "<input type='submit' name='additem' value=\""._sx('button', 'Save')."\" class='submit'>";
@@ -317,7 +318,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          
          if (!empty($results)) {
             Html::openArrowMassives('items', true);
-            Html::closeArrowMassives(array ('delete_items' => _sx('button', 'Disconnect')));
+            Html::closeArrowMassives(['delete_items' => _sx('button', 'Disconnect')]);
          }
       }
       echo "</table>" ;
@@ -356,9 +357,9 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
     **/
    static function countForSimcard(PluginSimcardSimcard $item) {
    
-      $restrict = "`glpi_plugin_simcard_simcards_items`.`plugin_simcard_simcards_id` = '".$item->getField('id')."'";
-   	
-      return countElementsInTable(array('glpi_plugin_simcard_simcards_items'), $restrict);
+      $restrict = ["glpi_plugin_simcard_simcards_items.plugin_simcard_simcards_id" => $item->getField('id')];
+
+      return countElementsInTable(['glpi_plugin_simcard_simcards_items'], $restrict);
    }
    
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {

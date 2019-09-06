@@ -43,13 +43,13 @@ function plugin_init_simcard() {
    if ($plugin->isInstalled('simcard') && $plugin->isActivated('simcard')) {
       
       //load changeprofile function (does not exist anymore in this version)
-   	  //$PLUGIN_HOOKS['change_profile']['simcard']   = array('PluginSimcardProfile','changeProfile');
+   	  //$PLUGIN_HOOKS['change_profile']['simcard']   = ['PluginSimcardProfile','changeProfile');
       
       $PLUGIN_HOOKS['assign_to_ticket']['simcard'] = true;
 
       $PLUGIN_HOOKS['plugin_datainjection_populate']['simcard']
          = 'plugin_datainjection_populate_simcard';
-      $PLUGIN_HOOKS['item_purge']['simcard'] = array();
+      $PLUGIN_HOOKS['item_purge']['simcard'] = [];
       
       foreach (PluginSimcardSimcard_Item::getClasses() as $type) {
          $PLUGIN_HOOKS['item_purge']['simcard'][$type] = 'plugin_item_purge_simcard';
@@ -59,13 +59,13 @@ function plugin_init_simcard() {
       $PLUGIN_HOOKS['item_add']['simcard']['ProfileRight'] = 'plugin_simcard_profileRightUpdate';
       
       Plugin::registerClass('PluginSimcardSimcard_Item',
-                            array('addtabon' => PluginSimcardSimcard_Item::getClasses()));
+                            ['addtabon' => PluginSimcardSimcard_Item::getClasses()]);
       Plugin::registerClass('PluginSimcardProfile',
-                            array('addtabon' => 'Profile'));
+                            ['addtabon' => 'Profile']);
                             
       // Params : plugin name - string type - number - class - table - form page
       Plugin::registerClass('PluginSimcardSimcard',
-                            array('linkgroup_types'        => true,
+                           ['linkgroup_types'        => true,
                                   'linkuser_types'         => true,
                                   'document_types'         => true,
                                   'contract_types'         => true,
@@ -75,7 +75,7 @@ function plugin_init_simcard() {
                                   'unicity_types'          => true,
                                   'reservation_types'      => true,
                                   'location_types'         => true
-                            ));
+                           ]);
        array_push($CFG_GLPI['state_types'], 'PluginSimcardSimcard');
        array_push($CFG_GLPI['globalsearch_types'], 'PluginSimcardSimcard');
 
@@ -89,7 +89,7 @@ function plugin_init_simcard() {
             || PluginSimcardSimcard::canView())
          {
             //menu entry
-         	$PLUGIN_HOOKS['menu_toadd']['simcard'] = array('assets' => 'PluginSimcardSimcard');
+         	$PLUGIN_HOOKS['menu_toadd']['simcard'] = ['assets' => 'PluginSimcardSimcard'];
             //search link
             //add simcard to items details
             $PLUGIN_HOOKS['headings']['simcard']           = 'plugin_get_headings_simcard';
