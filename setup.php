@@ -34,10 +34,12 @@
  @since     2009
  */
 
-define ("PLUGIN_SIMCARD_VERSION", "1.5.0");
+define('PLUGIN_SIMCARD_VERSION', '1.5.0');
 
 // Minimal GLPI version, inclusive
-define ("PLUGIN_SIMCARD_GLPI_MIN_VERSION", "9.2");
+define('PLUGIN_SIMCARD_MIN_GLPI', '9.2');
+// Maximum GLPI version, exclusive
+define('PLUGIN_SIMCARD_MAX_GLPI', '9.5');
 
 /**
  * Init hooks of the plugin.
@@ -130,19 +132,25 @@ function plugin_init_simcard() {
  * @return array
  */
 function plugin_version_simcard() {
-   global $LANG;
-
    $author = "<a href='http://www.elsendero.es'>El Sendero</a>";
    $author.= ", <a href='http://www.teclib.com'>Walid Nouh</a>";
    $author.= ", <a href='http://www.teclib.com'>Thierry Bugier Pineau</a>";
    $author.= ", Anthony Piesset";
    $author.= ", <a href='mailto:dethegeek@gmail.com'>Dethegeek</a>";
-   return  ['name'           => __s('Sim cards management', 'simcard'),
-                   'version'        => PLUGIN_SIMCARD_VERSION,
-                   'author'         => $author,
-                   'license'        => 'GPLv2+',
-                   'homepage'       => 'https://github.com/pluginsglpi/simcard',
-                   'minGlpiVersion' => PLUGIN_SIMCARD_GLPI_MIN_VERSION];
+
+   return [
+      'name'           => __s('Sim cards management', 'simcard'),
+      'version'        => PLUGIN_SIMCARD_VERSION,
+      'author'         => $author,
+      'license'        => 'GPLv2+',
+      'homepage'       => 'https://github.com/pluginsglpi/simcard',
+      'requirements'   => [
+         'glpi' => [
+            'min'     => PLUGIN_SIMCARD_MIN_GLPI,
+            'max'     => PLUGIN_SIMCARD_MAX_GLPI,
+         ]
+      ]
+   ];
 }
 
 /**
@@ -152,10 +160,24 @@ function plugin_version_simcard() {
  * @return boolean
  */
 function plugin_simcard_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, PLUGIN_SIMCARD_GLPI_MIN_VERSION, 'lt')) {
-      echo "This plugin requires GLPI >= " . PLUGIN_SIMCARD_GLPI_MIN_VERSION;
-      return false;
+   //Requirements check is not done by core in GLPI < 9.2 but has to be delegated to core in GLPI >= 9.2.
+   if (!method_exists('Plugin', 'checkGlpiVersion')) {
+      $version = preg_replace('/^((\d+\.?)+).*$/', '$1', GLPI_VERSION);
+      $matchMinGlpiReq = version_compare($version, PLUGIN_SIMCARD_MIN_GLPI, '>=');
+      $matchMaxGlpiReq = version_compare($version, PLUGIN_SIMCARD_MAX_GLPI, '<');
+
+      if (!$matchMinGlpiReq || !$matchMaxGlpiReq) {
+         echo vsprintf(
+            'This plugin requires GLPI >= %1$s and < %2$s.',
+            [
+               PLUGIN_SIMCARD_MIN_GLPI,
+               PLUGIN_SIMCARD_MAX_GLPI,
+            ]
+         );
+         return false;
+      }
    }
+
    return true;
 }
 

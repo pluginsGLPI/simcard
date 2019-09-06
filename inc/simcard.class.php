@@ -680,7 +680,7 @@ class PluginSimcardSimcard extends CommonDBTM {
 
       switch (plugin_simcard_currentVersion()) {
          case '1.2':
-            if (!$DB->FieldExists("glpi_plugin_simcard_simcards", "groups_id_tech")) {
+            if (!$DB->fieldExists("glpi_plugin_simcard_simcards", "groups_id_tech")) {
                $sql = "ALTER TABLE `glpi_plugin_simcard_simcards`
                         ADD `plugin_simcard_simcardtypes_id` int(11) NOT NULL DEFAULT '0' AFTER `plugin_simcard_simcardvoltages_id`,
                         ADD `groups_id_tech` int(11) NOT NULL DEFAULT '0' AFTER `groups_id`";
@@ -693,7 +693,7 @@ class PluginSimcardSimcard extends CommonDBTM {
          case '1.3.1':
          case '1.4':
             // Migrate notepad data
-            if (FieldExists('glpi_plugin_simcard_simcards', 'notepad')) {
+            if ($DB->fieldExists('glpi_plugin_simcard_simcards', 'notepad')) {
                $query = "SELECT id, notepad
                            FROM `glpi_plugin_simcard_simcards`
                            WHERE notepad IS NOT NULL

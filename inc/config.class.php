@@ -163,7 +163,7 @@ class PluginSimcardConfig extends CommonDBTM {
          return self::$config[$name];
       }
 
-      $config = current($this->find("`type`='".$name."'"));
+      $config = current($this->find(['type' => $name]));
       if (isset($config['value'])) {
          return $config['value'];
       }
@@ -179,7 +179,7 @@ class PluginSimcardConfig extends CommonDBTM {
     * @return boolean : TRUE on success
     **/
    function updateValue($name, $value) {
-      $config = current($this->find("`type`='".$name."'"));
+      $config = current($this->find(['type' => $name]));
       if (isset($config['id'])) {
          return $this->update(['id'=> $config['id'], 'value'=>$value]);
       } else {
