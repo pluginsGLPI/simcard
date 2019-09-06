@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Laszlo Czirbesz <czirbesz.laszlo@soulware.hu>, 2015
+# Markku Vepsä, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Simcard\n"
@@ -11,41 +11,41 @@ msgstr ""
 "POT-Creation-Date: 2019-09-06 12:51+0000\n"
 "PO-Revision-Date: 2019-09-06 12:50+0000\n"
 "Last-Translator: Cédric Anne\n"
-"Language-Team: Hungarian (Hungary) (http://www.transifex.com/teclib/glpi-plugin-simcard/language/hu_HU/)\n"
+"Language-Team: Finnish (Finland) (http://www.transifex.com/teclib/glpi-plugin-simcard/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hu_HU\n"
+"Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: inc/simcardsize.class.php:39 inc/simcard.class.php:185
 #: inc/simcard.class.php:468 hook.php:179
 msgid "Size"
-msgstr "Méret"
+msgstr "Koko"
 
 #: inc/simcardtype.class.php:41 inc/simcard.class.php:168 hook.php:182
 msgid "Type of SIM card"
-msgstr "SIM kártya típusa"
+msgstr "SIM-kortin tyyppi"
 
 #: inc/simcardvoltage.class.php:41 inc/simcard.class.php:204
 #: inc/simcard.class.php:444 hook.php:181
 msgid "Voltage"
-msgstr "Feszültség"
+msgstr "Jännite"
 
 #: inc/simcard.class.php:55 inc/simcard.class.php:339
 msgid "SIM card"
 msgid_plural "SIM cards"
-msgstr[0] "SIM kártya"
-msgstr[1] "SIM kártyák"
+msgstr[0] "SIM-kortti"
+msgstr[1] "SIM-kortit"
 
 #: inc/simcard.class.php:212 inc/simcard.class.php:479
 #: inc/phoneoperator.class.php:40 hook.php:180
 msgid "Provider"
-msgstr "Szolgáltató"
+msgstr "Palveluntarjoaja"
 
 #: inc/simcard.class.php:255 inc/simcard.class.php:490 hook.php:236
 msgid "Phone number"
-msgstr "Telefonszám"
+msgstr "Puhelinnumero"
 
 #: inc/simcard.class.php:265 inc/simcard.class.php:380 hook.php:245
 msgid "IMSI"
@@ -53,20 +53,20 @@ msgstr "IMSI"
 
 #: inc/simcard.class.php:273 inc/simcard.class.php:502
 msgid "Pin 1"
-msgstr "PIN 1"
+msgstr "Pin 1"
 
 #: inc/simcard.class.php:279 inc/simcard.class.php:524
 msgid "Pin 2"
-msgstr "PIN 2"
+msgstr "Pin 2"
 
 #: inc/simcard.class.php:285 inc/simcard.class.php:513
 msgid "Puk 1"
-msgstr "PUK 1"
+msgstr "Puk 1"
 
 #: inc/simcard.class.php:291 inc/simcard.class.php:535
 msgid "Puk 2"
-msgstr "PUK 2"
+msgstr "Puk 2"
 
 #: setup.php:142
 msgid "Sim cards management"
-msgstr "SIM kártyák kezelése"
+msgstr "SIM-korttien hallinta"

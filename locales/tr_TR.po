@@ -3,77 +3,70 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2015
+# Kaya Zeren <kayazeren@gmail.com>, 2015,2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Plugin - Simcard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-23 21:04+0200\n"
-"PO-Revision-Date: 2015-10-25 16:18+0000\n"
-"Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
-"Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-project-plugin-simcard/language/tr_TR/)\n"
+"POT-Creation-Date: 2019-09-06 12:51+0000\n"
+"PO-Revision-Date: 2019-09-06 12:50+0000\n"
+"Last-Translator: Cédric Anne\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/teclib/glpi-plugin-simcard/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr_TR\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: hook.php:163 inc/simcard.class.php:181 inc/simcard.class.php:427
-#: inc/simcardsize.class.php:41
+#: inc/simcardsize.class.php:39 inc/simcard.class.php:185
+#: inc/simcard.class.php:468 hook.php:179
 msgid "Size"
 msgstr "Boyut"
 
-#: hook.php:164 inc/phoneoperator.class.php:40 inc/simcard.class.php:204
-#: inc/simcard.class.php:435
-msgid "Provider"
-msgstr "Sağlayıcı"
-
-#: hook.php:165 hook.php:231 inc/simcard.class.php:197
-#: inc/simcard.class.php:409 inc/simcardvoltage.class.php:41
-msgid "Voltage"
-msgstr "Gerilim"
-
-#: hook.php:166 inc/simcard.class.php:167 inc/simcardtype.class.php:41
+#: inc/simcardtype.class.php:41 inc/simcard.class.php:168 hook.php:182
 msgid "Type of SIM card"
 msgstr "SIM kart tipi"
 
-#: hook.php:222 inc/simcard.class.php:243 inc/simcard.class.php:443
-msgid "Phone number"
-msgstr "Telefon no"
+#: inc/simcardvoltage.class.php:41 inc/simcard.class.php:204
+#: inc/simcard.class.php:444 hook.php:181
+msgid "Voltage"
+msgstr "Gerilim"
 
-#: setup.php:130
-msgid "Sim cards management"
-msgstr "SIM kart yönetimi"
-
-#: inc/profile.class.php:127
-msgid "Right manager"
-msgstr "İzin yönetimi"
-
-#: inc/profile.class.php:263 inc/simcard.class.php:54
+#: inc/simcard.class.php:55 inc/simcard.class.php:339
 msgid "SIM card"
 msgid_plural "SIM cards"
 msgstr[0] "SIM kartlar"
+msgstr[1] "SIM kartlar"
 
-#: inc/simcard.class.php:253 inc/simcard.class.php:367
+#: inc/simcard.class.php:212 inc/simcard.class.php:479
+#: inc/phoneoperator.class.php:40 hook.php:180
+msgid "Provider"
+msgstr "Sağlayıcı"
+
+#: inc/simcard.class.php:255 inc/simcard.class.php:490 hook.php:236
+msgid "Phone number"
+msgstr "Telefon no"
+
+#: inc/simcard.class.php:265 inc/simcard.class.php:380 hook.php:245
 msgid "IMSI"
 msgstr "IMSI"
 
-#: inc/simcard.class.php:273 inc/simcard.class.php:453
+#: inc/simcard.class.php:273 inc/simcard.class.php:502
 msgid "Pin 1"
 msgstr "1. Pin Kodu"
 
-#: inc/simcard.class.php:279 inc/simcard.class.php:469
+#: inc/simcard.class.php:279 inc/simcard.class.php:524
 msgid "Pin 2"
 msgstr "2. Pin Kodu"
 
-#: inc/simcard.class.php:285 inc/simcard.class.php:461
+#: inc/simcard.class.php:285 inc/simcard.class.php:513
 msgid "Puk 1"
 msgstr "1. Puk Kodu"
 
-#: inc/simcard.class.php:291 inc/simcard.class.php:477
+#: inc/simcard.class.php:291 inc/simcard.class.php:535
 msgid "Puk 2"
 msgstr "2. Puk Kodu"
 
-#: inc/simcard_item.class.php:217
-msgid "New SIM card"
-msgstr "SIM kartı ekle"
+#: setup.php:142
+msgid "Sim cards management"
+msgstr "SIM kart yönetimi"

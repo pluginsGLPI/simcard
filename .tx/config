@@ -1,8 +1,8 @@
 [main]
 host = https://www.transifex.com
 
-[glpi-project-plugin-simcard.en_gbpo]
+[glpi-plugin-simcard.simcard-pot]
 file_filter = locales/<lang>.po
 source_file = locales/simcard.pot
 source_lang = en
-
+type = PO
