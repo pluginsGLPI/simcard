@@ -27,6 +27,7 @@
  @link      http://www.glpi-project.org/
  @since     2009
  ---------------------------------------------------------------------- */
+use Glpi\Event;
 
 include ('../../../inc/includes.php');
 
