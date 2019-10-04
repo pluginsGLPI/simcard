@@ -5,6 +5,13 @@ Simcard management for GLPI
 * Updated by Anthony Piesset and Dethegeek for GLPi 0.84
 * Updated by Thierry Bugier Pineau for GLPi 0.85 and 0.90
 
+Integration in GLPI 9.4
+-----------------------
+
+Beside what they wrote, the way that GLPI handle SIM Card in core modules is really awful.
+Plugin is a lot better for Sim Card Management.
+
+
 Integration in GLPI 9.2
 -----------------------
 
