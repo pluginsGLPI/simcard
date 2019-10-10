@@ -356,9 +356,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
     **/
    static function countForSimcard(PluginSimcardSimcard $item) {
    
-      $restrict = "`glpi_plugin_simcard_simcards_items`.`plugin_simcard_simcards_id` = '".$item->getField('id')."'";
-   	
-      return countElementsInTable(array('glpi_plugin_simcard_simcards_items'), $restrict);
+      return countElementsInTable('glpi_plugin_simcard_simcards_items', ['plugin_simcard_simcards_id' => $item->getField('id')]);
    }
    
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
