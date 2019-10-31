@@ -73,25 +73,33 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    function can($ID, $right, array &$input=NULL) {
 
       if ($ID<0) {
-         // Ajout
-         if (!($item = new $input['itemtype'])) {
+	if (is_null($input['itemtype'])){
+		$input['itemtype'] = $input["simcard"]; //non ho ancora ben capito come passano i parametri post, ma passa come post "simcard" la tipologia di dispositivo
+	}
+
+        if (!($item = new $input['itemtype'])) {
             return false;
-         }
+        }
 
          if (!$item->getFromDB($input['items_id'])) {
             return false;
          }
-         if ($item->getField('is_global')==0
-             && self::countForItem($ID) > 0) {
+	//Non capisco per quale motivo passa la chiamata a una funzione che resistutisce 1...
+	//provo mettendo un 1 fisso
+         if ($item->getField('is_global')==0 && 1) {
                return false;
          }
       }
+
       return parent::can($ID, $right, $input);
    }
 
-   static function countForItem($id) {
-   	  return countElementsInTable(getTableForItemType(__CLASS__),
-               "`plugin_simcard_simcards_id`='$id'");
+   static function countForItem(CommonDBTM $id) {
+//   	  return countElementsInTable(getTableForItemType(__CLASS__),
+  //             "`plugin_simcard_simcards_id`='$id'");
+return 1;
+
+
    }
 
    /**
@@ -135,7 +143,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    static function install(Migration $migration) {
       global $DB;
       $table = getTableForItemType(__CLASS__);
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `items_id` int(11) NOT NULL DEFAULT '0' COMMENT 'RELATION to various table, according to itemtype (id)',
@@ -166,7 +174,7 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
    }
 
    static function showForSimcard(PluginSimcardSimcard $simcard) {
-      global $DB, $LANG;
+      global $DB, $LANG, $CFG_GLPI;
       
       if (!$simcard->canView()) {
          return false;
@@ -223,7 +231,60 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
          echo "<tr class='tab_bg_1'><td colspan='4' class='center'>";
          if (empty($results)) {
             echo "<input type='hidden' name='plugin_simcard_simcards_id' value='".$simcard->getID()."'>";
-            Dropdown::showSelectItemFromItemtypes(['items_id_name' => 'items_id']);
+	
+	$myname= "itemtype";
+	$rand = mt_rand();
+        $emptylabel = __('General');
+	$types = ["Peripheral" => "Device", "Phone" => "Phone"];
+	$itemtype = null;
+	$p = [		'itemtype'        => '__VALUE__',
+                       'entity_restrict' => 0,
+                       'admin'           => 1,
+                       'used'            => [],
+                       'multiple'        => 0,
+                       'rand'            => $rand,
+                       'myname'          => "items_id"];
+
+	Dropdown::showItemTypes($myname, array_keys($types),
+                                    ['emptylabel' => "-----",
+                                          'value'      => null,
+                                          'rand'       => $rand, 'display_emptychoice' => true]);
+
+
+            Ajax::updateItemOnSelectEvent( "dropdown_$myname$rand", 
+					   "results_$myname$rand",
+                                           $CFG_GLPI["root_doc"] . "/ajax/dropdownTrackingDeviceType.php",
+                                           $p);
+
+
+            echo "<span id='results_$myname$rand'>\n\n\n";
+
+           $found_type = isset($types[$itemtype]);
+
+
+
+            // Display default value if itemtype is displayed
+            if ($found_type && $itemtype) {
+               if (($item = getItemForItemtype($itemtype))
+                    && $items_id) {
+                  if ($item->getFromDB($items_id)) {
+                     Dropdown::showFromArray('items_id', [$items_id => $item->getName()],
+                                             ['value' => $items_id]);
+                  }
+               } else {
+                  $p['itemtype'] = $itemtype;
+                  echo "<script type='text/javascript' >\n";
+                  echo "$(function() {";
+                  Ajax::updateItemJsCode("results_$myname$rand",
+                                         $CFG_GLPI["root_doc"].
+                                            "/ajax/dropdownTrackingDeviceType.php",
+                                         $p);
+                  echo '});</script>';
+		
+               }
+            }
+            echo "</span>\n";
+
             echo "</td>";
             echo "<td colspan='2' class='center' class='tab_bg_2'>";
             echo "<input type='submit' name='additem' value=\""._sx('button', 'Add')."\" class='submit'>";
@@ -355,7 +416,12 @@ class PluginSimcardSimcard_Item extends CommonDBRelation{
     **/
    static function countForSimcard(PluginSimcardSimcard $item) {
    
+      $restrict = "`glpi_plugin_simcard_simcards_items`.`plugin_simcard_simcards_id` = '".$item->getField('id')."'";
+   	
       return countElementsInTable('glpi_plugin_simcard_simcards_items', ['plugin_simcard_simcards_id' => $item->getField('id')]);
+//      return countElementsInTable(array('glpi_plugin_simcard_simcards_items'), $restrict);
+
+
    }
    
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
