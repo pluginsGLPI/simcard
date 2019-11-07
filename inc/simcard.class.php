@@ -356,8 +356,18 @@ class PluginSimcardSimcard extends CommonDBTM {
       	 'checktype'          => 'text',
          'displaytype'        => 'text',
       	 'injectable'         => true
-
       ];
+
+$tab[] = [
+         'id'                 => '4',
+         'table'              => 'glpi_users',
+         'field'              => 'name',
+         'linkfield'	      => 'users_id',
+         'name'               => __('User'),
+         'datatype'           => 'dropdown',
+         'massiveaction'      => false // implicit key==1
+      ];
+
 
 return $tab;
 
