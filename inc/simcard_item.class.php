@@ -111,8 +111,10 @@ return 1;
    static function countForItemByItemtype(CommonDBTM $item) {
       $id = $item->getField('id');
       $itemtype = $item->getType();
-   	  return countElementsInTable(getTableForItemType(__CLASS__),
-   		 "`items_id`='$id' AND `itemtype`='$itemtype'");
+   	  return countElementsInTable(
+		  			getTableForItemType(__CLASS__),
+   		 			["itemype" => $itemtype, "items_id" => $id]
+	  );
    }
     
    /**
