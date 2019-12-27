@@ -369,6 +369,24 @@ $tab[] = [
       ];
 
 
+     $tab[] = [
+         'id'                 => '5',
+         'table'              => $this->getTable(),
+         'field'              => 'otherserial',
+         'name'               => __('Inventory Number'),
+         'datatype'           => 'text'
+      ];
+
+     $tab[] = [
+         'id'                 => '6',
+         'table'              => 'glpi_states',
+         'field'              => 'name',
+   	 'linkfield'	      => 'states_id',
+         'name'               => __('Status'),
+         'datatype'           => 'dropdown'
+      ];
+	   
+	   
 return $tab;
 
 }
