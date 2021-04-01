@@ -113,7 +113,7 @@ return 1;
       $itemtype = $item->getType();
    	  return countElementsInTable(
 		  			getTableForItemType(__CLASS__),
-   		 			["itemype" => $itemtype, "items_id" => $id]
+   		 			["itemtype" => $itemtype, "items_id" => $id]
 	  );
    }
     
