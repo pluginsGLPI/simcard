@@ -317,6 +317,80 @@ class PluginSimcardSimcard extends CommonDBTM {
       
    }
    
+	
+   function rawSearchOptions() {
+      global $CFG_GLPI;
+
+      $tab = [];
+
+      $tab[] = [
+         'id'                 => 'common',
+         'name'               => __('Plugin SIMCARD')
+      ];
+
+      $tab[] = [
+         'id'                 => '1',
+         'table'              => $this->getTable(),
+         'field'              => 'name',
+         'name'               => __('Name'),
+         'datatype'           => 'itemlink',
+         'massiveaction'      => false // implicit key==1
+      ];
+
+
+
+      $tab[] = [
+         'id'                 => '2',
+         'table'              => $this->getTable(),
+         'field'              => 'phonenumber',
+         'name'               => __('phonenumber'),
+         'datatype'           => 'text'
+      ];
+
+      $tab[] = [
+         'id'                 => '3',
+         'table'              => $this->getTable(),
+         'field'              => 'serial',
+         'name'               => __('IMSI', 'simcard'),
+         'datatype'           => 'string',
+      	 'checktype'          => 'text',
+         'displaytype'        => 'text',
+      	 'injectable'         => true
+      ];
+
+$tab[] = [
+         'id'                 => '4',
+         'table'              => 'glpi_users',
+         'field'              => 'name',
+         'linkfield'	      => 'users_id',
+         'name'               => __('User'),
+         'datatype'           => 'dropdown',
+         'massiveaction'      => false // implicit key==1
+      ];
+
+
+     $tab[] = [
+         'id'                 => '5',
+         'table'              => $this->getTable(),
+         'field'              => 'otherserial',
+         'name'               => __('Inventory Number'),
+         'datatype'           => 'text'
+      ];
+
+     $tab[] = [
+         'id'                 => '6',
+         'table'              => 'glpi_states',
+         'field'              => 'name',
+   	 'linkfield'	      => 'states_id',
+         'name'               => __('Status'),
+         'datatype'           => 'dropdown'
+      ];
+	   
+	   
+return $tab;
+
+}
+	
     function getSearchOptions() {
       global $CFG_GLPI, $LANG;
 
