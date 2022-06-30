@@ -181,7 +181,7 @@ return 1;
       if (!$simcard->canView()) {
          return false;
       }
-      $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
+      $results = $DB->request(getTableForItemType(__CLASS__),
                                      "`plugin_simcard_simcards_id` = '".$simcard->getID()."'");
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
@@ -294,8 +294,8 @@ return 1;
          }
    
          if (!empty($results)) {
-            Html::openArrowMassives('items', true);
-            Html::closeArrowMassives(array('delete_items' => _sx('button', 'Disconnect')));
+            //Html::openArrowMassives('items', true);
+            //Html::closeArrowMassives(array('delete_items' => _sx('button', 'Disconnect')));
          }
       }
       echo "</table>" ;
@@ -318,7 +318,7 @@ return 1;
 
 //       	 }
 //       }
-      $results = getAllDatasFromTable(getTableForItemType(__CLASS__),
+      $results = getAllDataFromTable(getTableForItemType(__CLASS__),
                                      "`items_id` = '".$item->getID()."' AND `itemtype`='".get_class($item)."'");
       echo "<div class='spaced'>";
       echo "<form id='items' name='items' method='post' action='".Toolbox::getItemTypeFormURL(__CLASS__)."'>";
