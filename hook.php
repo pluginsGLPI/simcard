@@ -53,7 +53,7 @@ function plugin_simcard_currentVersion() {
          // the plugin seems not installed
          $currentVersion = 0;
       } else {      
-         if ($DB->tTableExists('glpi_plugin_simcard_configs')) {
+         if ($DB->TableExists('glpi_plugin_simcard_configs')) {
             // The plugin is at least 1.3
             // Get the current version in the plugin's configuration
             $pluginSimcardConfig = new PluginSimcardConfig();
