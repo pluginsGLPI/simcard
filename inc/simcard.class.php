@@ -146,10 +146,16 @@ class PluginSimcardSimcard extends CommonDBTM {
                           (isset($options['withtemplate']) && $options['withtemplate']?"*":"").
            "</td>";
       echo "<td>";
-      $objectName = autoName($this->fields["name"], "name",
+      /*$objectName = autoName($this->fields["name"], "name",
                              (isset($options['withtemplate']) && $options['withtemplate']==2),
                              $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'name', array('value' => $objectName));
+      Html::autocompletionTextField($this, 'name', array('value' => $objectName));*/
+	  
+      echo Html::input('name', ['type'  => 'text',
+                                       'value' => $this->fields["name"]]);
+
+	 
+	  
       echo "</td>";
       echo "<td>".__s('Status')."</td>";
       echo "<td>";
@@ -189,7 +195,8 @@ class PluginSimcardSimcard extends CommonDBTM {
       Group::dropdown(array('name'      => 'groups_id_tech',
       'value'     => $this->fields['groups_id_tech'],
       'entity'    => $this->fields['entities_id'],
-      'condition' => '`is_assign`'));
+	  'condition' => ['is_assign' => 1]
+		));
       echo "</td>";
       
       echo "<td>".__s('Voltage', 'simcard')."</td>";
@@ -224,10 +231,13 @@ class PluginSimcardSimcard extends CommonDBTM {
                           (isset($options['withtemplate']) && $options['withtemplate']?"*":"").
            "</td>";
       echo "<td>";
-      $objectName = autoName($this->fields["otherserial"], "otherserial",
-                             (isset($options['withtemplate']) && $options['withtemplate']==2),
-                             $this->getType(), $this->fields["entities_id"]);
-      Html::autocompletionTextField($this, 'otherserial', array('value' => $objectName));
+	  
+	  
+      echo Html::input('otherserial', ['type'  => 'text',
+                                       'value' => $this->fields["otherserial"]]);
+
+
+
       echo "</td></tr>\n";
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__s('Group')."</td>";
@@ -240,7 +250,11 @@ class PluginSimcardSimcard extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__s('Phone number', 'simcard')."</td>";
       echo "<td>";
-      Html::autocompletionTextField($this,'phonenumber');
+	  
+      echo Html::input('phonenumber', ['type'  => 'text',
+                                       'value' => $this->fields["phonenumber"]]);
+
+
       echo "</td>";
       echo "<td rowspan='6'>".__s('Comments')."</td>";
       echo "<td rowspan='6' class='middle'>";
@@ -250,7 +264,11 @@ class PluginSimcardSimcard extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__s('IMSI', 'simcard')."</td>";
       echo "<td>";
-      Html::autocompletionTextField($this,'serial');
+      
+      echo Html::input('serial', ['type'  => 'text',
+                                       'value' => $this->fields["serial"]]);
+
+	  
       echo "</td></tr>\n";
       
       //Only show PIN and PUK code to users who can write (theses informations are highly sensible)
@@ -258,25 +276,38 @@ class PluginSimcardSimcard extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
          echo "<td>".__s('Pin 1', 'simcard')."</td>";
          echo "<td>";
-         Html::autocompletionTextField($this,'pin');
+      echo Html::input('pin', ['type'  => 'text',
+                                       'value' => $this->fields["pin"]]);
+
+         //Html::autocompletionTextField($this,'pin');
          echo "</td></tr>\n";
          
          echo "<tr class='tab_bg_1'>";
          echo "<td>".__s('Pin 2', 'simcard')."</td>";
          echo "<td>";
-         Html::autocompletionTextField($this,'pin2');
+      echo Html::input('pin2', ['type'  => 'text',
+                                       'value' => $this->fields["pin2"]]);
+
+         //Html::autocompletionTextField($this,'pin2');
+		 
          echo "</td></tr>\n";
          
          echo "<tr class='tab_bg_1'>";
          echo "<td>".__s('Puk 1', 'simcard')."</td>";
          echo "<td>";
-         Html::autocompletionTextField($this,'puk');
+      echo Html::input('puk', ['type'  => 'text',
+                                       'value' => $this->fields["puk"]]);
+
+         //Html::autocompletionTextField($this,'puk');
          echo "</td></tr>\n";
 
          echo "<tr class='tab_bg_1'>";
          echo "<td>".__s('Puk 2', 'simcard')."</td>";
          echo "<td>";
-         Html::autocompletionTextField($this,'puk2');
+      echo Html::input('puk2', ['type'  => 'text',
+                                       'value' => $this->fields["puk2"]]);
+
+         //Html::autocompletionTextField($this,'puk2');
          echo "</td></tr>\n";
       }
 
@@ -601,7 +632,7 @@ return $tab;
    static function install(Migration $migration) {
       global $DB;
       $table = getTableForItemType(__CLASS__);
-      if (!TableExists($table)) {
+      if (!$DB->tableExists($table)) {
          $query = "CREATE TABLE IF NOT EXISTS `$table` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `entities_id` int(11) NOT NULL DEFAULT '0',
@@ -700,7 +731,7 @@ return $tab;
       // Remove unicity constraints on simcards
       FieldUnicity::deleteForItemtype("SimcardSimcard");
 
-      foreach (array('Notepad', 'DisplayPreference', 'Contract_Item', 'Infocom', 'Fieldblacklist', 'Document_Item', 'Bookmark', 'Log') as $itemtype) {
+      foreach (array('Notepad', 'DisplayPreference', 'Contract_Item', 'Infocom', 'Fieldblacklist', 'Document_Item',  'Log') as $itemtype) {
          $item = new $itemtype();
          $item->deleteByCriteria(array('itemtype' => __CLASS__));
       }
